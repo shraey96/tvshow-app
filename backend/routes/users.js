@@ -97,6 +97,28 @@ router.post('/userTvInfo', function(req, res){
 
 })
 
+
+router.put('/episodeWatched', function(req, res){
+    TvShow.update(
+        { user_id: req.user._id ,
+        "tvShowInfo.tvShowId":req.body.tvid},
+        { $addToSet: { "tvShowInfo.$.episodeWatched" : req.body.episodeid  } },
+        )
+        .then((done) => {
+            if(done){
+                res.send({
+                    succes: true,
+                    msg: "Episode Added"
+                });
+            }else{
+                res.send({
+                    success:false,
+                    msg: "Episode already Exist"
+                })
+            }
+        })
+});
+
 router.post('/register', function(req, res){
 
     User.findOne({'email': req.body.email})
