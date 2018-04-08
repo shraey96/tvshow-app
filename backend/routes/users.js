@@ -4,10 +4,69 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const rp = require('request-promise');
 
-// bring in Models
+// bring in article model
 let User = require('../models/user');
 let TvShow = require('../models/userTVInfo');
 
+router.get('/tvseries', function(req, res){
+    TvShow.findOne({user_id:req.user._id})
+    .populate('user_id', '-password')
+    .then((user)=>{
+        if(user){
+            res.send({
+                success:true,
+                user:user
+            })
+        }else{
+            res.send({
+                success:false,
+                user: null
+            })
+        }
+    })
+});
+
+router.put('/episodeWatched', function(req, res){
+    if(req.body.request==="add"){
+    TvShow.update(
+        { user_id: req.user._id ,
+        "tvShowInfo.tvShowId":req.body.tvid},
+        { $addToSet: { "tvShowInfo.$.episodeWatched" : req.body.episodeid  } },
+    )
+        .then((done) => {
+            if(done){
+                res.send({
+                    succes: true,
+                    msg: "Episode Added"
+                });
+            }else{
+                res.send({
+                    success:false,
+                    msg: "Episode already Exist"
+                })
+            }
+        })
+    }else{
+        TvShow.update(
+            { user_id: req.user._id ,
+            "tvShowInfo.tvShowId":req.body.tvid},
+            { $pull: { "tvShowInfo.$.episodeWatched" : req.body.episodeid  } },
+        )
+            .then((done) => {
+                if(done){
+                    res.send({
+                        succes: true,
+                        msg: "Episode Deleted"
+                    });
+                }else{
+                    res.send({
+                        success:false,
+                        msg: "Episode Not Found"
+                    })
+                }
+            })
+    }
+});
 
 router.post('/userTvInfo', function(req, res){
     TvShow.findOne({user_id:req.user._id})
@@ -44,11 +103,11 @@ router.post('/userTvInfo', function(req, res){
                 })
         }else{
             console.log("jhsbcjhdbjhcbdjhbcjhdcbjdbcjh",user_id);
-            // TvShow.find(
-            //     { user_id: req.user._id}, {tvShowInfo: { $elemMatch: {tvShowId: req.body.tvid} } }
+            // TvShow.findOne(
+            //     { user_id: req.user._id}, {tvShowInfo: { $elemMatch: {tvShowId: req.body.tvid} } } 
             //  )
             TvShow.findOne(
-                {user_id: req.user._id,
+                {user_id: req.user._id, 
                 "tvShowInfo.tvShowId":req.body.tvid}
             )
              .then((tv)=>{
@@ -72,30 +131,43 @@ router.post('/userTvInfo', function(req, res){
                                         tvShowId : req.body.tvid,
                                         tvShowIMDB: req.body.imdb,
                                         tvShowName: req.body.tvname,
-                                        tvShowImageUrl: req.body.tvimg,
+                                        tvShowImageUrl: req.body.tvimg || '',
                                         totalEpisodeCount:episodeCount
-                                      };
+                                    };
                             TvShow.update(
                                 { user_id: req.user._id },
                                 { $push: { tvShowInfo: tvShowInfo } }
                             )
                             .then((done)=>{
                                 res.send({
-                                  success: true,
-                                  msg: "TV Show followed."
+                                    success:true,
+                                    msg: "Show followed."
                                 })
                             })
                         });
                  }
              })
-
+            
         }
         })
     .catch((err)=>{
         console.log("catcherorro",err);
-    })
+    });
 
-})
+});
+
+router.post('/userTvInfo/unfollow', function (req, res) {
+    TvShow.update(
+        { user_id: req.user._id },
+        { $pull: { tvShowInfo: { tvShowId: req.body.tvid } } },
+    )
+        .then((done) => {
+            res.send({
+                succes: true,
+                msg: "Unfollowed"
+            });
+        })
+});
 
 
 router.put('/episodeWatched', function(req, res){
