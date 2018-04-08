@@ -1,0 +1,8 @@
+export const FETCH_SHOWS = 'FETCH_SHOWS';
+export const FETCH_SHOWS_ID = 'FETCH_SHOWS_ID';
+export const FETCH_EPISODE_INFO = 'FETCH_EPISODE_INFO';
+export const FETCH_SEARCH_QUERY = 'FETCH_SEARCH_QUERY';
+
+
+export const LOGIN_USER = 'LOGIN_USER';
+export const LOGOUT_USER = 'LOGOUT_USER';
