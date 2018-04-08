@@ -1,4 +1,4 @@
-import {LOGIN_USER, LOGOUT_USER} from '../actions/types';
+import {LOGIN_USER, LOGOUT_USER, FOLLOW_SHOW} from '../actions/types';
 
 const initialState = {
 
@@ -12,7 +12,6 @@ const initialState = {
 export default function(state = initialState, action){
 
   console.log("User Reducer Called");
-
 
   switch (action.type) {
     case 'LOGIN_USER':

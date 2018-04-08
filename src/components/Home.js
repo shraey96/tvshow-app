@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import '../App.css';
 
 import {connect} from 'react-redux';
-import {fetchShows} from '../actions/showsAction';
+
 import {Link} from 'react-router-dom';
 
 import { Grid, Row, Col } from 'react-flexbox-grid';
+
+import {fetchShows} from '../actions/showsAction';
+import {UserFollowShow} from '../actions/userAction'
 
 class Home extends Component {
 
@@ -35,11 +38,21 @@ handleChange(e){
 
 Follow = (tvShowInfo) => {
 
-  // if(this.props.)
+  if(this.props.userProfile.isUserLoggedIn === false){
+  alert("PLEASE LOGIN FIRST");
+  }else {
+  let data = {
+    tvid: String(tvShowInfo.show.id),
+    imdb: tvShowInfo.show.externals.imdb,
+    tvname: tvShowInfo.show.name,
+    tvimg:  tvShowInfo.show.image.medium
+  }
+  console.log(data);
+  this.props.UserFollowShow(data);
+  // this.props.UserFollowShow(data);
+  }
 
-  console.log("tvshowinfo: ", this.props.userProfile.userProfile._id, tvShowInfo.show.id, tvShowInfo.show.externals.imdb, tvShowInfo.show.name, tvShowInfo.show.image.medium);
-
- }
+}
 
 
   render() {
@@ -110,4 +123,4 @@ const mapStateToProps = function(state){
 }
 
 
-export default connect(mapStateToProps, {fetchShows})(Home);
+export default connect(mapStateToProps, {fetchShows, UserFollowShow})(Home);

@@ -9,7 +9,7 @@ import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import {LoginUser, LogoutUser} from '../actions/userAction'
+import {LoginUser, LogoutUser} from '../actions/userAction';
 
 class Login extends Component {
 

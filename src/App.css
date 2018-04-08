@@ -22,11 +22,3 @@
     transform: rotate(0deg); }
   to {
     transform: rotate(360deg); } }
-
-.tvpopular{
-  margin-top: 10px;
-}
-
-.tvpopularLink{
-  font-size: 10px;
-}

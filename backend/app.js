@@ -28,8 +28,8 @@ db.on('error', function(err){
 
 //init app
 const app = express();
-
 app.use(cors());
+
 
 // body parser middleware
 app.use(bodyParser.json());
@@ -59,11 +59,7 @@ app.get('*', function(req, res, next){
 });
 
 app.get('/', function(req, res){
-    //res.render(index);
-    res.render('index', {
-		ashu:ashu,
-	});
-	console.log(ashu);
+
    });
 
 // route files
