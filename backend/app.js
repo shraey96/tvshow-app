@@ -5,13 +5,13 @@ const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const expressValidator = require('express-validator');
-const flash = require('connect-flash');
 const passport = require('passport');
 const config = require('./config/database');
 const cors = require('cors');
 const rp = require('request-promise');
-const morganBody  = require('morgan-body')
+const morganBody  = require('morgan-body');
+
+const users = require('./routes/users');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.database, { useMongoClient: true });
@@ -28,14 +28,24 @@ db.on('error', function(err){
 
 //init app
 const app = express();
-app.use(cors());
+
+
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+  if ('OPTIONS' == req.method) {
+    res.send(200);
+  } else {
+      next();
+  }
+});
 
 
 // body parser middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-
-
 morganBody(app);
 
 
@@ -59,12 +69,11 @@ app.get('*', function(req, res, next){
 });
 
 app.get('/', function(req, res){
+res.send({user: req.user})
+});
 
-   });
 
 // route files
-
-let users = require('./routes/users');
 app.use('/users', users);
 
 // start server

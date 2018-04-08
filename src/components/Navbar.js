@@ -39,9 +39,6 @@ class Simple extends Component {
     this.setState({value: e.target.value})
   }
 
-
-
-
   handleToggle = () => this.setState({open: !this.state.open});
 
   handleClose = () => this.setState({open: false});

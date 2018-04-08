@@ -38,7 +38,7 @@ handleChange(e){
 
 Follow = (tvShowInfo) => {
 
-  if(this.props.userProfile.isUserLoggedIn === false){
+  if(this.props.user.isUserLoggedIn === false){
   alert("PLEASE LOGIN FIRST");
   }else {
   let data = {
@@ -47,9 +47,7 @@ Follow = (tvShowInfo) => {
     tvname: tvShowInfo.show.name,
     tvimg:  tvShowInfo.show.image.medium
   }
-  console.log(data);
   this.props.UserFollowShow(data);
-  // this.props.UserFollowShow(data);
   }
 
 }
@@ -118,7 +116,7 @@ popularShowsAiringTonight = show.map((tvshow, index)=>{
 const mapStateToProps = function(state){
   return {
     shows: state.shows,
-    userProfile: state.user
+    user: state.user
           }
 }
 
