@@ -3,7 +3,9 @@ import '../App.css';
 
 import {connect} from 'react-redux';
 import {fetchSearchQueryInfo} from '../actions/showsAction';
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
+import { Grid, Row, Col } from 'react-flexbox-grid';
+
 class Search extends Component {
 
 componentWillMount(){
@@ -14,11 +16,13 @@ this.props.fetchSearchQueryInfo((this.props.match.params.query));
 componentWillReceiveProps(nextProps){
 this.props.fetchSearchQueryInfo((nextProps.match.params.query));
 }
-
-  render() {
+// {show.show.genres.map((genre)=>{
+//   return (<p key={genre}>Genres: {genre}</p>)
+// })}
+render() {
 let people;
 let shows;
-
+let days;
 if(this.props.searchShow){
   shows = this.props.searchShow.map((show)=>{
     let image;
@@ -28,19 +32,22 @@ if(this.props.searchShow){
       image = '';
     }
     return(
-      <div key={show.show.id}>
+
+      <Col xs={12} md={3} key={show.show.id}>
+      <div>
         {image} <br/>
         <u><Link to={`/shows/${show.show.name}/${show.show.id}`}>Name: {show.show.name}</Link></u>
         <p>Language: {show.show.language}</p>
         <p>Rating: {show.show.rating.average}</p>
         <p>Time: {show.show.schedule.time}</p>
-        {show.show.schedule.days.map((day)=>{
-          return (<p key={day}>Days: {day}</p>)
+        <p>Days:
+         {show.show.schedule.days.map((day)=>{
+          return ( day + ',')
         })}
-        {show.show.genres.map((genre)=>{
-          return (<p key={genre}>Genres: {genre}</p>)
-        })}
+        </p>
+
       </div>
+    </Col>
     )
   })
 }else {
@@ -54,7 +61,7 @@ if(this.props.searchPeople){
     if(person.person.image){
       image = <img src={person.person.image.medium}/>
     }else {
-      image = ''
+      image = <img src="https://image.freepik.com/free-icon/user-image-with-black-background_318-34564.jpg" height="300px;" width="300px;"/>
     }
 
     if(person.person.country){
@@ -63,13 +70,16 @@ if(this.props.searchPeople){
       country = '';
     }
     return(
-      <div id={person.id}>
+      <Col xs={12} md={3} key={person.id}>
+      <div>
         {image}<br/>
         <u>Name: {person.person.name}</u>
         {country}
         <p>Birthday: {person.person.birthday}</p>
         <p>Gender: {person.person.gender}</p>
       </div>
+    </Col>
+
     )
   })
 }else {
@@ -78,14 +88,21 @@ if(this.props.searchPeople){
 
 
     return (
-      <div className="App FullHeight">
 
-      <u><h3>SearchComponent</h3></u>
-      <h2>Shows</h2>
-      {shows}
-      <h2>People</h2>
-      {people}
-      </div>
+      <Grid fluid>
+            <h2>Shows</h2>
+        <Row>
+{shows}
+        </Row>
+        <br/>
+        <hr/>
+        <br/>
+            <h2>People</h2>
+        <Row>
+{people}
+        </Row>
+     </Grid>
+
     );
   }
 }

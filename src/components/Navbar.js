@@ -93,6 +93,12 @@ let userLoggedIn = (
       </MenuItem>
       </Link>
 
+      <Link className="sideLink" to={`/${this.props.user.userProfile.username}/myshows`}>
+      <MenuItem>
+      My Shows
+      </MenuItem>
+      </Link>
+
       <Link className="sideLink" to={`/about/`}>
       <MenuItem>
       Calendar

@@ -15,7 +15,7 @@ router.get('/tvseries', function(req, res){
         if(user){
             res.send({
                 success:true,
-                user:user
+                info:user
             })
         }else{
             res.send({
@@ -31,14 +31,39 @@ router.put('/episodeWatched', function(req, res){
     TvShow.update(
         { user_id: req.user._id ,
         "tvShowInfo.tvShowId":req.body.tvid},
-        { $addToSet: { "tvShowInfo.$.episodeWatched" : req.body.episodeid  } },
+        { $addToSet: { "tvShowInfo.$.episodeWatched" : req.body.episodeid  }}
     )
+
+    // let query = { user_id: req.user._id , "tvShowInfo.tvShowId":req.body.tvid};
+    // let update = { $addToSet: { "tvShowInfo.$.episodeWatched" : req.body.episodeid  } };
+    // let options = {new: true, upsert: true}
+    //   TvShow.findOneAndUpdate (query, update, options, function(err, result){
+    //     if(result){
+    //               res.send({
+    //                   succes: true,
+    //                   msg: "Episode Added",
+    //                   result: result
+    //                 });
+    //     }
+    //   })
+
         .then((done) => {
             if(done){
-                res.send({
-                    succes: true,
-                    msg: "Episode Added"
-                });
+              console.log(done);
+                // res.send({
+                //     succes: true,
+                //     msg: "Episode Added"
+                  // });
+                  TvShow.findOne({user_id: req.user._id})
+                  .then((user)=>{
+                    res.send({
+                        succes: true,
+                        msg: "Episode Added",
+                        user: user
+                      });
+                  })
+
+
             }else{
                 res.send({
                     success:false,
@@ -94,20 +119,29 @@ router.post('/userTvInfo', function(req, res){
                             console.log(err);
                             return;
                         }else{
-                            res.send({
-                              succes: true,
-                              msg: "Show followed."
-                            });
+                            // res.send({
+                            //   succes: true,
+                            //   msg: "Show followed."
+                            // });
+
+                            TvShow.findOne({user_id: req.user._id})
+                            .then((user)=>{
+                              res.send({
+                                succes: true,
+                                msg: "Show followed.",
+                                result: user
+                              });
+                            })
+
                         }
                     });
                 })
         }else{
-            console.log("jhsbcjhdbjhcbdjhbcjhdcbjdbcjh",user_id);
             // TvShow.findOne(
-            //     { user_id: req.user._id}, {tvShowInfo: { $elemMatch: {tvShowId: req.body.tvid} } } 
+            //     { user_id: req.user._id}, {tvShowInfo: { $elemMatch: {tvShowId: req.body.tvid} } }
             //  )
             TvShow.findOne(
-                {user_id: req.user._id, 
+                {user_id: req.user._id,
                 "tvShowInfo.tvShowId":req.body.tvid}
             )
              .then((tv)=>{
@@ -139,19 +173,28 @@ router.post('/userTvInfo', function(req, res){
                                 { $push: { tvShowInfo: tvShowInfo } }
                             )
                             .then((done)=>{
-                                res.send({
-                                    success:true,
-                                    msg: "Show followed."
+                                // res.send({
+                                //     success:true,
+                                //     msg: "Show followed."
+                                // })
+                                TvShow.findOne({user_id: req.user._id})
+                                .then((user)=>{
+                                  res.send({
+                                    succes: true,
+                                    msg: "Show followed.",
+                                    result: user
+                                  });
                                 })
+
                             })
                         });
                  }
              })
-            
+
         }
         })
     .catch((err)=>{
-        console.log("catcherorro",err);
+        console.log("catch errorr: ",err);
     });
 
 });

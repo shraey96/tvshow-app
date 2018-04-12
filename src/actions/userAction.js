@@ -1,4 +1,4 @@
-import {LOGIN_USER, LOGOUT_USER, FOLLOW_SHOW} from './types';
+import {LOGIN_USER, LOGOUT_USER, FOLLOW_SHOW, FOLLOW_EPISODE} from './types';
 import urlToUse from '../config';
 import axios from 'axios';
 
@@ -24,10 +24,23 @@ export function LoginUser(email, password) {
             .then(userData => userData.json())
             .then((userData) => {
                 console.log(userData);
-                dispatch({
-                    type: LOGIN_USER,
-                    payload: userData
-                })
+
+
+                  fetch(`${urlToUse}/users/tvseries`, {credentials: 'include'})
+                  .then((userCompleteList) => userCompleteList.json())
+                  .then((userCompleteList)=>{
+
+                    let data = {
+                      login: userData,
+                      userInfo: userCompleteList
+                    }
+
+                    dispatch({
+                        type: LOGIN_USER,
+                        payload: data
+                    })
+                  })
+
             })
 
     }
@@ -86,5 +99,51 @@ export function UserFollowShow(data) {
             })
 
     }
+
+}
+
+
+export function getUserData(userData){
+return function(dispatch){
+
+  fetch(`${urlToUse}/users/tvseries`, {credentials: 'include'})
+  .then((userCompleteList) => userCompleteList.json())
+  .then((userCompleteList)=>{
+    dispatch({
+        type: LOGIN_USER,
+        payload: "A"
+    })
+  })
+}
+}
+
+
+export function followEpisode(data){
+
+  data.request = "add";
+
+
+  return function(dispatch){
+
+    fetch(`${urlToUse}/users/episodeWatched`, {
+            method: 'put',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(result => result.json())
+        .then((result) => {
+          console.log(result);
+          dispatch({
+            type: FOLLOW_EPISODE,
+            payload: result
+          })
+
+
+        })
+
+  }
 
 }

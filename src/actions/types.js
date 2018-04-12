@@ -7,3 +7,4 @@ export const FETCH_SEARCH_QUERY = 'FETCH_SEARCH_QUERY';
 export const LOGIN_USER = 'LOGIN_USER';
 export const LOGOUT_USER = 'LOGOUT_USER';
 export const FOLLOW_SHOW = 'FOLLOW_SHOW';
+export const FOLLOW_EPISODE = 'FOLLOW_EPISODE';

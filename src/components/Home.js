@@ -8,7 +8,9 @@ import {Link} from 'react-router-dom';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 
 import {fetchShows} from '../actions/showsAction';
-import {UserFollowShow} from '../actions/userAction'
+import {UserFollowShow} from '../actions/userAction';
+
+
 
 class Home extends Component {
 
@@ -57,10 +59,45 @@ Follow = (tvShowInfo) => {
 
 let popularShowsAiringTonight;
 let show = this.props.shows.shows;
+
+let userShowInfo = this.props.user.userFollows
+console.log(userShowInfo);
+
 if(this.props.shows.shows.length !==0){
 
-
 popularShowsAiringTonight = show.map((tvshow, index)=>{
+
+let button;
+
+if(this.props.user.isUserLoggedIn === true){
+
+  userShowInfo.forEach((usershow)=>{
+
+    if(tvshow.show.id === parseInt(usershow.tvShowId)){
+      console.log("exists");
+      // return ()
+    }else {
+      console.log("doe");
+    }
+
+  })
+
+// userShowInfo.map((usershow)=>{
+//   if(tvshow.show.id === parseInt(usershow.tvShowId)){
+//     // console.log("I follow");
+//     button = (<button>UnFollow</button>);
+//
+//   }else {
+//     // console.log("I don't");
+//     button = (<button onClick={()=>{this.Follow(tvshow)}}>Follow</button>);
+//   }
+// })
+}else {
+  console.log("NO");
+  button = ""
+}
+
+
   if(index<16)
 { let image;
   if(tvshow.show.image){
@@ -75,7 +112,7 @@ popularShowsAiringTonight = show.map((tvshow, index)=>{
         <p><Link className="tvpopularLink" to={`/shows/${tvshow.show.name}/${tvshow.show.id}/${tvshow.season}/episode/${tvshow.number}`}><b>{tvshow.name}</b></Link> </p>
         <p><Link className="tvpopularLink" to={`/shows/${tvshow.show.name}/${tvshow.show.id}`}>{tvshow.show.name}</Link> </p>
         <p className="tvpopularLink"> <u>S{tvshow.season}E{tvshow.number}</u> </p>
-        <button onClick={()=>{this.Follow(tvshow)}}>Follow</button>
+        {button}
         </div>
 
       </Col>
@@ -106,9 +143,8 @@ popularShowsAiringTonight = show.map((tvshow, index)=>{
   </Row>
 </Grid>
 
-
-
       </div>
+
     );
   }
 }
