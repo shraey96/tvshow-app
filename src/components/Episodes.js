@@ -41,18 +41,48 @@ handleWatch = (episode_num, showid) =>{
 
 }
 
+handleUnWatch = (episode_num, showid) =>{
+  console.log(episode_num, showid);
+}
 
 
   render() {
 
-    let episodes='';
-    let showid = (this. props.showid);
-      // this.handleWatch = this.handleSubmit.bind(this);
 
+
+    let episodes='';
+    let showid = (this.props.showid);
+    let presentShowArray = [];
+    let button;
+
+if(this.props.user.isUserLoggedIn === true){
+   presentShowArray = this.props.user.userFollows.filter((follow)=>{
+    return  parseInt(follow.tvShowId) === parseInt(this.props.showid)
+  })
+  console.log(presentShowArray);
+  if(!presentShowArray[0]){
+    presentShowArray = [];
+  }else {
+  presentShowArray = (presentShowArray[0].episodeWatched);  
+  }
+
+}
 
 
     if(this.props.episodes){
       episodes = this.props.episodes.map((episode, i)=>{
+
+        let episodeIn = (presentShowArray.indexOf(episode.id))
+        if(episodeIn>-1){
+          button = (<button onClick={()=>{this.handleUnWatch(episode.id, showid)}}>UnWatch</button>)
+        }else {
+          button = (<button onClick={()=>{this.handleWatch(episode.id, showid)}}>Watch</button>)
+        }
+// for(var i = 0; i<presentShowArray.length; i++){
+
+// }
+
+
 
         return(
           <tr key={episode.id}>
@@ -61,7 +91,7 @@ handleWatch = (episode_num, showid) =>{
             <td>{episode.name}</td>
             <td>{episode.runtime}</td>
             <td>{episode.airdate}</td>
-            <td><button onClick={()=>{this.handleWatch(episode.id, showid)}}>Watch</button></td>
+            <td>{button}</td>
           </tr>
 
         )

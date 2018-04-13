@@ -54,6 +54,10 @@ Follow = (tvShowInfo) => {
 
 }
 
+unFollow = (tvShowInfo) => {
+  console.log("AAAA");
+}
+
 
   render() {
 
@@ -71,27 +75,16 @@ let button;
 
 if(this.props.user.isUserLoggedIn === true){
 
-  userShowInfo.forEach((usershow)=>{
 
-    if(tvshow.show.id === parseInt(usershow.tvShowId)){
-      console.log("exists");
-      // return ()
-    }else {
-      console.log("doe");
-    }
+      for(var i = 0; i<userShowInfo.length; i++){
+          if(tvshow.show.id === parseInt(userShowInfo[i].tvShowId)){
+            button = (<button onClick={()=>{this.unFollow(tvshow)}}>UnFollow</button>);
+            break;
+          }else {
+            button = (<button onClick={()=>{this.Follow(tvshow)}}>Follow</button>);
+          }
+      }
 
-  })
-
-// userShowInfo.map((usershow)=>{
-//   if(tvshow.show.id === parseInt(usershow.tvShowId)){
-//     // console.log("I follow");
-//     button = (<button>UnFollow</button>);
-//
-//   }else {
-//     // console.log("I don't");
-//     button = (<button onClick={()=>{this.Follow(tvshow)}}>Follow</button>);
-//   }
-// })
 }else {
   console.log("NO");
   button = ""
