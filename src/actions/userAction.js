@@ -1,6 +1,5 @@
 import {LOGIN_USER, LOGOUT_USER, FOLLOW_SHOW, FOLLOW_EPISODE} from './types';
 import urlToUse from '../config';
-import axios from 'axios';
 
 export function LoginUser(email, password) {
 
