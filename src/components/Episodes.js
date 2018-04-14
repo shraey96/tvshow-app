@@ -26,6 +26,7 @@ componentWillMount(){
   }
 
 handleWatch = (episode_num, showid) =>{
+  if(this.props.user.isUserLoggedIn === true){
   console.log(this.props);
   console.log(episode_num,showid);
   let data = {
@@ -38,6 +39,10 @@ handleWatch = (episode_num, showid) =>{
   console.log(data);
 
   this.props.followEpisode(data);
+}
+else {
+  alert("Login first!");
+}
 
 }
 
@@ -63,15 +68,30 @@ if(this.props.user.isUserLoggedIn === true){
   if(!presentShowArray[0]){
     presentShowArray = [];
   }else {
-  presentShowArray = (presentShowArray[0].episodeWatched);  
+  presentShowArray = (presentShowArray[0].episodeWatched);
   }
 
 }
-
+  console.log(this.props.episodes);
 
     if(this.props.episodes){
-      episodes = this.props.episodes.map((episode, i)=>{
+      let count;
+      let tag;
+      // let count = (this.props.episodes[0].season);
+      if(this.props.episodes[0]){
+        console.log("present");
+        count=0;
+      }
 
+
+      episodes = this.props.episodes.map((episode, i)=>{
+        // console.log(episode);
+          if(count===episode.season){
+            tag = (<h3></h3>)
+          }else {
+            count=episode.season
+            tag= (<h3>Season: {count}</h3>)
+          }
         let episodeIn = (presentShowArray.indexOf(episode.id))
         if(episodeIn>-1){
           button = (<button onClick={()=>{this.handleUnWatch(episode.id, showid)}}>UnWatch</button>)
@@ -86,8 +106,7 @@ if(this.props.user.isUserLoggedIn === true){
 
         return(
           <tr key={episode.id}>
-            <td>{episode.season}</td>
-            <td>{episode.number}</td>
+            <td>{tag}</td>
             <td>{episode.name}</td>
             <td>{episode.runtime}</td>
             <td>{episode.airdate}</td>
@@ -103,7 +122,7 @@ if(this.props.user.isUserLoggedIn === true){
 
 
     return (
-      <table className="App">
+      <table className="App episodeTable">
       <tr>
       <th>Season</th>
       <th>Episode Number</th>

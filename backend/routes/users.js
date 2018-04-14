@@ -4,13 +4,16 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const rp = require('request-promise');
 
-// bring in article model
+// bring in models
 let User = require('../models/user');
+let showCache = require('../models/showCache');
 let TvShow = require('../models/userTVInfo');
+
 
 router.get('/tvseries', function(req, res){
     TvShow.findOne({user_id:req.user._id})
     .populate('user_id', '-password')
+    .populate('tvShowInfo.show_ref')
     .then((user)=>{
         if(user){
             res.send({
@@ -25,6 +28,8 @@ router.get('/tvseries', function(req, res){
         }
     })
 });
+
+
 
 router.put('/episodeWatched', function(req, res){
     if(req.body.request==="add"){
@@ -55,6 +60,7 @@ router.put('/episodeWatched', function(req, res){
                 //     msg: "Episode Added"
                   // });
                   TvShow.findOne({user_id: req.user._id})
+                  .populate('tvShowInfo.show_ref')
                   .then((user)=>{
                     res.send({
                         succes: true,
@@ -93,111 +99,125 @@ router.put('/episodeWatched', function(req, res){
     }
 });
 
+
 router.post('/userTvInfo', function(req, res){
-    TvShow.findOne({user_id:req.user._id})
-    .then((user_id)=>{
-        if(!user_id){
-            var options = {
-                uri: 'http://api.tvmaze.com/shows/'+req.body.tvid+'/episodes?specials=1',
-            };
-            rp(options)
-                .then(function (response) {
-                    response = JSON.parse(response);
-                    let episodeCount = parseInt(response.length);
-                    let newTvShow = new TvShow({
-                        user_id:req.user._id,
-                        tvShowInfo:[{
-                            tvShowId : req.body.tvid,
-                            tvShowIMDB: req.body.imdb,
-                            tvShowName: req.body.tvname,
-                            tvShowImageUrl: req.body.tvimg || '',
-                            totalEpisodeCount:episodeCount
-                        }]
+
+  showCache.findOne({tvShowId: req.body.tvid})
+  .then((show)=>{
+
+    if(show){
+      console.log("show found!");
+      proceedToAdd(show)
+    }else {
+      console.log("show not found!");
+      var options = {
+          uri: 'http://api.tvmaze.com/shows/'+req.body.tvid+'/episodes?specials=1',
+          json: true
+      };
+      rp(options)
+          .then(function (response) {
+
+            let objToCreate = {
+              tvShowId : req.body.tvid,
+              tvShowIMDB: req.body.imdb,
+              tvShowImageUrl: req.body.tvimg || '',
+              tvShowName: req.body.tvname,
+              totalEpisodeCount: response.length,
+              episodes: response
+            }
+
+            showCache.create(objToCreate)
+            .then((show)=>{
+              proceedToAdd(show)
+            })
+
+          })
+    }
+  })
+
+
+function proceedToAdd(show){
+  TvShow.findOne({user_id:req.user._id})
+  .then((user_id)=>{
+      if(!user_id){
+
+
+                  let episodeCount = (show.episodes.length);
+                  let newTvShow = new TvShow({
+                      user_id:req.user._id,
+                      tvShowInfo:[{
+                          tvShowId : parseInt(req.body.tvid),
+                          show_ref : show._id
+                      }]
+                  });
+                  newTvShow.save(function(err){
+                      if(err){
+                          console.log(err);
+                          return;
+                      }else{
+                          TvShow.findOne({user_id: req.user._id})
+                          .populate('tvShowInfo.show_ref')
+                          .then((user)=>{
+                            res.send({
+                              succes: true,
+                              msg: "Show followed.",
+                              result: user
+                            });
+                          })
+                      }
+                  });
+
+      }else{
+
+          TvShow.findOne(
+              {user_id: req.user._id,
+              "tvShowInfo.tvShowId":req.body.tvid}
+          )
+          .populate('tvShowInfo.show_ref')
+           .then((tv)=>{
+               if(tv){
+                   res.send({
+                      succes: true,
+                      msg: "Show Exist.",
+                      tv:tv
                     });
-                    newTvShow.save(function(err){
-                        if(err){
-                            console.log(err);
-                            return;
-                        }else{
-                            // res.send({
-                            //   succes: true,
-                            //   msg: "Show followed."
-                            // });
+               }
+               else{
+                   console.log("not present");
 
-                            TvShow.findOne({user_id: req.user._id})
-                            .then((user)=>{
-                              res.send({
-                                succes: true,
-                                msg: "Show followed.",
-                                result: user
-                              });
-                            })
+                          let tvShowInfo = {
+                                      tvShowId : req.body.tvid,
+                                      show_ref: show._id
+                                  };
+                          TvShow.update(
+                              { user_id: req.user._id },
+                              { $push: { tvShowInfo: tvShowInfo } }
+                          )
+                          .then((done)=>{
 
-                        }
-                    });
-                })
-        }else{
-            // TvShow.findOne(
-            //     { user_id: req.user._id}, {tvShowInfo: { $elemMatch: {tvShowId: req.body.tvid} } }
-            //  )
-            TvShow.findOne(
-                {user_id: req.user._id,
-                "tvShowInfo.tvShowId":req.body.tvid}
-            )
-             .then((tv)=>{
-                 if(tv){
-                     res.send({
-                        succes: true,
-                        msg: "Show Exist.",
-                        tv:tv
-                      });
-                 }
-                 else{
-                     console.log("not present");
-                     var options = {
-                        uri: 'http://api.tvmaze.com/shows/'+req.body.tvid+'/episodes?specials=1',
-                    };
-                    rp(options)
-                        .then(function (response) {
-                            response = JSON.parse(response);
-                            let episodeCount = parseInt(response.length);
-                            let tvShowInfo = {
-                                        tvShowId : req.body.tvid,
-                                        tvShowIMDB: req.body.imdb,
-                                        tvShowName: req.body.tvname,
-                                        tvShowImageUrl: req.body.tvimg || '',
-                                        totalEpisodeCount:episodeCount
-                                    };
-                            TvShow.update(
-                                { user_id: req.user._id },
-                                { $push: { tvShowInfo: tvShowInfo } }
-                            )
-                            .then((done)=>{
-                                // res.send({
-                                //     success:true,
-                                //     msg: "Show followed."
-                                // })
-                                TvShow.findOne({user_id: req.user._id})
-                                .then((user)=>{
-                                  res.send({
-                                    succes: true,
-                                    msg: "Show followed.",
-                                    result: user
-                                  });
-                                })
+                              TvShow.findOne({user_id: req.user._id})
+                              .populate('tvShowInfo.show_ref')
+                              .then((user)=>{
+                                res.send({
+                                  succes: true,
+                                  msg: "Show followed.",
+                                  result: user
+                                });
+                              })
 
-                            })
-                        });
-                 }
-             })
+                          })
+               }
+           })
 
-        }
-        })
-    .catch((err)=>{
-        console.log("catch errorr: ",err);
-    });
+      }
+      })
+  .catch((err)=>{
+      console.log("catch errorr: ",err);
+  });
+}
 
 });
+
 
 router.post('/userTvInfo/unfollow', function (req, res) {
     TvShow.update(

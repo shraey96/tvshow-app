@@ -11,26 +11,30 @@ const tvShowSchema = mongoose.Schema({
    tvShowInfo : [
        {
            tvShowId: {
-               type: String,
+               type: Number,
                require: true
            },
-           tvShowIMDB: {
-               type: String,
-               require: false
+           show_ref: {
+             type: mongoose.Schema.Types.ObjectId,
+             ref:"showCache"
            },
-           tvShowImageUrl:{
-               type: String,
-               require:false
-           },
-           tvShowName: {
-                type: String,
-                require: false
-           },
-           totalEpisodeCount:{
-               type: Number,
-               require:false
-           },
-           episodeWatched:{
+           // tvShowIMDB: {
+           //     type: Number,
+           //     require: false
+           // },
+           // tvShowImageUrl: {
+           //     type: String,
+           //     require:false
+           // },
+           // tvShowName: {
+           //      type: String,
+           //      require: false
+           // },
+           // totalEpisodeCount: {
+           //     type: Number,
+           //     require:false
+           // },
+           episodeWatched: {
                type: Array,
                require:false
            }

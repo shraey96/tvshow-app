@@ -17,15 +17,15 @@ let percentageWatched;
 if(props.user.isUserLoggedIn === true){
   usershows = props.user.userFollows.map((shows)=>{
     console.log(shows);
-    image = <Link to={`/shows/${shows.tvShowName}/${shows.tvShowId}`}><img src={shows.tvShowImageUrl}/></Link>
-    percentageWatched = Percentage(shows.episodeWatched.length, shows.totalEpisodeCount)
+    image = <Link to={`/shows/${shows.show_ref.tvShowName}/${shows.tvShowId}`}><img src={shows.show_ref.tvShowImageUrl}/></Link>
+    percentageWatched = Percentage(shows.episodeWatched.length, shows.show_ref.totalEpisodeCount)
     return(
       <Col xs={12} md={3}  key={shows._id}>
 
         <div className="tvpopular">
         {image}
         <br/>
-        <p><Link className="tvpopularLink" to={`/shows/${shows.tvShowName}/${shows.tvShowId}`}>{shows.tvShowName}</Link> </p>
+        <p><Link className="tvpopularLink" to={`/shows/${shows.show_ref.tvShowName}/${shows.show_ref.tvShowId}`}>{shows.show_ref.tvShowName}</Link> </p>
         <p>Percentage Watched: {percentageWatched}</p>
         </div>
         <br/>

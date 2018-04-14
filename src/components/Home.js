@@ -64,7 +64,7 @@ unFollow = (tvShowInfo) => {
 let popularShowsAiringTonight;
 let show = this.props.shows.shows;
 
-let userShowInfo = this.props.user.userFollows
+let userShowInfo = this.props.user.userFollows;
 console.log(userShowInfo);
 
 if(this.props.shows.shows.length !==0){
@@ -74,8 +74,8 @@ popularShowsAiringTonight = show.map((tvshow, index)=>{
 let button;
 
 if(this.props.user.isUserLoggedIn === true){
-
-
+console.log("YES");
+  if(userShowInfo.length>0){
       for(var i = 0; i<userShowInfo.length; i++){
           if(tvshow.show.id === parseInt(userShowInfo[i].tvShowId)){
             button = (<button onClick={()=>{this.unFollow(tvshow)}}>UnFollow</button>);
@@ -84,12 +84,15 @@ if(this.props.user.isUserLoggedIn === true){
             button = (<button onClick={()=>{this.Follow(tvshow)}}>Follow</button>);
           }
       }
+    }else {
+      button = (<button onClick={()=>{this.Follow(tvshow)}}>Follow</button>);
+    }
 
 }else {
   console.log("NO");
   button = ""
 }
-
+console.log(button);
 
   if(index<16)
 { let image;

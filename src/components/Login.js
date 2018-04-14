@@ -30,7 +30,7 @@ constructor(){
   Login = () =>{
     let email = "shraey96@gmail.com";
     let password = "chikker";
-    (this.props.LoginUser(email, password))
+    this.props.LoginUser(email,password)
   }
 
 

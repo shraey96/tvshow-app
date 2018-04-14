@@ -9,12 +9,13 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 class Search extends Component {
 
 componentWillMount(){
-  console.log("Mounted AboutShow");
+console.log("Mounted AboutShow");
 this.props.fetchSearchQueryInfo((this.props.match.params.query));
 }
 
 componentWillReceiveProps(nextProps){
-this.props.fetchSearchQueryInfo((nextProps.match.params.query));
+
+// this.props.fetchSearchQueryInfo((nextProps.match.params.query));
 }
 // {show.show.genres.map((genre)=>{
 //   return (<p key={genre}>Genres: {genre}</p>)
@@ -24,6 +25,7 @@ let people;
 let shows;
 let days;
 if(this.props.searchShow){
+
   shows = this.props.searchShow.map((show)=>{
     let image;
     if(show.show.image){

@@ -39,6 +39,8 @@ export function LoginUser(email, password) {
                         type: LOGIN_USER,
                         payload: data
                     })
+
+
                   })
 
             })

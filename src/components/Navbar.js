@@ -32,7 +32,8 @@ class Simple extends Component {
 
   handleSubmit(e){
     e.preventDefault();
-    this.props.history.push(`/search/${this.state.value}`)
+    this.props.history.push(`/search/${this.state.value}`);
+    this.setState({value:''});
   }
 
   handleChange(e){
@@ -128,7 +129,7 @@ user = userNotLoggedIn;
     const rightButtons = (
         <div>
           <form onSubmit={this.handleSubmit}>
-            <TextField hintText="Search for a show or person"  name="search" onChange={this.handleChange}/>
+            <TextField hintText="Search for a show or person" name="search" onChange={this.handleChange}/>
           </form>
         </div>
       );
