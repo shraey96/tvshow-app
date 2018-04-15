@@ -28,9 +28,13 @@ class Calendar extends Component {
 componentWillMount(){
   console.log("Mounted Calendar");
   let events = [];
-  let tz = moment.tz.guess();
-
-
+  let tz = moment.tz.guess('2018-04-16T02:00:00+00:00');
+  console.log(moment.utc('2018-04-18T00:00:00+00:00'));
+  console.log(tz);
+  console.log(moment('2018-04-17').utcOffset("+05:30").format('MMMM Do YYYY'));
+  // console.log(moment("2018-04-16T02:00:00+00:00").zone('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a'));
+  console.log(moment.tz("2018-04-16T02:00:00+00:00", tz).format('MMMM Do YYYY, h:mm:ss a'));
+console.log(moment.tz("2018-04-16T02:00:00+00:00", "America/Toronto").format('MMMM Do YYYY, h:mm:ss a'));
   this.props.user.userFollows.forEach((event, index)=>{
     // console.log(event);
     // console.log(event);
