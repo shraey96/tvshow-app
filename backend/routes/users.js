@@ -8,6 +8,8 @@ const rp = require('request-promise');
 let User = require('../models/user');
 let showCache = require('../models/showCache');
 let TvShow = require('../models/userTVInfo');
+let ShowNotification = require('../models/showNotification');
+
 
 
 router.get('/tvseries', function(req, res){
@@ -322,6 +324,14 @@ router.get('/logout', function(req, res){
 router.get('/test', function(req, res){
     res.send({
         user:req.user
+    });
+});
+
+router.post('/notification', function(req, res){
+    ShowNotification.create(req.body).then((notification)=>{
+        res.send({
+            notification
+        });
     });
 });
 
