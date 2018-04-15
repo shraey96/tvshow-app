@@ -119,7 +119,7 @@ router.post('/userTvInfo', function(req, res){
 
             let objToCreate = {
               tvShowId : req.body.tvid,
-              tvShowIMDB: req.body.imdb,
+              tvShowIMDB: parseInt(req.body.imdb) || '',
               tvShowImageUrl: req.body.tvimg || '',
               tvShowName: req.body.tvname,
               totalEpisodeCount: response.length,

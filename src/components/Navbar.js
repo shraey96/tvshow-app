@@ -66,7 +66,7 @@ let userNotLoggedIn =  (
       </MenuItem>
       </Link>
 
-      <Link className="sideLink" to={`/about/`}>
+      <Link className="sideLink" to={`/calendar/`}>
       <MenuItem>
       Calendar
       </MenuItem>
@@ -100,7 +100,7 @@ let userLoggedIn = (
       </MenuItem>
       </Link>
 
-      <Link className="sideLink" to={`/about/`}>
+      <Link className="sideLink" to={`/calendar/`}>
       <MenuItem>
       Calendar
       </MenuItem>

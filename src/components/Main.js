@@ -7,9 +7,11 @@ import Home from './Home';
 import AboutShow from './AboutShow';
 import AboutShowEpisode from './AboutShowEpisode';
 import Search from './Search';
-import Login from './Login'
-import About from './About'
-import MyShows from './MyShows'
+import Login from './Login';
+import About from './About';
+import MyShows from './MyShows';
+import Calendar from './Calendar';
+
 import '../App.css';
 
 
@@ -31,7 +33,7 @@ class Main extends Component {
 <Route exact path="/search/:query" component={Search}/>
 <Route exact path="/shows/:tvshow/:id" component={AboutShow}/>
 <Route exact path="/shows/:tvshowname/:tvshowid/:season/episode/:enum" component={AboutShowEpisode}/>
-
+<Route exact path="/calendar" component={Calendar}/>
 <Route exact path="/:username/myshows" component={MyShows}/>
 
   </Switch>

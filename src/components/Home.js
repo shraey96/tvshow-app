@@ -100,7 +100,7 @@ console.log(button);
      image = <Link to={`/shows/${tvshow.show.name}/${tvshow.show.id}`}><img src={tvshow.show.image.medium}/></Link>
   }
     return (
-      <Col xs={12} md={3}  key={tvshow.id}>
+      <Col xs={12} md={3} sm={4} key={tvshow.id}>
 
         <div className="tvpopular">
         {image}
