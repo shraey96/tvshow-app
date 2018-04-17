@@ -12,7 +12,7 @@ const showNotification = mongoose.Schema({
         type: Number,
         require: true
     },
-    tvShowRef:{
+    show_ref:{
         type: mongoose.Schema.Types.ObjectId,
         ref:"showCache",
         require:true

@@ -121,7 +121,7 @@ router.post('/userTvInfo', function(req, res){
 
             let objToCreate = {
               tvShowId : req.body.tvid,
-              tvShowIMDB: parseInt(req.body.imdb) || '',
+              tvShowIMDB: req.body.imdb || '',
               tvShowImageUrl: req.body.tvimg || '',
               tvShowName: req.body.tvname,
               totalEpisodeCount: response.length,
@@ -165,6 +165,16 @@ function proceedToAdd(show){
                               msg: "Show followed.",
                               result: user
                             });
+
+                            console.log("create notif");
+
+                            req.body.show_ref = show._id;
+                            req.body.user_id = req.user._id;
+                            ShowNotification.create(req.body).then((notification)=>{
+                              console.log("notification created!");
+                            })
+
+
                           })
                       }
                   });
@@ -205,6 +215,14 @@ function proceedToAdd(show){
                                   msg: "Show followed.",
                                   result: user
                                 });
+                              })
+
+                                console.log("create notif");
+
+                              req.body.show_ref = show._id;
+                              req.body.user_id = req.user._id;
+                              ShowNotification.create(req.body).then((notification)=>{
+                                console.log("notification created");
                               })
 
                           })

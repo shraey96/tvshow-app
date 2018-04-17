@@ -16,11 +16,17 @@ export default function(state = initialState, action){
   switch (action.type) {
     case 'LOGIN_USER':
     console.log(action.payload);
+    let userInfo;
+    if(!action.payload.userInfo.user){
+      userInfo = "";
+    }else {
+      userInfo = action.payload.userInfo.info.tvShowInfo;
+    }
     return {
       ...state,
       isUserLoggedIn : action.payload.login.success,
       userProfile : action.payload.login.user,
-      userFollows: action.payload.userInfo.info.tvShowInfo
+      userFollows: userInfo
     }
 
     case 'LOGOUT_USER':

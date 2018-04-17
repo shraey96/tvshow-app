@@ -3,6 +3,7 @@ import '../App.css';
 
 import {connect} from 'react-redux';
 import {fetchSearchQueryInfo} from '../actions/showsAction';
+import {UserFollowShow} from '../actions/userAction';
 import {Link} from 'react-router-dom';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 
@@ -11,22 +12,69 @@ class Search extends Component {
 componentWillMount(){
 console.log("Mounted AboutShow");
 this.props.fetchSearchQueryInfo((this.props.match.params.query));
+// console.log(this.state);
 }
 
 componentWillReceiveProps(nextProps){
-
+console.log(nextProps);
+console.log(this.props);
+if(nextProps.match.params.query!==this.props.match.params.query){
+  console.log("no");
+}else {
+  console.log("y");
+}
 // this.props.fetchSearchQueryInfo((nextProps.match.params.query));
 }
 // {show.show.genres.map((genre)=>{
 //   return (<p key={genre}>Genres: {genre}</p>)
 // })}
+
+Follow = (tvShowInfo) => {
+
+  if(this.props.user.isUserLoggedIn === false){
+  alert("PLEASE LOGIN FIRST");
+  }else {
+  let data = {
+    tvid: String(tvShowInfo.show.id),
+    imdb: tvShowInfo.show.externals.imdb,
+    tvname: tvShowInfo.show.name,
+    tvimg:  tvShowInfo.show.image.medium
+  }
+  this.props.UserFollowShow(data);
+  }
+
+}
+
 render() {
 let people;
 let shows;
 let days;
+let button;
+
 if(this.props.searchShow){
 
   shows = this.props.searchShow.map((show)=>{
+
+    if(this.props.user.isUserLoggedIn === true){
+    console.log("YES");
+      if(this.props.user.userFollows.length>0){
+          for(var i = 0; i<this.props.user.userFollows.length; i++){
+              if(show.show.id === parseInt(this.props.user.userFollows[i].tvShowId)){
+                button = (<button onClick={()=>{this.unFollow(show)}}>UnFollow</button>);
+                break;
+              }else {
+                button = (<button onClick={()=>{this.Follow(show)}}>Follow</button>);
+              }
+          }
+        }else {
+          button = (<button onClick={()=>{this.Follow(show)}}>Follow</button>);
+        }
+
+    }else {
+      console.log("NO");
+      button = ""
+    }
+
     let image;
     if(show.show.image){
       image = <Link to={`/shows/${show.show.name}/${show.show.id}`}><img src={show.show.image.medium}/></Link>
@@ -46,6 +94,7 @@ if(this.props.searchShow){
          {show.show.schedule.days.map((day)=>{
           return ( day + ',')
         })}
+        {button}
         </p>
 
       </div>
@@ -114,9 +163,10 @@ const mapStateToProps = function(state){
     shows: state.shows,
     currentShow: state.shows.currentShow,
     searchPeople: state.shows.searchPeople,
-    searchShow: state.shows.searchShow
+    searchShow: state.shows.searchShow,
+    user: state.user
           }
 }
 
 
-export default connect(mapStateToProps, {fetchSearchQueryInfo})(Search);
+export default connect(mapStateToProps, {fetchSearchQueryInfo, UserFollowShow})(Search);

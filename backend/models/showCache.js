@@ -8,7 +8,7 @@ const showCache = mongoose.Schema({
         require: true
     },
     tvShowIMDB: {
-        type: Number,
+        type: String,
         require: false
     },
     tvShowImageUrl:{
