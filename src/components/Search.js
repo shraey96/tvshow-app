@@ -7,6 +7,8 @@ import {UserFollowShow} from '../actions/userAction';
 import {Link} from 'react-router-dom';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 
+import {Animated} from "react-animated-css";
+
 class Search extends Component {
 
 componentWillMount(){
@@ -52,7 +54,14 @@ let shows;
 let days;
 let button;
 
+let showsHeader;
+let peopleHeader;
+
+let hrLine;
+
 if(this.props.searchShow){
+
+showsHeader = (<h2>Shows</h2>);
 
   shows = this.props.searchShow.map((show)=>{
 
@@ -85,6 +94,8 @@ if(this.props.searchShow){
     return(
 
       <Col xs={12} md={3} key={show.show.id}>
+
+<Animated animationIn="bounceInLeft" animationOut="fadeOut" isVisible={true}>
       <div>
         {image} <br/>
         <u><Link to={`/shows/${show.show.name}/${show.show.id}`}>Name: {show.show.name}</Link></u>
@@ -95,18 +106,25 @@ if(this.props.searchShow){
          {show.show.schedule.days.map((day)=>{
           return ( day + ',')
         })}
+        <br />
         {button}
         </p>
 
       </div>
+</Animated>
+
     </Col>
     )
   })
 }else {
   shows = '';
+  showsHeader = '';
 }
 
 if(this.props.searchPeople){
+
+  peopleHeader = <h2>People</h2>
+
   people = this.props.searchPeople.map((person)=>{
     let image;
     let country;
@@ -123,6 +141,8 @@ if(this.props.searchPeople){
     }
     return(
       <Col xs={12} md={3} key={person.id}>
+
+<Animated animationIn="bounceInLeft" animationOut="fadeOut" isVisible={true}>
       <div>
         {image}<br/>
         <u>Name: {person.person.name}</u>
@@ -130,26 +150,34 @@ if(this.props.searchPeople){
         <p>Birthday: {person.person.birthday}</p>
         <p>Gender: {person.person.gender}</p>
       </div>
+</Animated>
+
     </Col>
 
     )
   })
 }else {
   people = '';
+  peopleHeader = '';
 }
 
+if(this.props.searchShow && this.props.searchPeople){
+  hrLine = (<hr/>);
+}else {
+  hrLine = '';
+}
 
     return (
 
       <Grid fluid>
-            <h2>Shows</h2>
+            {showsHeader}
         <Row>
 {shows}
         </Row>
         <br/>
-        <hr/>
+        {hrLine}
         <br/>
-            <h2>People</h2>
+            <h2>{peopleHeader}</h2>
         <Row>
 {people}
         </Row>

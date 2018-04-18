@@ -1,5 +1,14 @@
 .App {
-  text-align: center; }
+  text-align: center;
+}
+
+html{
+  /* background: linear-gradient(to right, #000000 , #53346d); */
+  /* background: linear-gradient(to right, #141e30 , #243b55); */
+  /* background: linear-gradient(to right, #000000, #434343); */
+  background: linear-gradient(to right, #114357, #F29492);
+  /* background: linear-gradient(to right, #232526, #232526); */
+}
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;

@@ -12,6 +12,8 @@ import {UserFollowShow} from '../actions/userAction';
 import Snackbar from 'material-ui/Snackbar';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+import {Animated} from "react-animated-css";
+
 class Home extends Component {
 
   constructor(){
@@ -118,6 +120,7 @@ console.log("YES");
     return (
       <Col xs={12} md={3} sm={4} key={tvshow.id}>
 
+<Animated animationIn="bounceInLeft" animationOut="fadeOut" isVisible={true}>
         <div className="tvpopular">
         {image}
         <br/>
@@ -126,6 +129,7 @@ console.log("YES");
         <p className="tvpopularLink"> <u>S{tvshow.season}E{tvshow.number}</u> </p>
         {button}
         </div>
+</Animated>
 
       </Col>
 
