@@ -92,7 +92,6 @@ console.log("YES");
   console.log("NO");
   button = ""
 }
-console.log(button);
 
   if(index<16)
 { let image;
