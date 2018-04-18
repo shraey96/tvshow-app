@@ -20,6 +20,7 @@ console.log(nextProps);
 console.log(this.props);
 if(nextProps.match.params.query!==this.props.match.params.query){
   console.log("no");
+  this.props.fetchSearchQueryInfo((nextProps.match.params.query));
 }else {
   console.log("y");
 }
@@ -72,14 +73,14 @@ if(this.props.searchShow){
 
     }else {
       console.log("NO");
-      button = ""
+      button = (<button onClick={()=>{this.Follow(show)}}>Follow</button>);
     }
 
     let image;
     if(show.show.image){
       image = <Link to={`/shows/${show.show.name}/${show.show.id}`}><img src={show.show.image.medium}/></Link>
     }else {
-      image = '';
+      image = <Link to={`/shows/${show.show.name}/${show.show.id}`}><img src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/vintage-tv-poster-irina-march.jpg" height="295px" width="210px"/></Link>
     }
     return(
 

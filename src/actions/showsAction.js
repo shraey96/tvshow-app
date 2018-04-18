@@ -6,10 +6,21 @@ export function fetchShows(query){
       .then(res=>res.json())
       .then(shows=>
 {
-        dispatch({
+
+
+    shows = shows.sort((r1, r2)=>{
+      if(r1.show.rating.average){
+        return r2.show.rating.average - r1.show.rating.average
+      }else {
+        return r1.show.rating.average
+      }
+    })
+
+        dispatch
+        ({
         type: FETCH_SHOWS,
         payload: shows
-      })
+        })
 }
     )
 

@@ -9,15 +9,17 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 
 import {fetchShows} from '../actions/showsAction';
 import {UserFollowShow} from '../actions/userAction';
-
-
+import Snackbar from 'material-ui/Snackbar';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 class Home extends Component {
 
   constructor(){
     super();
     this.state = {
-      value : ''
+      value : '',
+      open: false,
+      msg: ''
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -41,7 +43,7 @@ handleChange(e){
 Follow = (tvShowInfo) => {
 
   if(this.props.user.isUserLoggedIn === false){
-  alert("PLEASE LOGIN FIRST");
+  this.setState({open: true, msg: `You must login to follow shows!`});
   }else {
   let data = {
     tvid: String(tvShowInfo.show.id),
@@ -49,14 +51,27 @@ Follow = (tvShowInfo) => {
     tvname: tvShowInfo.show.name,
     tvimg:  tvShowInfo.show.image.medium
   }
-  this.props.UserFollowShow(data);
+  let followShow = this.props.UserFollowShow(data);
+  followShow.then((show)=>{
+    if(show.success === true){
+      this.setState({open: true, msg: `Show Followed!`});
+  }else {
+      this.setState({open: true, msg: `There was some problem.`});
   }
-
+})
+}
 }
 
 unFollow = (tvShowInfo) => {
   console.log("AAAA");
 }
+
+
+handleRequestClose = () => {
+this.setState({
+  open: false,
+});
+};
 
 
   render() {
@@ -90,14 +105,16 @@ console.log("YES");
 
 }else {
   console.log("NO");
-  button = ""
+  button = (<button onClick={()=>{this.Follow(tvshow)}}>Follow</button>);
 }
 
-  if(index<16)
-{ let image;
+
+   let image;
   if(tvshow.show.image){
      image = <Link to={`/shows/${tvshow.show.name}/${tvshow.show.id}`}><img src={tvshow.show.image.medium}/></Link>
-  }
+}else {
+     image = <Link to={`/shows/${tvshow.show.name}/${tvshow.show.id}`}><img src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/vintage-tv-poster-irina-march.jpg" height="295px" width="210px"/></Link>
+}
     return (
       <Col xs={12} md={3} sm={4} key={tvshow.id}>
 
@@ -114,7 +131,7 @@ console.log("YES");
 
 
   )
-}
+
 })
 
 }else {
@@ -123,10 +140,9 @@ console.log("YES");
 
 
     return (
+
+<MuiThemeProvider>
       <div className="App">
-
-
-
 
     <u><h3 className="headingPopular">Popular shows airing tonight!</h3></u>
 
@@ -138,8 +154,15 @@ console.log("YES");
   </Row>
 </Grid>
 
-      </div>
+<Snackbar
+          open={this.state.open}
+          message={this.state.msg}
+          autoHideDuration={2000}
+          onRequestClose={this.handleRequestClose}
+  />
 
+      </div>
+</MuiThemeProvider>
     );
   }
 }

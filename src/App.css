@@ -23,6 +23,10 @@
   to {
     transform: rotate(360deg); } }
 
-.Calendar{
+.Calendar {
   height: 500px;
+}
+
+.form-field {
+  width: 60% !important
 }

@@ -65,7 +65,7 @@ router.put('/episodeWatched', function(req, res){
                   .populate('tvShowInfo.show_ref')
                   .then((user)=>{
                     res.send({
-                        succes: true,
+                        success: true,
                         msg: "Episode Added",
                         user: user
                       });
@@ -88,7 +88,7 @@ router.put('/episodeWatched', function(req, res){
             .then((done) => {
                 if(done){
                     res.send({
-                        succes: true,
+                        success: true,
                         msg: "Episode Deleted"
                     });
                 }else{
@@ -161,7 +161,7 @@ function proceedToAdd(show){
                           .populate('tvShowInfo.show_ref')
                           .then((user)=>{
                             res.send({
-                              succes: true,
+                              success: true,
                               msg: "Show followed.",
                               result: user
                             });
@@ -189,7 +189,7 @@ function proceedToAdd(show){
            .then((tv)=>{
                if(tv){
                    res.send({
-                      succes: true,
+                      success: true,
                       msg: "Show Exist.",
                       tv:tv
                     });
@@ -211,7 +211,7 @@ function proceedToAdd(show){
                               .populate('tvShowInfo.show_ref')
                               .then((user)=>{
                                 res.send({
-                                  succes: true,
+                                  success: true,
                                   msg: "Show followed.",
                                   result: user
                                 });
@@ -246,7 +246,7 @@ router.post('/userTvInfo/unfollow', function (req, res) {
     )
         .then((done) => {
             res.send({
-                succes: true,
+                success: true,
                 msg: "Unfollowed"
             });
         })
@@ -262,7 +262,7 @@ router.put('/episodeWatched', function(req, res){
         .then((done) => {
             if(done){
                 res.send({
-                    succes: true,
+                    success: true,
                     msg: "Episode Added"
                 });
             }else{

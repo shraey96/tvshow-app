@@ -1,4 +1,4 @@
-import {LOGIN_USER, LOGOUT_USER, FOLLOW_SHOW, FOLLOW_EPISODE} from './types';
+import {LOGIN_USER, LOGOUT_USER, REGISTER_USER ,FOLLOW_SHOW, FOLLOW_EPISODE} from './types';
 import urlToUse from '../config';
 
 export function LoginUser(email, password) {
@@ -12,7 +12,7 @@ export function LoginUser(email, password) {
 
     return function(dispatch) {
 
-        fetch(`${urlToUse}/users/login`, {
+  return  fetch(`${urlToUse}/users/login`, {
                 method: 'post',
                 credentials: 'include',
                 headers: {
@@ -25,7 +25,7 @@ export function LoginUser(email, password) {
                 console.log(userData);
 
 
-                  fetch(`${urlToUse}/users/tvseries`, {credentials: 'include'})
+              return    fetch(`${urlToUse}/users/tvseries`, {credentials: 'include'})
                   .then((userCompleteList) => userCompleteList.json())
                   .then((userCompleteList)=>{
 
@@ -39,6 +39,7 @@ export function LoginUser(email, password) {
                         payload: data
                     })
 
+                    return userData
 
                   })
 
@@ -54,7 +55,7 @@ export function LogoutUser() {
 
     return function(dispatch) {
 
-        fetch(`${urlToUse}/users/logout`, {
+      return  fetch(`${urlToUse}/users/logout`, {
                 method: 'get',
                 credentials: 'include',
                 headers: {
@@ -68,9 +69,35 @@ export function LogoutUser() {
                     type: LOGOUT_USER,
                     payload: userLogout
                 })
+                return userLogout
             })
 
     }
+
+}
+
+export function RegisterUser(data){
+
+  return function(dispatch){
+
+    return  fetch(`${urlToUse}/users/register`, {
+                  method: 'post',
+                  credentials: 'include',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(data)
+              })
+              .then(registered => registered.json())
+              .then((registered) => {
+                  console.log(registered);
+
+
+                  return registered
+
+                })
+
+  }
 
 }
 
@@ -82,7 +109,7 @@ export function UserFollowShow(data) {
     return function(dispatch) {
 
 
-        fetch(`${urlToUse}/users/userTvInfo`, {
+      return  fetch(`${urlToUse}/users/userTvInfo`, {
                 method: 'post',
                 credentials: 'include',
                 headers: {
@@ -97,6 +124,7 @@ export function UserFollowShow(data) {
                     type: FOLLOW_SHOW,
                     payload: show
                 })
+                return show
             })
 
     }

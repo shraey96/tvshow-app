@@ -7,12 +7,13 @@ import MenuItem from 'material-ui/MenuItem';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import TextField from 'material-ui/TextField';
+import Snackbar from 'material-ui/Snackbar';
 
 import {Link} from 'react-router-dom';
 import {withRouter} from 'react-router-dom';
 
 import {connect} from 'react-redux';
-import {LogoutUser} from '../actions/userAction'
+import {LogoutUser} from '../actions/userAction';
 
 import '../App.css';
 
@@ -22,7 +23,8 @@ class Simple extends Component {
     super(props);
     this.state = {
       open: false,
-      value : ''
+      value : '',
+      opensnack: false
         };
 
   this.handleChange = this.handleChange.bind(this);
@@ -33,7 +35,6 @@ class Simple extends Component {
   handleSubmit(e){
     e.preventDefault();
     this.props.history.push(`/search/${this.state.value}`);
-    this.setState({value:''});
   }
 
   handleChange(e){
@@ -45,8 +46,23 @@ class Simple extends Component {
   handleClose = () => this.setState({open: false});
 
   Logout = () =>{
-    this.props.LogoutUser();
+    let logoutUser = this.props.LogoutUser();
+    logoutUser.then((logout)=>{
+      if(logout.success === true){
+        this.setState({opensnack: true, msg: `Logout Success!`}, ()=>{
+          setTimeout(()=>{
+             this.props.history.push('/')
+          }, 1000)
+        });
+      }
+    })
   }
+
+  handleRequestClose = () => {
+  this.setState({
+    opensnack: false,
+  });
+  };
 
   render() {
 console.log("Navbar!" , this.props.user);
@@ -57,6 +73,12 @@ let userNotLoggedIn =  (
       <Link className="sideLink" to={`/`}>
       <MenuItem>
       Home
+      </MenuItem>
+      </Link>
+
+      <Link className="sideLink" to={`/register/`}>
+      <MenuItem>
+      Register
       </MenuItem>
       </Link>
 
@@ -123,7 +145,7 @@ let userLoggedIn = (
 if(this.props.user.isUserLoggedIn === false){
 user = userNotLoggedIn;
 }else {
-  user = userLoggedIn;
+user = userLoggedIn;
 }
 
     const rightButtons = (
@@ -153,6 +175,12 @@ user = userNotLoggedIn;
       {user}
   </Drawer>
 
+  <Snackbar
+            open={this.state.opensnack}
+            message={this.state.msg}
+            autoHideDuration={2000}
+            onRequestClose={this.handleRequestClose}
+    />
 
       </MuiThemeProvider>
     )
