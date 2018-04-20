@@ -149,10 +149,12 @@ return function(dispatch){
   .then((userCompleteList) => userCompleteList.json())
   .then((userCompleteList)=>{
     console.log(userCompleteList);
+    if(userCompleteList.succes===true){
     dispatch({
         type: GET_USER_INFO,
         payload: userCompleteList
     })
+  }
   })
 }
 }

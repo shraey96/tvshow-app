@@ -153,7 +153,7 @@ router.get('/tvseries', function(req, res){
         }else{
             res.send({
                 success:false,
-                user: null
+                info: ''
             })
         }
     })
@@ -425,7 +425,15 @@ router.post('/register', function(req, res){
                                         success:true,
                                         msg:"User Created.",
                                     })
+                                    let newUser = {
+                                      user_id: newuser._id,
+                                      tvShowInfo:[]
+                                    }
+
+                                    TvShow.create(newUser)
                                 })
+
+
                             });
                 });
             }
