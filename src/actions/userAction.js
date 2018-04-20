@@ -1,4 +1,4 @@
-import {LOGIN_USER, LOGOUT_USER, REGISTER_USER ,FOLLOW_SHOW, FOLLOW_EPISODE} from './types';
+import {LOGIN_USER, LOGOUT_USER, REGISTER_USER ,FOLLOW_SHOW, FOLLOW_EPISODE, GET_USER_INFO} from './types';
 import urlToUse from '../config';
 
 export function LoginUser(email, password) {
@@ -39,6 +39,11 @@ export function LoginUser(email, password) {
                         payload: data
                     })
 
+                    console.log(data);
+                    if(data.login.success === true){
+                      localStorage.setItem('isUserLoggedIn', true);
+                    }
+
                     return userData
 
                   })
@@ -70,6 +75,11 @@ export function LogoutUser() {
                     payload: userLogout
                 })
                 return userLogout
+
+                if(userLogout.success === true){
+                    localStorage.setItem('isUserLoggedIn', false);
+                }
+
             })
 
     }
@@ -138,9 +148,10 @@ return function(dispatch){
   fetch(`${urlToUse}/users/tvseries`, {credentials: 'include'})
   .then((userCompleteList) => userCompleteList.json())
   .then((userCompleteList)=>{
+    console.log(userCompleteList);
     dispatch({
-        type: LOGIN_USER,
-        payload: "A"
+        type: GET_USER_INFO,
+        payload: userCompleteList
     })
   })
 }

@@ -51,6 +51,14 @@ export default function(state = initialState, action){
       userFollows: action.payload.result.tvShowInfo
     }
 
+    case 'GET_USER_INFO':
+    return{
+      ...state,
+      isUserLoggedIn: true,
+      userProfile : action.payload.info.user_id,
+      userFollows: action.payload.info.tvShowInfo
+    }
+    return
 
     default:
       return state

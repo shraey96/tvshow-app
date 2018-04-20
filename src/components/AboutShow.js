@@ -16,6 +16,7 @@ class AboutShow extends Component {
   constructor(){
     super()
     this.state = {
+      loader: false,
       episodes : []
     }
   }
@@ -27,19 +28,20 @@ componentWillMount(){
 
 componentDidMount(){
   console.log("############", this.props.currentShow);
+  this.setState({loader: true})
 
   fetch(`http://api.tvmaze.com/shows/${this.props.match.params.id}/episodes`)
   .then(res=>res.json())
   .then(episode=>{
-    // console.log(episode);
 
-    this.setState({episodes: episode});
+    this.setState({episodes: episode.reverse(), loader: false});
 
     })
 
 }
 
   render() {
+    console.log(this.props.match.params);
 let currentShow = this.props.currentShow;
 let currentShowInfo;
 let col1;
@@ -99,7 +101,7 @@ col2 = (
 <Row>
 
 <Col md={12} xs={12}>
-<Episodes episodes={this.state.episodes} showid={this.props.match.params.id}></Episodes>
+<Episodes episodes={this.state.episodes} showid={this.props.match.params.id} loader={this.state.loader} showName={this.props.match.params.tvshow}></Episodes>
 </Col>
 
 </Row>

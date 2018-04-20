@@ -8,8 +8,136 @@ const rp = require('request-promise');
 let User = require('../models/user');
 let showCache = require('../models/showCache');
 let TvShow = require('../models/userTVInfo');
+let showAuto = require('../models/showAutoComplete');
 let ShowNotification = require('../models/showNotification');
 
+
+
+
+
+router.get('/shows', function(req, res){
+
+  let perPage = 50;
+  let page = req.query.page || 1;
+  let skips = ((perPage * page) - perPage);
+
+  let query;
+  console.log("req.query: ", req.query);
+
+  if(req.query.genres || req.query.status || req.query.rating){
+    console.log("some query present");
+
+    if(req.query.genres && req.query.status && req.query.rating){
+      console.log("all 3 present");
+      query = {tvShowStatus: req.query.status, tvShowRating: {$gte: req.query.rating}, tvShowGenres: req.query.genres};
+    }else if(req.query.genres && req.query.status){
+      console.log("genres and status present");
+      query = {tvShowGenres: req.query.genres, tvShowStatus: req.query.status};
+    }else if(req.query.genres && req.query.rating){
+      console.log("genres and rating present");
+      query = {tvShowGenres: req.query.genres, tvShowRating: {$gte: req.query.rating}};
+    }else if(req.query.status && req.query.rating){
+      console.log("status and rating present");
+      query = {tvShowStatus: req.query.status, tvShowRating: {$gte: req.query.rating}};
+    }else if(req.query.genres){
+      console.log("genres present");
+      query = {tvShowGenres: req.query.genres};
+    }else if(req.query.status){
+      console.log("status present");
+      query = {tvShowStatus: req.query.status};
+    }else if(req.query.rating){
+      console.log("rating present");
+      query = {tvShowRating: {$gte: req.query.rating}};
+    }
+
+  }else {
+    query = {}
+  }
+
+  showAuto.find(query)
+  .skip(skips)
+  .limit(perPage)
+  .sort({tvShowPremiered: -1})
+  .then((shows)=>{
+    console.log(shows.length);
+    res.json({shows})
+  })
+})
+
+
+
+
+
+router.get('/auto', function(req, res){
+
+let page = 0;
+
+
+fetchAndStoreShow()
+  function fetchAndStoreShow(){
+    console.log("#### FETCHING SHOWS ####");
+    var options = {
+    uri: 'http://api.tvmaze.com/shows?page=' + page,
+    json: true
+    };
+
+rp(options)
+    .then(function (show) {
+      console.log("Fetched Shows");
+      console.log("Total shows found: ", show.length);
+
+        let showPromise = show.map((each_show)=>{
+          let objToCreate = {
+            tvShowId: each_show.id,
+            tvShowIMDB: each_show.externals.imdb,
+            tvShowImageUrl: each_show.image.medium || '',
+            tvShowName: each_show.name,
+            tvShowStatus: each_show.status,
+            tvShowGenres: each_show.genres,
+            tvShowLanguage: each_show.language,
+            tvShowRating: each_show.rating.average || '',
+            tvShowPremiered: each_show.premiered
+          }
+
+          return showAuto.create(objToCreate);
+
+        })
+
+        Promise.all(showPromise)
+        .then((done)=>{
+          // res.send({done})
+          console.log("DONE FETCHING AND STORING!");
+          if(page===145){
+              console.log("Fetched All shows");
+              console.log("page: ", page);
+              res.json({succes: true, done: "ALL"})
+          }else {
+              page++;
+              console.log("page: ", page);
+              setTimeout(()=>{
+                fetchAndStoreShow();
+              },1500)
+          }
+          // if(page<2){
+          //   page++;
+          //   console.log("page: ", page);
+          //   fetchAndStoreShow()
+          // }else {
+          //   console.log("Fetched All shows");
+          //   console.log("page: ", page);
+          //   res.json({succes: true, done: "ALL"})
+          // }
+        })
+
+    })
+    .catch(function (err) {
+        // API call failed...
+    });
+
+  }
+
+
+})
 
 
 router.get('/tvseries', function(req, res){

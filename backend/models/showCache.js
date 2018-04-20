@@ -21,15 +21,11 @@ const showCache = mongoose.Schema({
     },
     totalEpisodeCount:{
         type: Number,
-        require:true
+
     },
     episodes:{
         type: Array,
-        require:true
-    },
-    last_updated:{
-        type:Date,
-        default:Date.now()
+
     }
 
 });
