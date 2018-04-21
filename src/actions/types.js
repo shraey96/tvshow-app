@@ -14,3 +14,4 @@ export const FOLLOW_EPISODE = 'FOLLOW_EPISODE';
 
 
 export const SEARCH_OPTIONS = 'SEARCH_OPTIONS';
+export const PAGE_CHANGE = 'PAGE_CHANGE';

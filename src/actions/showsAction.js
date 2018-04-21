@@ -95,21 +95,21 @@ Promise.all([apiRequest1,apiRequest2]).then(function(values){
 export function fetchShowsCustom(query){
   console.log(query);
   if(query.rating === 'Show Rating'){
-    query.rating === '';
+    query.rating = '';
   }
 
   if(query.genre === 'Show Genre'){
-    query.genre === '';
+    query.genre = '';
   }
 
   if(query.status === 'Show Status'){
-    query.status === '';
+    query.status = '';
   }
 
   console.log("##### FETCH SHOWS CUSTOM");
   return function(dispatch){
 
-return    fetch(`${urlToUse}/users/shows?page=&rating=${query.rating}&genres=${query.genre}&status=${query.status}`)
+return    fetch(`${urlToUse}/users/shows?page=${query.page}&rating=${query.rating}&genres=${query.genre}&status=${query.status}`)
     .then(res=>res.json())
     .then(show=>
 {

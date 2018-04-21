@@ -3,7 +3,8 @@ import {SEARCH_OPTIONS} from '../actions/types';
 const initialState = {
   rating: '',
   genre: '',
-  status: ''
+  status: '',
+  page: 1
 }
 
 export default function(state = initialState, action){
@@ -15,6 +16,13 @@ export default function(state = initialState, action){
       rating: action.payload.rating,
       genre: action.payload.genre,
       status: action.payload.status
+    }
+
+    case 'PAGE_CHANGE':
+    console.log(action.payload);
+    return {
+      ...state,
+      page: action.payload
     }
 
 
