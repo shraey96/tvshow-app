@@ -14,7 +14,7 @@ import TextField from 'material-ui/TextField';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
 
 class MoreShowsSearch extends Component {
 
@@ -35,6 +35,17 @@ class MoreShowsSearch extends Component {
   }
 
 componentWillMount(){
+  let optionsValue = {
+    status: parseInt(this.props.search.searchValue) || parseInt(this.props.match.params.sid) || 1,
+    rating: parseInt(this.props.search.ratingValue) || parseInt(this.props.match.params.rid) || 1,
+    genre: parseInt(this.props.search.genreValue)|| parseInt(this.props.match.params.gid) || 1
+  }
+  console.log(optionsValue);
+this.setState({
+  optionsValue: optionsValue
+}, ()=>{
+  console.log(this.state);
+})
 
 }
 
@@ -82,7 +93,6 @@ handleSubmit = (e) =>{
   console.log(this.state);
   this.props.searchAlter(this.state);
   this.props.history.push(`/more-shows/${this.state.options.genre || 1}/${this.state.optionsValue.genre || 1}/${this.state.options.rating || 1}/${this.state.optionsValue.rating || 1}/${this.state.options.status || 1}/${this.state.optionsValue.status || 1}`);
-  // this.props.history.push(`/browse/${this.state.searchTitle || 0}/${this.state.quality || 0}/${this.state.genre || 0}/${this.state.rating || 0}/${this.state.orderBy || 0}`)
 }
 
   render() {
@@ -174,7 +184,8 @@ handleSubmit = (e) =>{
 const mapStateToProps = function(state){
   return {
     shows: state.shows,
-    currentShow: state.shows.currentShow
+    currentShow: state.shows.currentShow,
+    search: state.search
           }
 }
 

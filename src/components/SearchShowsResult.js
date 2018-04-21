@@ -8,9 +8,10 @@ import {Link} from 'react-router-dom';
 import {Animated} from "react-animated-css";
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import {Tabs, Tab} from 'material-ui/Tabs';
+import Snackbar from 'material-ui/Snackbar';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import MoreShowsSearch from './MoreShowsSearch';
-// import Pagination from "react-js-pagination";
+import { withRouter } from 'react-router-dom';
 // import injectTapEventPlugin from 'react-tap-event-plugin';
 import Pagination from 'material-ui-pagination';
 
@@ -20,7 +21,9 @@ class SearchShowsResult extends Component {
     super()
     this.state = {
       loader: false,
-      episodes : []
+      episodes : [],
+      open: false,
+      msg: ''
     }
   }
 
@@ -44,6 +47,7 @@ componentDidMount(){
 
 componentWillReceiveProps(nextProps){
   // console.log(nextProps.shows.searchShowCustom);
+  console.log("RECEIVED NEXT PROPS");
   console.log(nextProps.search);
   if(nextProps.search !== this.props.search){
     console.log("DIFFERENT");
@@ -63,12 +67,49 @@ componentWillReceiveProps(nextProps){
 handlePageChange = (pageNumber) =>{
   console.log(pageNumber);
   this.props.changePage(pageNumber);
+  // this.props.history.push(`/more-shows/${this.props.search.genre || 1}/${this.props.search.genre || 1}/${this.props.search.rating || 1}/${this.props.search.rating || 1}/${this.props.search.status || 1}/${this.state.optionsValue.status || 1}`);
 }
+
+Follow = (tvShowInfo) => {
+  console.log("clicked follow");
+  console.log(this.props.user);
+  if(this.props.user.isUserLoggedIn === false){
+  this.setState({open: true, msg: `You must login to follow shows!`});
+  }else {
+  let data = {
+    tvid: String(tvShowInfo.show.id),
+    imdb: tvShowInfo.show.externals.imdb,
+    tvname: tvShowInfo.show.name,
+    tvimg:  tvShowInfo.show.image.medium
+  }
+  let followShow = this.props.UserFollowShow(data);
+  followShow.then((show)=>{
+    if(show.success === true){
+      this.setState({open: true, msg: `Show Followed!`});
+  }else {
+      this.setState({open: true, msg: `There was some problem.`});
+  }
+})
+}
+}
+
+unFollow = (tvShowInfo) => {
+  console.log("AAAA");
+}
+
+handleRequestClose = () => {
+this.setState({
+  open: false,
+});
+};
+
 
   render() {
 let shows;
 let loader;
-let pagenationTag
+let pagenationTag;
+let userShowInfo = this.props.user.userFollows;
+
 if(this.state.loader === true){
   loader = (<img src="http://backgroundcheckall.com/wp-content/uploads/2017/12/ajax-loading-gif-transparent-background-5.gif" height="50px" width="50px"/>);
 }else {
@@ -76,7 +117,30 @@ if(this.state.loader === true){
 }
 if(this.props.shows.searchShowCustom.length!==0){
 
+  let button;
+
   shows = this.props.shows.searchShowCustom.map((tvshow)=>{
+
+
+    if(this.props.user.isUserLoggedIn === true){
+    console.log("YES");
+      if(userShowInfo.length>0){
+          for(var i = 0; i<userShowInfo.length; i++){
+              if(tvshow.tvShowId === parseInt(userShowInfo[i].tvShowId)){
+                button = (<button onClick={()=>{this.unFollow(tvshow)}}>UnFollow</button>);
+                break;
+              }else {
+                button = (<button onClick={()=>{this.Follow(tvshow)}}>Follow</button>);
+              }
+          }
+        }else {
+          button = (<button onClick={()=>{this.Follow(tvshow)}}>Follow</button>);
+        }
+
+    }else {
+      console.log("NO");
+      button = (<button onClick={()=>{this.Follow(tvshow)}}>Follow</button>);
+    }
 
     let image;
     let rating;
@@ -100,6 +164,7 @@ if(this.props.shows.searchShowCustom.length!==0){
           <br/>
           <p><Link className="tvpopularLink" to={`/shows/${tvshow.tvShowName}}/${tvshow.tvShowId}`}>{tvshow.tvShowName}</Link> </p>
           <p>{rating}</p>
+          <p>{button}</p>
           </div>
   </Animated>
 
@@ -111,7 +176,7 @@ if(this.props.shows.searchShowCustom.length!==0){
   pagenationTag = (<Pagination
            total = {this.props.shows.searchShowCustom.length}
            current = {this.props.search.page}
-           display = "10"
+           display = {10}
            onChange = {this.handlePageChange}
          />)
 
@@ -136,8 +201,16 @@ if(this.props.shows.searchShowCustom.length!==0){
 <br/>
 
 
-{pagenationTag}
+{loader}{pagenationTag}
+
       </div>
+      <Snackbar
+                open={this.state.open}
+                message={this.state.msg}
+                autoHideDuration={2000}
+                onRequestClose={this.handleRequestClose}
+        />
+
 </MuiThemeProvider>
     );
   }
@@ -152,4 +225,5 @@ const mapStateToProps = function(state){
 }
 
 
-export default connect(mapStateToProps, {fetchShowsCustom, changePage})(SearchShowsResult);
+// export default connect(mapStateToProps, {fetchShowsCustom, changePage})(SearchShowsResult);
+export default withRouter(connect(mapStateToProps, {fetchShowsCustom, changePage})(SearchShowsResult))

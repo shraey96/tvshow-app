@@ -1,4 +1,4 @@
-import {LOGIN_USER, LOGOUT_USER, FOLLOW_SHOW} from '../actions/types';
+import {LOGIN_USER, LOGOUT_USER, FOLLOW_SHOW, UNFOLLOW_EPISODE} from '../actions/types';
 
 const initialState = {
 
@@ -52,6 +52,8 @@ export default function(state = initialState, action){
     }
 
     case 'GET_USER_INFO':
+    console.log("GET USER INFO");
+    console.log(action.payload);
     return{
       ...state,
       isUserLoggedIn: true,

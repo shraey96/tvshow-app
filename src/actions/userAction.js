@@ -1,4 +1,4 @@
-import {LOGIN_USER, LOGOUT_USER, REGISTER_USER ,FOLLOW_SHOW, FOLLOW_EPISODE, GET_USER_INFO} from './types';
+import {LOGIN_USER, LOGOUT_USER, REGISTER_USER ,FOLLOW_SHOW, FOLLOW_EPISODE, UNFOLLOW_EPISODE, GET_USER_INFO} from './types';
 import urlToUse from '../config';
 
 export function LoginUser(email, password) {
@@ -149,7 +149,7 @@ return function(dispatch){
   .then((userCompleteList) => userCompleteList.json())
   .then((userCompleteList)=>{
     console.log(userCompleteList);
-    if(userCompleteList.succes===true){
+    if(userCompleteList.success===true){
     dispatch({
         type: GET_USER_INFO,
         payload: userCompleteList
@@ -178,6 +178,7 @@ export function followEpisode(data){
         .then(result => result.json())
         .then((result) => {
           console.log(result);
+
           dispatch({
             type: FOLLOW_EPISODE,
             payload: result
@@ -188,4 +189,30 @@ export function followEpisode(data){
 
   }
 
+}
+
+export function unFollowEpisode(data){
+  return function(dispatch){
+
+    fetch(`${urlToUse}/users/episodeWatched`, {
+            method: 'put',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(result => result.json())
+        .then((result) => {
+          console.log(result);
+
+          // dispatch({
+          //   type: UNFOLLOW_EPISODE,
+          //   payload: result
+          // })
+
+
+        })
+
+  }
 }

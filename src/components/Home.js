@@ -21,24 +21,31 @@ class Home extends Component {
     this.state = {
       value : '',
       open: false,
-      msg: ''
+      msg: '',
+      loader: false
     }
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    // this.handleSubmit = this.handleSubmit.bind(this);
+    // this.handleChange = this.handleChange.bind(this);
   }
 
 componentWillMount(){
     console.log("Mounted");
-    this.props.fetchShows();
+    this.setState({loader: true});
+    let fetchShows = this.props.fetchShows();
+    fetchShows.then((shows)=>{
+      if(shows){
+        this.setState({loader: false});
+      }
+    })
   }
 
 
-handleSubmit(e){
+handleSubmit = (e) =>{
   e.preventDefault();
   this.props.history.push(`/search/${this.state.value}`)
 }
 
-handleChange(e){
+handleChange = (e) =>{
   this.setState({value: e.target.value})
 }
 
@@ -81,6 +88,14 @@ this.setState({
 let popularShowsAiringTonight;
 let show = this.props.shows.shows;
 
+let loader;
+
+if(this.state.loader === true){
+  loader = (<img src="http://backgroundcheckall.com/wp-content/uploads/2017/12/ajax-loading-gif-transparent-background-5.gif" height="50px" width="50px"/>);
+}else {
+  loader = "";
+}
+
 let userShowInfo = this.props.user.userFollows;
 console.log(userShowInfo);
 
@@ -91,7 +106,6 @@ popularShowsAiringTonight = show.map((tvshow, index)=>{
 let button;
 
 if(this.props.user.isUserLoggedIn === true){
-console.log("YES");
   if(userShowInfo.length>0){
       for(var i = 0; i<userShowInfo.length; i++){
           if(tvshow.show.id === parseInt(userShowInfo[i].tvShowId)){
@@ -106,7 +120,6 @@ console.log("YES");
     }
 
 }else {
-  console.log("NO");
   button = (<button onClick={()=>{this.Follow(tvshow)}}>Follow</button>);
 }
 
@@ -150,7 +163,7 @@ console.log("YES");
 
     <u><h3 className="headingPopular">Popular shows airing tonight!</h3></u>
 
-
+{loader}
 
 <Grid fluid>
   <Row>

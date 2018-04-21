@@ -58,8 +58,9 @@ let showsHeader;
 let peopleHeader;
 
 let hrLine;
+let noResultsText;
 
-if(this.props.searchShow){
+if(this.props.searchShow.length>0){
 
 showsHeader = (<h2>Shows</h2>);
 
@@ -121,7 +122,7 @@ showsHeader = (<h2>Shows</h2>);
   showsHeader = '';
 }
 
-if(this.props.searchPeople){
+if(this.props.searchPeople.length>0){
 
   peopleHeader = <h2>People</h2>
 
@@ -161,10 +162,14 @@ if(this.props.searchPeople){
   peopleHeader = '';
 }
 
-if(this.props.searchShow && this.props.searchPeople){
+if(this.props.searchShow.length>0 && this.props.searchPeople.length>0){
   hrLine = (<hr/>);
+  // noResultsText = '';
 }else {
   hrLine = '';
+  console.log(this.props.searchShow.length, this.props.searchPeople.length);
+  console.log(this.props.searchPeople.length>0);
+  // noResultsText = (<h3>No Shows or People Found!</h3>);
 }
 
     return (
@@ -176,6 +181,7 @@ if(this.props.searchShow && this.props.searchPeople){
         </Row>
         <br/>
         {hrLine}
+        {noResultsText}
         <br/>
             <h2>{peopleHeader}</h2>
         <Row>

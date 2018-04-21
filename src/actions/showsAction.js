@@ -3,7 +3,7 @@ import urlToUse from '../config';
 
 export function fetchShows(query){
   return function(dispatch){
-      fetch(`http://api.tvmaze.com/schedule`)
+  return    fetch(`http://api.tvmaze.com/schedule`)
       .then(res=>res.json())
       .then(shows=>
 {
@@ -22,6 +22,8 @@ export function fetchShows(query){
         type: FETCH_SHOWS,
         payload: shows
         })
+
+        return shows
 }
     )
 
