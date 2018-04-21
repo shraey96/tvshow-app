@@ -13,6 +13,8 @@ module.exports = function(passport){
         //match username
         let query = {email:email};
         console.log("came in passport");
+        console.log(email);
+        console.log(password);
         User.findOne(query, function(err, user){
             if(err) throw err;
             if(!user){

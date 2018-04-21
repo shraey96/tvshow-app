@@ -11,7 +11,16 @@ let TvShow = require('../models/userTVInfo');
 let showAuto = require('../models/showAutoComplete');
 let ShowNotification = require('../models/showNotification');
 
-
+function ensureAuthenticated(req, res, next){
+	if(req.isAuthenticated()){
+		return next();
+	} else {
+		res.send({
+            success:false,
+            msg:"notauthenticated"
+        });
+	}
+}
 
 router.get('/shows', function(req, res){
 
@@ -155,7 +164,7 @@ rp(options)
 })
 
 
-router.get('/tvseries', function(req, res){
+router.get('/tvseries',ensureAuthenticated, function(req, res){
     TvShow.findOne({user_id:req.user._id})
     .populate('user_id', '-password')
     .populate('tvShowInfo.show_ref')
@@ -176,7 +185,7 @@ router.get('/tvseries', function(req, res){
 
 
 
-router.put('/episodeWatched', function(req, res){
+router.put('/episodeWatched',ensureAuthenticated, function(req, res){
     if(req.body.request==="add"){
     TvShow.update(
         { user_id: req.user._id ,
@@ -230,9 +239,14 @@ router.put('/episodeWatched', function(req, res){
         )
             .then((done) => {
                 if(done){
-                    res.send({
-                        success: true,
-                        msg: "Episode Deleted"
+                    TvShow.findOne({user_id: req.user._id})
+                        .populate('tvShowInfo.show_ref')
+                        .then((user)=>{
+                        res.send({
+                            success: true,
+                            msg: "Episode Deleted.",
+                            result: user
+                        });
                     });
                 }else{
                     res.send({
@@ -245,7 +259,7 @@ router.put('/episodeWatched', function(req, res){
 });
 
 
-router.post('/userTvInfo', function(req, res){
+router.post('/userTvInfo',ensureAuthenticated, function(req, res){
 
   showCache.findOne({tvShowId: req.body.tvid})
   .then((show)=>{
@@ -382,43 +396,53 @@ function proceedToAdd(show){
 });
 
 
-router.post('/userTvInfo/unfollow', function (req, res) {
+router.post('/userTvInfo/unfollow',ensureAuthenticated, function (req, res) {
     TvShow.update(
         { user_id: req.user._id },
         { $pull: { tvShowInfo: { tvShowId: req.body.tvid } } },
     )
         .then((done) => {
-            res.send({
-                success: true,
-                msg: "Unfollowed"
-            });
-        })
-});
-
-
-router.put('/episodeWatched', function(req, res){
-    TvShow.update(
-        { user_id: req.user._id ,
-        "tvShowInfo.tvShowId":req.body.tvid},
-        { $addToSet: { "tvShowInfo.$.episodeWatched" : req.body.episodeid  } },
-        )
-        .then((done) => {
-            if(done){
+            TvShow.findOne({user_id: req.user._id})
+                .populate('tvShowInfo.show_ref')
+                .then((user)=>{
                 res.send({
                     success: true,
-                    msg: "Episode Added"
+                    msg: "Show unfollowed.",
+                    result: user
                 });
-            }else{
-                res.send({
-                    success:false,
-                    msg: "Episode already Exist"
-                })
-            }
+                });
         })
 });
 
-router.post('/register', function(req, res){
 
+// router.put('/episodeWatched', function(req, res){
+//     TvShow.update(
+//         { user_id: req.user._id ,
+//         "tvShowInfo.tvShowId":req.body.tvid},
+//         { $addToSet: { "tvShowInfo.$.episodeWatched" : req.body.episodeid  } },
+//         )
+//         .then((done) => {
+//             if(done){
+//                 TvShow.findOne({user_id: req.user._id})
+//                           .populate('tvShowInfo.show_ref')
+//                           .then((user)=>{
+//                             res.send({
+//                               success: true,
+//                               msg: "Episode Added.",
+//                               result: user
+//                             });
+//                           });
+//             }else{
+//                 res.send({
+//                     success:false,
+//                     msg: "Episode already Exist"
+//                 })
+//             }
+//         })
+// });
+
+router.post('/register', function(req, res, next){
+    req.body.checkPassword = req.body.password;
     User.findOne({'email': req.body.email})
     .then((user)=>{
         if(user){
@@ -446,6 +470,15 @@ router.post('/register', function(req, res){
                                     }
 
                                     TvShow.create(newUser)
+                                    .then((userRegister)=>{
+                                        req.body.password = req.body.checkPassword;
+                                        passport.authenticate("local", function(err, user, info){
+                                            if(err){return next(err); }
+                                                req.logIn(user, function(err){
+                                                    if(err){ return next(err);}
+                                                })
+                                        })(req, res, next);
+                                    })
                                 })
 
 
@@ -470,11 +503,15 @@ router.post('/login', function(req, res, next){
         });}
             req.logIn(user, function(err){
                 if(err){ return next(err);}
-                return res.send({
-                    success:true,
-                    user:user,
-                    msg:"authenticated."
-                })
+                TvShow.findOne({user_id: req.user._id})
+                    .populate('tvShowInfo.show_ref')
+                    .then((userData)=>{
+                    res.send({
+                        success: true,
+                        msg: "authenticated.",
+                        result: userData
+                    });
+                });
             })
     })(req, res, next);
 
