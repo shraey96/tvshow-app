@@ -5,7 +5,8 @@ const initialState = {
   currentShow: '',
   currentShowEpisode: '',
   searchPeople: '',
-  searchShow: ''
+  searchShow: '',
+  searchShowCustom: ''
 }
 
 
@@ -38,6 +39,12 @@ export default function(state = initialState, action){
       ...state,
       searchShow: action.payload.show,
       searchPeople: action.payload.people
+    }
+
+    case 'FETCH_SHOWS_CUSTOM':
+    return{
+      ...state,
+      searchShowCustom: action.payload.shows
     }
 
     default:

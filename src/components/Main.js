@@ -12,6 +12,8 @@ import Register from './Register';
 import About from './About';
 import MyShows from './MyShows';
 import Calendar from './Calendar';
+import MoreShows from './MoreShows';
+import MoreShowsSearch from './MoreShowsSearch';
 
 import '../App.css';
 
@@ -37,6 +39,8 @@ class Main extends Component {
 <Route exact path="/shows/:tvshowname/:tvshowid/:season/episode/:enum" component={AboutShowEpisode}/>
 <Route exact path="/calendar" component={Calendar}/>
 <Route exact path="/:username/myshows" component={MyShows}/>
+<Route exact path="/more-shows" component={MoreShows}/>
+<Route exact path="/more-shows/:genre/:gid/:rating/:rid/:status/:sid" component={MoreShows}/>
 
   </Switch>
 </main>

@@ -13,11 +13,9 @@ let ShowNotification = require('../models/showNotification');
 
 
 
-
-
 router.get('/shows', function(req, res){
 
-  let perPage = 50;
+  let perPage = 52;
   let page = req.query.page || 1;
   let skips = ((perPage * page) - perPage);
 
@@ -50,18 +48,35 @@ router.get('/shows', function(req, res){
       query = {tvShowRating: {$gte: req.query.rating}};
     }
 
+    showAuto.find({})
+    .count()
+    .then((count)=>{
+      showAuto.find(query)
+      .skip(skips)
+      .limit(perPage)
+      .sort()
+      .then((shows)=>{
+        res.json({success: true, shows: shows, totalCount: count, countPerPage: Math.ceil(count/perPage)})
+      })
+    })
+
   }else {
-    query = {}
+    query = {};
+    showAuto.find({})
+    .count()
+    .then((count)=>{
+      showAuto.find(query)
+      .skip(skips)
+      .limit(perPage)
+      .then((shows)=>{
+        res.json({success: true, shows: shows, totalCount: count, countPerPage: Math.ceil(count/perPage)})
+      })
+    })
   }
 
-  showAuto.find(query)
-  .skip(skips)
-  .limit(perPage)
-  .sort({tvShowPremiered: -1})
-  .then((shows)=>{
-    console.log(shows.length);
-    res.json({shows})
-  })
+
+
+
 })
 
 

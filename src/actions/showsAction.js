@@ -1,4 +1,5 @@
-import {FETCH_SHOWS, FETCH_SHOWS_ID, FETCH_EPISODE_INFO, FETCH_SEARCH_QUERY} from './types';
+import {FETCH_SHOWS, FETCH_SHOWS_ID, FETCH_EPISODE_INFO, FETCH_SEARCH_QUERY, FETCH_SHOWS_CUSTOM} from './types';
+import urlToUse from '../config';
 
 export function fetchShows(query){
   return function(dispatch){
@@ -89,4 +90,39 @@ Promise.all([apiRequest1,apiRequest2]).then(function(values){
 });
 
   }
+}
+
+export function fetchShowsCustom(query){
+  console.log(query);
+  if(query.rating === 'Show Rating'){
+    query.rating === '';
+  }
+
+  if(query.genre === 'Show Genre'){
+    query.genre === '';
+  }
+
+  if(query.status === 'Show Status'){
+    query.status === '';
+  }
+
+  console.log("##### FETCH SHOWS CUSTOM");
+  return function(dispatch){
+
+return    fetch(`${urlToUse}/users/shows?page=&rating=${query.rating}&genres=${query.genre}&status=${query.status}`)
+    .then(res=>res.json())
+    .then(show=>
+{
+  console.log("FETCH SHOWS CUSTOM: ", show);
+
+      dispatch({
+      type: FETCH_SHOWS_CUSTOM,
+      payload: show
+    })
+    return show
+}
+  )
+
+  }
+
 }

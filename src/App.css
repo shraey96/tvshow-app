@@ -39,3 +39,7 @@ html{
 .form-field {
   width: 60% !important
 }
+
+.search-button{
+  margin-top: 10px;
+}
