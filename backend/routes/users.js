@@ -190,7 +190,7 @@ router.put('/episodeWatched',ensureAuthenticated, function(req, res){
     TvShow.update(
         { user_id: req.user._id ,
         "tvShowInfo.tvShowId":req.body.tvid},
-        { $addToSet: { "tvShowInfo.$.episodeWatched" : req.body.episodeid  }}
+        { $addToSet: { "tvShowInfo.$.episodeWatched" : { $each: req.body.episodeid  }}}
     )
 
     // let query = { user_id: req.user._id , "tvShowInfo.tvShowId":req.body.tvid};
@@ -235,7 +235,7 @@ router.put('/episodeWatched',ensureAuthenticated, function(req, res){
         TvShow.update(
             { user_id: req.user._id ,
             "tvShowInfo.tvShowId":req.body.tvid},
-            { $pull: { "tvShowInfo.$.episodeWatched" : req.body.episodeid  } },
+            { $pull: { "tvShowInfo.$.episodeWatched" : { $each: req.body.episodeid  } }},
         )
             .then((done) => {
                 if(done){
@@ -322,6 +322,7 @@ function proceedToAdd(show){
                 });
                 req.body.show_ref = show._id;
                 req.body.user_id = req.user._id;
+                req.body.tvShowId = req.body.tvid;
                 ShowNotification.create(req.body).then((notification)=>{
                     console.log("notification created!");
                 })
@@ -389,6 +390,13 @@ function proceedToAdd(show){
 }
 
 });
+
+router.post('/deleteNotification',ensureAuthenticated, function (req, res) {
+    ShowNotification.update(
+        { user_id: req.user._id },
+        { $remove: { tvShowId: req.body.tvid } },
+    )
+})
 
 
 router.post('/userTvInfo/unfollow',ensureAuthenticated, function (req, res) {
@@ -500,7 +508,7 @@ router.post('/login', function(req, res, next){
                 if(err){ return next(err);}
                 TvShow.findOne({user_id: req.user._id})
                     .populate('tvShowInfo.show_ref')
-										.populate('user_id')
+					.populate('user_id')
                     .then((userData)=>{
                     res.send({
                         success: true,
