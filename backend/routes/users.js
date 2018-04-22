@@ -299,42 +299,37 @@ function proceedToAdd(show){
   TvShow.findOne({user_id:req.user._id})
   .then((user_id)=>{
       if(!user_id){
+        let episodeCount = (show.episodes.length);
+        let newTvShow = new TvShow({
+            user_id:req.user._id,
+            tvShowInfo:[{
+                tvShowId : parseInt(req.body.tvid),
+                show_ref : show._id
+            }]
+        });
+        newTvShow.save(function(err){
+            if(err){
+                console.log(err);
+                return;
+            }else{
+                TvShow.findOne({user_id: req.user._id})
+                .populate('tvShowInfo.show_ref')
+                .then((user)=>{
+                res.send({
+                    success: true,
+                    msg: "Show followed.",
+                    result: user
+                });
+                req.body.show_ref = show._id;
+                req.body.user_id = req.user._id;
+                ShowNotification.create(req.body).then((notification)=>{
+                    console.log("notification created!");
+                })
 
 
-                  let episodeCount = (show.episodes.length);
-                  let newTvShow = new TvShow({
-                      user_id:req.user._id,
-                      tvShowInfo:[{
-                          tvShowId : parseInt(req.body.tvid),
-                          show_ref : show._id
-                      }]
-                  });
-                  newTvShow.save(function(err){
-                      if(err){
-                          console.log(err);
-                          return;
-                      }else{
-                          TvShow.findOne({user_id: req.user._id})
-                          .populate('tvShowInfo.show_ref')
-                          .then((user)=>{
-                            res.send({
-                              success: true,
-                              msg: "Show followed.",
-                              result: user
-                            });
-
-                            console.log("create notif");
-
-                            req.body.show_ref = show._id;
-                            req.body.user_id = req.user._id;
-                            ShowNotification.create(req.body).then((notification)=>{
-                              console.log("notification created!");
-                            })
-
-
-                          })
-                      }
-                  });
+                })
+            }
+        });
 
       }else{
 
