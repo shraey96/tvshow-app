@@ -8,7 +8,6 @@ import {UserFollowShow, UserUnFollowShow} from '../actions/userAction';
 import {Link} from 'react-router-dom';
 import {Animated} from "react-animated-css";
 import { Grid, Row, Col } from 'react-flexbox-grid';
-import {Tabs, Tab} from 'material-ui/Tabs';
 import Snackbar from 'material-ui/Snackbar';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import MoreShowsSearch from './MoreShowsSearch';

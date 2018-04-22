@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import {Switch, Route} from 'react-router-dom';
 
-import Shows from './Shows';
+// import Shows from './Shows';
 import Home from './Home';
 import AboutShow from './AboutShow';
 import AboutShowEpisode from './AboutShowEpisode';
@@ -13,7 +13,9 @@ import About from './About';
 import MyShows from './MyShows';
 import Calendar from './Calendar';
 import MoreShows from './MoreShows';
-import MoreShowsSearch from './MoreShowsSearch';
+import AboutShowCast from './AboutShowCast';
+import AboutShowCrew from './AboutShowCrew';
+import People from './People';
 
 import '../App.css';
 
@@ -24,20 +26,24 @@ import '../App.css';
 
 class Main extends Component {
   render() {
+    // <Route exact path="/shows" component={Shows}/>
     return (
       <div className="App">
 
 <main>
   <Switch>
 <Route exact path="/" component={Home}/>
-<Route exact path="/shows" component={Shows}/>
+
 <Route exact path="/about" component={About}/>
 <Route exact path="/login" component={Login}/>
 <Route exact path="/register" component={Register}/>
 <Route exact path="/search/:query" component={Search}/>
 <Route exact path="/shows/:tvshow/:id" component={AboutShow}/>
+<Route exact path="/shows/cast/:tvshow/:id" component={AboutShowCast}/>
+<Route exact path="/shows/crew/:tvshow/:id" component={AboutShowCrew}/>
 <Route exact path="/shows/:tvshowname/:tvshowid/:season/episode/:enum" component={AboutShowEpisode}/>
 <Route exact path="/calendar" component={Calendar}/>
+<Route exact path="/people/:person/:id" component={People}/>
 <Route exact path="/:username/myshows" component={MyShows}/>
 <Route exact path="/more-shows" component={MoreShows}/>
 <Route exact path="/more-shows/:genre/:gid/:rating/:rid/:status/:sid" component={MoreShows}/>

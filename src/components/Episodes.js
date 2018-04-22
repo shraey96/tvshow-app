@@ -64,7 +64,7 @@ else {
 handleUnWatch = (episode_num, showid) =>{
   console.log(episode_num, showid);
   let data = {
-    tvid: showid,
+    tvid: parseInt(showid),
     episodeid: episode_num
   }
 
