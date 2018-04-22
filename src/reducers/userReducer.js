@@ -16,16 +16,12 @@ export default function(state = initialState, action){
   switch (action.type) {
     case 'LOGIN_USER':
     let userInfo;
-    if(!action.payload.userInfo.user){
-      userInfo = "";
-    }else {
-      userInfo = action.payload.userInfo.info.tvShowInfo;
-    }
+    console.log(action.payload);
     return {
       ...state,
-      isUserLoggedIn : action.payload.login.success,
-      userProfile : action.payload.login.user,
-      userFollows: action.payload.userInfo.info.tvShowInfo
+      isUserLoggedIn : action.payload.success,
+      userProfile : action.payload.result.user_id,
+      userFollows: action.payload.result.tvShowInfo
     }
 
     case 'LOGOUT_USER':
@@ -44,7 +40,21 @@ export default function(state = initialState, action){
       userFollows: action.payload.user.tvShowInfo
     }
 
+    case 'UNFOLLOW_EPISODE':
+    console.log(action.payload);
+    return {
+      ...state,
+      userFollows: action.payload.user.tvShowInfo
+    }
+
     case 'FOLLOW_SHOW':
+    console.log(action.payload);
+    return{
+      ...state,
+      userFollows: action.payload.result.tvShowInfo
+    }
+
+    case 'UNFOLLOW_SHOW':
     console.log(action.payload);
     return{
       ...state,

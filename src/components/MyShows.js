@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 
 import { Grid, Row, Col } from 'react-flexbox-grid';
+import { withRouter } from 'react-router-dom';
 
 import '../App.css';
 
@@ -15,6 +16,8 @@ let usershows;
 let image;
 let percentageWatched;
 if(props.user.isUserLoggedIn === true){
+
+  if(props.user.userFollows.length>0){
   usershows = props.user.userFollows.map((shows)=>{
     console.log(shows);
     image = <Link to={`/shows/${shows.show_ref.tvShowName}/${shows.tvShowId}`}><img src={shows.show_ref.tvShowImageUrl}/></Link>
@@ -36,6 +39,12 @@ if(props.user.isUserLoggedIn === true){
     )
 
   })
+}else {
+  usershows = "Looks like you have no shows!";
+}
+}else {
+    props.history.push('/login');
+  console.log("NOOO");
 }
 
 
@@ -68,4 +77,5 @@ const mapStateToProps = function(state){
 }
 
 
-export default connect(mapStateToProps, {})(MyShows);
+// export default connect(mapStateToProps, {})(MyShows);
+export default withRouter(connect(mapStateToProps, {})(MyShows))

@@ -3,17 +3,30 @@ import '../App.css';
 
 import {connect} from 'react-redux';
 import {fetchSearchQueryInfo} from '../actions/showsAction';
-import {UserFollowShow} from '../actions/userAction';
+import {UserFollowShow, UserUnFollowShow} from '../actions/userAction';
 import {Link} from 'react-router-dom';
+import Snackbar from 'material-ui/Snackbar';
 import { Grid, Row, Col } from 'react-flexbox-grid';
-
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {Animated} from "react-animated-css";
 
 class Search extends Component {
-
+  constructor(){
+    super();
+    this.state = {
+      value : '',
+      open: false,
+      msg: '',
+      loader: false
+    }
+  }
 componentWillMount(){
 console.log("Mounted AboutShow");
-this.props.fetchSearchQueryInfo((this.props.match.params.query));
+let searchQuery = this.props.fetchSearchQueryInfo((this.props.match.params.query));
+console.log(searchQuery);
+searchQuery.then((search)=>{
+  console.log(search);
+})
 // console.log(this.state);
 }
 
@@ -43,9 +56,31 @@ Follow = (tvShowInfo) => {
     tvname: tvShowInfo.show.name,
     tvimg:  tvShowInfo.show.image.medium
   }
-  this.props.UserFollowShow(data);
+  let userFollow = this.props.UserFollowShow(data);
+  userFollow.then((show)=>{
+    if(show.success === true){
+      this.setState({open: true, msg: `Show Followed!`});
+    }else {
+      this.setState({open: true, msg: `There was some problem.`});
+    }
+  })
   }
 
+}
+
+unFollow = (tvShowInfo) => {
+  console.log(tvShowInfo);
+  let data = {
+    tvid: tvShowInfo.show.id
+  }
+  let userShowUnfollow = this.props.UserUnFollowShow(data)
+  userShowUnfollow.then((show)=>{
+    if(show.success === true){
+      this.setState({open: true, msg: `Show Unollowed!`});
+  }else {
+      this.setState({open: true, msg: `There was some problem.`});
+  }
+})
 }
 
 render() {
@@ -59,6 +94,15 @@ let peopleHeader;
 
 let hrLine;
 let noResultsText;
+
+let loader;
+
+if(this.state.loader === true){
+  loader = (<img src="http://backgroundcheckall.com/wp-content/uploads/2017/12/ajax-loading-gif-transparent-background-5.gif" height="50px" width="50px"/>);
+}else {
+  loader = "";
+}
+
 
 if(this.props.searchShow.length>0){
 
@@ -174,20 +218,35 @@ if(this.props.searchShow.length>0 && this.props.searchPeople.length>0){
 
     return (
 
-      <Grid fluid>
-            {showsHeader}
-        <Row>
+<MuiThemeProvider>
+<div>
+  <Grid fluid>
+        {showsHeader}
+    <Row>
 {shows}
-        </Row>
-        <br/>
-        {hrLine}
-        {noResultsText}
-        <br/>
-            <h2>{peopleHeader}</h2>
-        <Row>
+    </Row>
+    <br/>
+    {hrLine}
+    {noResultsText}
+    <br/>
+        <h2>{peopleHeader}</h2>
+    <Row>
 {people}
-        </Row>
-     </Grid>
+    </Row>
+
+
+ </Grid>
+
+
+  <Snackbar
+            open={this.state.open}
+            message={this.state.msg}
+            autoHideDuration={2000}
+            onRequestClose={this.handleRequestClose}
+    />
+
+</div>
+</MuiThemeProvider>
 
     );
   }
@@ -204,4 +263,4 @@ const mapStateToProps = function(state){
 }
 
 
-export default connect(mapStateToProps, {fetchSearchQueryInfo, UserFollowShow})(Search);
+export default connect(mapStateToProps, {fetchSearchQueryInfo, UserFollowShow, UserUnFollowShow})(Search);

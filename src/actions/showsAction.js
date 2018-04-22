@@ -78,7 +78,7 @@ var apiRequest2 = fetch(urls[1]).then(function(response){
          return response.json()
 });
 
-Promise.all([apiRequest1,apiRequest2]).then(function(values){
+return Promise.all([apiRequest1,apiRequest2]).then(function(values){
 
     dispatch({
     type: FETCH_SEARCH_QUERY,
@@ -87,7 +87,7 @@ Promise.all([apiRequest1,apiRequest2]).then(function(values){
       people: values[1]
     }
   })
-
+  return values[0]
 
 });
 

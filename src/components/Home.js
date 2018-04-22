@@ -8,7 +8,7 @@ import {Link} from 'react-router-dom';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 
 import {fetchShows} from '../actions/showsAction';
-import {UserFollowShow} from '../actions/userAction';
+import {UserFollowShow, UserUnFollowShow} from '../actions/userAction';
 import Snackbar from 'material-ui/Snackbar';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
@@ -24,8 +24,6 @@ class Home extends Component {
       msg: '',
       loader: false
     }
-    // this.handleSubmit = this.handleSubmit.bind(this);
-    // this.handleChange = this.handleChange.bind(this);
   }
 
 componentWillMount(){
@@ -42,20 +40,19 @@ componentWillMount(){
 
 handleSubmit = (e) =>{
   e.preventDefault();
-  this.props.history.push(`/search/${this.state.value}`)
+  this.props.history.push(`/search/${this.state.value}`);
 }
 
 handleChange = (e) =>{
-  this.setState({value: e.target.value})
+  this.setState({value: e.target.value});
 }
 
 Follow = (tvShowInfo) => {
-
   if(this.props.user.isUserLoggedIn === false){
   this.setState({open: true, msg: `You must login to follow shows!`});
   }else {
   let data = {
-    tvid: String(tvShowInfo.show.id),
+    tvid: (tvShowInfo.show.id),
     imdb: tvShowInfo.show.externals.imdb,
     tvname: tvShowInfo.show.name,
     tvimg:  tvShowInfo.show.image.medium
@@ -72,7 +69,17 @@ Follow = (tvShowInfo) => {
 }
 
 unFollow = (tvShowInfo) => {
-  console.log("AAAA");
+  let data = {
+    tvid: tvShowInfo.show.id
+  }
+  let userShowUnfollow = this.props.UserUnFollowShow(data)
+  userShowUnfollow.then((show)=>{
+    if(show.success === true){
+      this.setState({open: true, msg: `Show Unollowed!`});
+  }else {
+      this.setState({open: true, msg: `There was some problem.`});
+  }
+})
 }
 
 
@@ -192,4 +199,4 @@ const mapStateToProps = function(state){
 }
 
 
-export default connect(mapStateToProps, {fetchShows, UserFollowShow})(Home);
+export default connect(mapStateToProps, {fetchShows, UserFollowShow, UserUnFollowShow})(Home);

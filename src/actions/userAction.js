@@ -1,4 +1,4 @@
-import {LOGIN_USER, LOGOUT_USER, REGISTER_USER ,FOLLOW_SHOW, FOLLOW_EPISODE, UNFOLLOW_EPISODE, GET_USER_INFO} from './types';
+import {LOGIN_USER, LOGOUT_USER, REGISTER_USER ,FOLLOW_SHOW, UNFOLLOW_SHOW, FOLLOW_EPISODE, UNFOLLOW_EPISODE, GET_USER_INFO} from './types';
 import urlToUse from '../config';
 
 export function LoginUser(email, password) {
@@ -23,30 +23,40 @@ export function LoginUser(email, password) {
             .then(userData => userData.json())
             .then((userData) => {
                 console.log(userData);
+                if(userData.success === true){
+                        dispatch({
+                            type: LOGIN_USER,
+                            payload: userData
+                        })
 
+                               localStorage.setItem('isUserLoggedIn', true);
+                  return userData
+                }else {
+                  return userData
+                }
 
-              return    fetch(`${urlToUse}/users/tvseries`, {credentials: 'include'})
-                  .then((userCompleteList) => userCompleteList.json())
-                  .then((userCompleteList)=>{
-
-                    let data = {
-                      login: userData,
-                      userInfo: userCompleteList
-                    }
-
-                    dispatch({
-                        type: LOGIN_USER,
-                        payload: data
-                    })
-
-                    console.log(data);
-                    if(data.login.success === true){
-                      localStorage.setItem('isUserLoggedIn', true);
-                    }
-
-                    return userData
-
-                  })
+              // return    fetch(`${urlToUse}/users/tvseries`, {credentials: 'include'})
+              //     .then((userCompleteList) => userCompleteList.json())
+              //     .then((userCompleteList)=>{
+              //
+              //       let data = {
+              //         login: userData,
+              //         userInfo: userCompleteList
+              //       }
+              //
+              //       dispatch({
+              //           type: LOGIN_USER,
+              //           payload: data
+              //       })
+              //
+              //       console.log(data);
+              //       if(data.login.success === true){
+              //         localStorage.setItem('isUserLoggedIn', true);
+              //       }
+              //
+              //       return userData
+              //
+              //     })
 
             })
 
@@ -119,7 +129,7 @@ export function UserFollowShow(data) {
     return function(dispatch) {
 
 
-      return  fetch(`${urlToUse}/users/userTvInfo`, {
+      return  fetch(`${urlToUse}/users/userTvInfo/follow`, {
                 method: 'post',
                 credentials: 'include',
                 headers: {
@@ -131,7 +141,36 @@ export function UserFollowShow(data) {
             .then((show) => {
                 console.log(show);
                 dispatch({
-                    type: FOLLOW_SHOW,
+                    type: UNFOLLOW_SHOW,
+                    payload: show
+                })
+                return show
+            })
+
+    }
+
+}
+
+export function UserUnFollowShow(data) {
+
+    console.log(data);
+
+    return function(dispatch) {
+
+
+      return  fetch(`${urlToUse}/users/userTvInfo/unfollow`, {
+                method: 'post',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(show => show.json())
+            .then((show) => {
+                console.log(show);
+                dispatch({
+                    type: UNFOLLOW_SHOW,
                     payload: show
                 })
                 return show
@@ -167,7 +206,7 @@ export function followEpisode(data){
 
   return function(dispatch){
 
-    fetch(`${urlToUse}/users/episodeWatched`, {
+  return  fetch(`${urlToUse}/users/episodeWatched`, {
             method: 'put',
             credentials: 'include',
             headers: {
@@ -184,6 +223,7 @@ export function followEpisode(data){
             payload: result
           })
 
+          return result
 
         })
 
@@ -194,7 +234,7 @@ export function followEpisode(data){
 export function unFollowEpisode(data){
   return function(dispatch){
 
-    fetch(`${urlToUse}/users/episodeWatched`, {
+  return  fetch(`${urlToUse}/users/episodeWatched`, {
             method: 'put',
             credentials: 'include',
             headers: {
@@ -206,11 +246,12 @@ export function unFollowEpisode(data){
         .then((result) => {
           console.log(result);
 
-          // dispatch({
-          //   type: UNFOLLOW_EPISODE,
-          //   payload: result
-          // })
+          dispatch({
+            type: UNFOLLOW_EPISODE,
+            payload: result
+          })
 
+          return result
 
         })
 

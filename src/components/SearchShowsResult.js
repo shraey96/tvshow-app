@@ -4,6 +4,7 @@ import '../App.css';
 import {connect} from 'react-redux';
 import {fetchShowsCustom} from '../actions/showsAction';
 import {changePage} from '../actions/searchAction';
+import {UserFollowShow, UserUnFollowShow} from '../actions/userAction';
 import {Link} from 'react-router-dom';
 import {Animated} from "react-animated-css";
 import { Grid, Row, Col } from 'react-flexbox-grid';
@@ -12,6 +13,7 @@ import Snackbar from 'material-ui/Snackbar';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import MoreShowsSearch from './MoreShowsSearch';
 import { withRouter } from 'react-router-dom';
+
 // import injectTapEventPlugin from 'react-tap-event-plugin';
 import Pagination from 'material-ui-pagination';
 
@@ -71,16 +73,17 @@ handlePageChange = (pageNumber) =>{
 }
 
 Follow = (tvShowInfo) => {
+  console.log(tvShowInfo);
   console.log("clicked follow");
   console.log(this.props.user);
   if(this.props.user.isUserLoggedIn === false){
   this.setState({open: true, msg: `You must login to follow shows!`});
   }else {
   let data = {
-    tvid: String(tvShowInfo.show.id),
-    imdb: tvShowInfo.show.externals.imdb,
-    tvname: tvShowInfo.show.name,
-    tvimg:  tvShowInfo.show.image.medium
+    tvid: (tvShowInfo.tvShowId),
+    imdb: tvShowInfo.tvShowIMDB,
+    tvname: tvShowInfo.tvShowName,
+    tvimg:  tvShowInfo.tvShowImageUrl
   }
   let followShow = this.props.UserFollowShow(data);
   followShow.then((show)=>{
@@ -94,7 +97,17 @@ Follow = (tvShowInfo) => {
 }
 
 unFollow = (tvShowInfo) => {
-  console.log("AAAA");
+  let data = {
+    tvid: tvShowInfo.tvShowId
+  }
+  let userShowUnfollow = this.props.UserUnFollowShow(data)
+  userShowUnfollow.then((show)=>{
+    if(show.success === true){
+      this.setState({open: true, msg: `Show Unollowed!`});
+  }else {
+      this.setState({open: true, msg: `There was some problem.`});
+  }
+  })
 }
 
 handleRequestClose = () => {
@@ -226,4 +239,4 @@ const mapStateToProps = function(state){
 
 
 // export default connect(mapStateToProps, {fetchShowsCustom, changePage})(SearchShowsResult);
-export default withRouter(connect(mapStateToProps, {fetchShowsCustom, changePage})(SearchShowsResult))
+export default withRouter(connect(mapStateToProps, {fetchShowsCustom, changePage, UserFollowShow, UserUnFollowShow})(SearchShowsResult))

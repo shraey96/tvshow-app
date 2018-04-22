@@ -245,7 +245,7 @@ router.put('/episodeWatched',ensureAuthenticated, function(req, res){
                         res.send({
                             success: true,
                             msg: "Episode Deleted.",
-                            result: user
+                            user: user
                         });
                     });
                 }else{
@@ -259,7 +259,7 @@ router.put('/episodeWatched',ensureAuthenticated, function(req, res){
 });
 
 
-router.post('/userTvInfo',ensureAuthenticated, function(req, res){
+router.post('/userTvInfo/follow',ensureAuthenticated, function(req, res){
 
   showCache.findOne({tvShowId: req.body.tvid})
   .then((show)=>{
@@ -505,12 +505,14 @@ router.post('/login', function(req, res, next){
                 if(err){ return next(err);}
                 TvShow.findOne({user_id: req.user._id})
                     .populate('tvShowInfo.show_ref')
+										.populate('user_id')
                     .then((userData)=>{
                     res.send({
                         success: true,
                         msg: "authenticated.",
                         result: userData
                     });
+										console.log(userData);
                 });
             })
     })(req, res, next);
