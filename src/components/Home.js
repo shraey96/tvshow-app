@@ -8,7 +8,7 @@ import {Link} from 'react-router-dom';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 
 import {fetchShows} from '../actions/showsAction';
-import {UserFollowShow} from '../actions/userAction';
+import {UserFollowShow, UserUnFollowShow} from '../actions/userAction';
 import Snackbar from 'material-ui/Snackbar';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
@@ -21,34 +21,38 @@ class Home extends Component {
     this.state = {
       value : '',
       open: false,
-      msg: ''
+      msg: '',
+      loader: false
     }
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
   }
 
 componentWillMount(){
     console.log("Mounted");
-    this.props.fetchShows();
+    this.setState({loader: true});
+    let fetchShows = this.props.fetchShows();
+    fetchShows.then((shows)=>{
+      if(shows){
+        this.setState({loader: false});
+      }
+    })
   }
 
 
-handleSubmit(e){
+handleSubmit = (e) =>{
   e.preventDefault();
-  this.props.history.push(`/search/${this.state.value}`)
+  this.props.history.push(`/search/${this.state.value}`);
 }
 
-handleChange(e){
-  this.setState({value: e.target.value})
+handleChange = (e) =>{
+  this.setState({value: e.target.value});
 }
 
 Follow = (tvShowInfo) => {
-
   if(this.props.user.isUserLoggedIn === false){
   this.setState({open: true, msg: `You must login to follow shows!`});
   }else {
   let data = {
-    tvid: String(tvShowInfo.show.id),
+    tvid: (tvShowInfo.show.id),
     imdb: tvShowInfo.show.externals.imdb,
     tvname: tvShowInfo.show.name,
     tvimg:  tvShowInfo.show.image.medium
@@ -65,7 +69,17 @@ Follow = (tvShowInfo) => {
 }
 
 unFollow = (tvShowInfo) => {
-  console.log("AAAA");
+  let data = {
+    tvid: tvShowInfo.show.id
+  }
+  let userShowUnfollow = this.props.UserUnFollowShow(data)
+  userShowUnfollow.then((show)=>{
+    if(show.success === true){
+      this.setState({open: true, msg: `Show Unollowed!`});
+  }else {
+      this.setState({open: true, msg: `There was some problem.`});
+  }
+})
 }
 
 
@@ -81,6 +95,14 @@ this.setState({
 let popularShowsAiringTonight;
 let show = this.props.shows.shows;
 
+let loader;
+
+if(this.state.loader === true){
+  loader = (<img src="http://backgroundcheckall.com/wp-content/uploads/2017/12/ajax-loading-gif-transparent-background-5.gif" height="50px" width="50px"/>);
+}else {
+  loader = "";
+}
+
 let userShowInfo = this.props.user.userFollows;
 console.log(userShowInfo);
 
@@ -91,7 +113,6 @@ popularShowsAiringTonight = show.map((tvshow, index)=>{
 let button;
 
 if(this.props.user.isUserLoggedIn === true){
-console.log("YES");
   if(userShowInfo.length>0){
       for(var i = 0; i<userShowInfo.length; i++){
           if(tvshow.show.id === parseInt(userShowInfo[i].tvShowId)){
@@ -106,7 +127,6 @@ console.log("YES");
     }
 
 }else {
-  console.log("NO");
   button = (<button onClick={()=>{this.Follow(tvshow)}}>Follow</button>);
 }
 
@@ -150,7 +170,7 @@ console.log("YES");
 
     <u><h3 className="headingPopular">Popular shows airing tonight!</h3></u>
 
-
+{loader}
 
 <Grid fluid>
   <Row>
@@ -179,4 +199,4 @@ const mapStateToProps = function(state){
 }
 
 
-export default connect(mapStateToProps, {fetchShows, UserFollowShow})(Home);
+export default connect(mapStateToProps, {fetchShows, UserFollowShow, UserUnFollowShow})(Home);

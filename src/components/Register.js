@@ -193,6 +193,14 @@ constructor(){
  onFailure={this.responseGoogle}
 />
 
+<ul>
+  <h3>Keep track of all your favourite shows!</h3>
+<li> Follow the shows you like!</li>
+<li> Get to know about show/episodes/cast/people!</li>
+<li> Get live-email notifications for the next episode!</li>
+<li> Stay up to date on future episode dates!</li>
+</ul>
+
 </div>
 </Col>
 

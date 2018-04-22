@@ -76,6 +76,12 @@ let userNotLoggedIn =  (
       </MenuItem>
       </Link>
 
+      <Link className="sideLink" to={`/more-shows`}>
+      <MenuItem>
+      More Shows
+      </MenuItem>
+      </Link>
+
       <Link className="sideLink" to={`/register/`}>
       <MenuItem>
       Register
@@ -107,6 +113,12 @@ let userLoggedIn = (
       <Link className="sideLink" to={`/`}>
       <MenuItem>
       Home
+      </MenuItem>
+      </Link>
+
+      <Link className="sideLink" to={`/more-shows`}>
+      <MenuItem>
+      More Shows
       </MenuItem>
       </Link>
 

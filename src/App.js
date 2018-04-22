@@ -14,6 +14,7 @@ let loggedIN = localStorage.getItem('isUserLoggedIn');
 if(!loggedIN){
   console.log("Hi");
 }else {
+  console.log("FETCHING USER DATA");
  this.props.getUserData();
 }
 // this.props.getUserData();

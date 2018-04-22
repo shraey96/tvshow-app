@@ -5,8 +5,9 @@ import {connect} from 'react-redux';
 import {fetchShowByID} from '../actions/showsAction';
 
 import { Grid, Row, Col } from 'react-flexbox-grid';
-import {Tabs, Tab} from 'material-ui/Tabs';
+import {Link} from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import striptags from 'striptags';
 
 import Episodes from './Episodes';
 import Cast from './Cast';
@@ -41,7 +42,7 @@ componentDidMount(){
 }
 
   render() {
-    console.log(this.props.match.params);
+
 let currentShow = this.props.currentShow;
 let currentShowInfo;
 let col1;
@@ -64,8 +65,6 @@ col1 = (
       </div>
     </Col>
 
-    // <p>Sumamry: {currentShow.summary} </p>
-
   )
 col2 = (
   <Col xs={12} md={6}>
@@ -74,7 +73,10 @@ col2 = (
       <p>Run time: {currentShow.runtime} minutes</p>
       <a href={currentShow.officialSite}>officialSite</a>
       <p>Rating: {currentShow.rating.average}</p>
-      <p>Sumamry: {this.props.currentShow.summary} </p>
+      <p>Summary: {striptags(this.props.currentShow.summary)} </p>
+      <p><Link to={`/shows/cast/${currentShow.name}/${currentShow.id}`}>Cast</Link></p>
+      <p><Link to={`/shows/crew/${currentShow.name}/${currentShow.id}`}>Crew</Link></p>
+      <p></p>
     </Col>
   )
 }else {

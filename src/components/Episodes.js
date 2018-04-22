@@ -7,7 +7,9 @@ import {Link} from 'react-router-dom';
 
 import { Grid, Row, Col } from 'react-flexbox-grid';
 
-import {followEpisode} from '../actions/userAction';
+import {followEpisode, unFollowEpisode} from '../actions/userAction';
+import Snackbar from 'material-ui/Snackbar';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import {
   Table,
@@ -23,7 +25,9 @@ class Episodes extends Component {
   constructor(){
     super();
     this.state = {
-      value : ''
+      value : '',
+      msg : '',
+      open: false,
     }
 
   }
@@ -34,8 +38,6 @@ componentWillMount(){
 
 handleWatch = (episode_num, showid) =>{
   if(this.props.user.isUserLoggedIn === true){
-  console.log(this.props);
-  console.log(episode_num,showid);
   let data = {
     tvid: showid,
     episodeid: episode_num,
@@ -43,19 +45,46 @@ handleWatch = (episode_num, showid) =>{
     tvname: this.props.shows.currentShow.name,
     tvimg: this.props.shows.currentShow.image.medium
   };
-  console.log(data);
 
-  this.props.followEpisode(data);
+  let watch = this.props.followEpisode(data);
+  watch.then((episode)=>{
+    if(episode.success===true){
+        this.setState({open: true, msg: `Episode watched!`});
+    }else {
+        this.setState({open: true, msg: `There was some problem.`});
+    }
+  })
 }
 else {
-  alert("Login first!");
+  this.setState({open: true, msg: `Login First!`});
 }
 
 }
 
 handleUnWatch = (episode_num, showid) =>{
   console.log(episode_num, showid);
+  let data = {
+    tvid: parseInt(showid),
+    episodeid: episode_num
+  }
+
+  let unWatch = this.props.unFollowEpisode(data);
+  unWatch.then((episode)=>{
+    console.log(episode);
+  if(episode.success===true){
+      this.setState({open: true, msg: `Episode Unwatched!`});
+  }else {
+      this.setState({open: true, msg: `There was some problem.`});
+  }
+  })
 }
+
+handleRequestClose = () => {
+this.setState({
+  open: false,
+});
+};
+
 
 handlePreviousEpisodeWatch = (episodeid, showid) =>{
   console.log(episodeid, showid);
@@ -208,6 +237,14 @@ if(this.props.loader === true){
       {episodes}
       </TableBody>
       </Table>
+
+      <Snackbar
+                open={this.state.open}
+                message={this.state.msg}
+                autoHideDuration={2000}
+                onRequestClose={this.handleRequestClose}
+        />
+
       </div>
 
     );
@@ -222,4 +259,4 @@ const mapStateToProps = function(state){
 }
 
 
-export default connect(mapStateToProps, {followEpisode})(Episodes);
+export default connect(mapStateToProps, {followEpisode, unFollowEpisode})(Episodes);

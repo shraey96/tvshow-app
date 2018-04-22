@@ -49,7 +49,6 @@ constructor(){
     }else {
       let loginAttempt =  this.props.LoginUser(this.state.email, this.state.password);
       loginAttempt.then((login)=>{
-        console.log("A");
         if(login.success === true){
           this.setState({open: true, msg: `Login Success!`}, ()=>{
             setTimeout(()=>{

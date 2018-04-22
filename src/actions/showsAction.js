@@ -3,7 +3,7 @@ import urlToUse from '../config';
 
 export function fetchShows(query){
   return function(dispatch){
-      fetch(`http://api.tvmaze.com/schedule`)
+  return    fetch(`http://api.tvmaze.com/schedule`)
       .then(res=>res.json())
       .then(shows=>
 {
@@ -22,6 +22,8 @@ export function fetchShows(query){
         type: FETCH_SHOWS,
         payload: shows
         })
+
+        return shows
 }
     )
 
@@ -76,7 +78,7 @@ var apiRequest2 = fetch(urls[1]).then(function(response){
          return response.json()
 });
 
-Promise.all([apiRequest1,apiRequest2]).then(function(values){
+return Promise.all([apiRequest1,apiRequest2]).then(function(values){
 
     dispatch({
     type: FETCH_SEARCH_QUERY,
@@ -85,7 +87,7 @@ Promise.all([apiRequest1,apiRequest2]).then(function(values){
       people: values[1]
     }
   })
-
+  return values[0]
 
 });
 
@@ -115,6 +117,8 @@ return    fetch(`${urlToUse}/users/shows?page=${query.page}&rating=${query.ratin
 {
   console.log("FETCH SHOWS CUSTOM: ", show);
 
+  show.shows = shuffle(show.shows);
+
       dispatch({
       type: FETCH_SHOWS_CUSTOM,
       payload: show
@@ -125,4 +129,22 @@ return    fetch(`${urlToUse}/users/shows?page=${query.page}&rating=${query.ratin
 
   }
 
+}
+
+
+function shuffle(arra1) {
+    var ctr = arra1.length, temp, index;
+
+// While there are elements in the array
+    while (ctr > 0) {
+// Pick a random index
+        index = Math.floor(Math.random() * ctr);
+// Decrease ctr by 1
+        ctr--;
+// And swap the last element with it
+        temp = arra1[ctr];
+        arra1[ctr] = arra1[index];
+        arra1[index] = temp;
+    }
+    return arra1;
 }
