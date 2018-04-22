@@ -51,7 +51,7 @@ export function fetchShowByID(showid){
 export function fetchEpisodeByNumber(showID, season, episode){
   return function(dispatch){
 
-    fetch(`http://api.tvmaze.com/shows/${showID}/episodebynumber?season=${season}&number=${episode}`)
+return    fetch(`http://api.tvmaze.com/shows/${showID}/episodebynumber?season=${season}&number=${episode}`)
     .then(res=>res.json())
     .then(show=>
 {
@@ -59,6 +59,7 @@ export function fetchEpisodeByNumber(showID, season, episode){
       type: FETCH_EPISODE_INFO,
       payload: show
     })
+    return show
 }
   )
 

@@ -48,10 +48,13 @@ if(this.state.loader === true){
 if(this.state.cast.length>0){
 cast = this.state.cast.map((cast)=>{
 let image;
+
 if(cast.character.image){
-  image = <img src={cast.character.image.medium}/>
-}else {
-  image = '';
+  image = <Link to={`/people/${cast.person.name}/${cast.person.id}`}><img src={cast.character.image.medium}/></Link>
+}else if(cast.person.image){
+  image = <Link to={`/people/${cast.person.name}/${cast.person.id}`}><img src={cast.person.image.medium}/></Link>;
+}else{
+  image = <Link to={`/people/${cast.person.name}/${cast.person.id}`}><img src="https://image.freepik.com/free-icon/user-image-with-black-background_318-34564.jpg" height="300px;" width="300px;"/></Link>;
 }
 return(
   <Col xs={12} md={3} sm={4} key={cast.character.id}>
@@ -59,7 +62,7 @@ return(
 <Animated animationIn="bounceInLeft" animationOut="fadeOut" isVisible={true}>
     <div className="tvpopular">
     {image}
-    <h4><b>{cast.person.name}</b></h4> as
+    <h4><b><Link to={`/people/${cast.person.name}/${cast.person.id}`}>{cast.person.name}</Link></b></h4> as
     <h5>{cast.character.name}</h5>
     </div>
 </Animated>

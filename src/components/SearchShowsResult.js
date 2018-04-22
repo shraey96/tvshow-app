@@ -12,7 +12,7 @@ import Snackbar from 'material-ui/Snackbar';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import MoreShowsSearch from './MoreShowsSearch';
 import { withRouter } from 'react-router-dom';
-
+import RaisedButton from 'material-ui/RaisedButton';
 // import injectTapEventPlugin from 'react-tap-event-plugin';
 import Pagination from 'material-ui-pagination';
 
@@ -139,19 +139,23 @@ if(this.props.shows.searchShowCustom.length!==0){
       if(userShowInfo.length>0){
           for(var i = 0; i<userShowInfo.length; i++){
               if(tvshow.tvShowId === parseInt(userShowInfo[i].tvShowId)){
-                button = (<button onClick={()=>{this.unFollow(tvshow)}}>UnFollow</button>);
+                // button = (<button onClick={()=>{this.unFollow(tvshow)}}>UnFollow</button>);
+                button = (<RaisedButton label="UnFollow" secondary={true}  onClick={()=>{this.unFollow(tvshow)}}/>);
                 break;
               }else {
-                button = (<button onClick={()=>{this.Follow(tvshow)}}>Follow</button>);
+                // button = (<button onClick={()=>{this.Follow(tvshow)}}>Follow</button>);
+                button = (<RaisedButton label="Follow" primary={true}  onClick={()=>{this.Follow(tvshow)}}/>);
               }
           }
         }else {
           button = (<button onClick={()=>{this.Follow(tvshow)}}>Follow</button>);
+          button = (<RaisedButton label="Follow" primary={true}  onClick={()=>{this.Follow(tvshow)}}/>);
         }
 
     }else {
       console.log("NO");
       button = (<button onClick={()=>{this.Follow(tvshow)}}>Follow</button>);
+      button = (<RaisedButton label="Follow" primary={true}  onClick={()=>{this.Follow(tvshow)}}/>);
     }
 
     let image;

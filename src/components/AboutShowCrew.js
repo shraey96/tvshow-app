@@ -53,9 +53,9 @@ if(this.state.crew.length>0){
 crew = this.state.crew.map((crew)=>{
 let image;
 if(crew.person.image){
-  image = <img src={crew.person.image.medium}/>
+  image = <Link to={`/people/${crew.person.name}/${crew.person.id}`}><img src={crew.person.image.medium}/></Link>;
 }else {
-  image = <img src="https://image.freepik.com/free-icon/user-image-with-black-background_318-34564.jpg" height="300px;" width="250px;"/>;
+  image = <Link to={`/people/${crew.person.name}/${crew.person.id}`}><img src="https://image.freepik.com/free-icon/user-image-with-black-background_318-34564.jpg" height="300px;" width="250px;"/></Link>;
 }
 return(
   <Col xs={12} md={3} sm={4} key={crew.person.id}>
@@ -63,7 +63,7 @@ return(
 <Animated animationIn="bounceInLeft" animationOut="fadeOut" isVisible={true}>
     <div className="tvpopular">
     {image}
-    <h4><b>{crew.person.name}</b></h4> as
+    <h4><b><Link to={`/people/${crew.person.name}/${crew.person.id}`}>{crew.person.name}</Link></b></h4> as
     <h5>{crew.type}</h5>
     </div>
 </Animated>

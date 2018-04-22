@@ -11,7 +11,7 @@ import {fetchShows} from '../actions/showsAction';
 import {UserFollowShow, UserUnFollowShow} from '../actions/userAction';
 import Snackbar from 'material-ui/Snackbar';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
+import RaisedButton from 'material-ui/RaisedButton';
 import {Animated} from "react-animated-css";
 
 class Home extends Component {
@@ -116,18 +116,20 @@ if(this.props.user.isUserLoggedIn === true){
   if(userShowInfo.length>0){
       for(var i = 0; i<userShowInfo.length; i++){
           if(tvshow.show.id === parseInt(userShowInfo[i].tvShowId)){
-            button = (<button onClick={()=>{this.unFollow(tvshow)}}>UnFollow</button>);
+            // button = (<button onClick={()=>{this.unFollow(tvshow)}}>UnFollow</button>);
+            button = (<RaisedButton label="UnFollow" secondary={true}  onClick={()=>{this.unFollow(tvshow)}}/>);
             break;
           }else {
-            button = (<button onClick={()=>{this.Follow(tvshow)}}>Follow</button>);
+            // button = (<button onClick={()=>{this.Follow(tvshow)}}>Follow</button>);
+            button = (<RaisedButton label="Follow" primary={true}  onClick={()=>{this.Follow(tvshow)}}/>);
           }
       }
     }else {
-      button = (<button onClick={()=>{this.Follow(tvshow)}}>Follow</button>);
+      button = (<RaisedButton label="Follow" primary={true}  onClick={()=>{this.Follow(tvshow)}}/>);
     }
 
 }else {
-  button = (<button onClick={()=>{this.Follow(tvshow)}}>Follow</button>);
+  button = (<RaisedButton label="Follow" primary={true}  onClick={()=>{this.Follow(tvshow)}}/>);
 }
 
 
@@ -148,7 +150,9 @@ if(this.props.user.isUserLoggedIn === true){
         <p><Link className="tvpopularLink" to={`/shows/${tvshow.show.name}/${tvshow.show.id}`}>{tvshow.show.name}</Link> </p>
         <p className="tvpopularLink"> <u>S{tvshow.season}E{tvshow.number}</u> </p>
         {button}
+
         </div>
+        <br/>
 </Animated>
 
       </Col>

@@ -184,7 +184,7 @@ export function UserUnFollowShow(data) {
 export function getUserData(userData){
 return function(dispatch){
 
-  fetch(`${urlToUse}/users/tvseries`, {credentials: 'include'})
+  return fetch(`${urlToUse}/users/tvseries`, {credentials: 'include'})
   .then((userCompleteList) => userCompleteList.json())
   .then((userCompleteList)=>{
     console.log(userCompleteList);
@@ -193,6 +193,7 @@ return function(dispatch){
         type: GET_USER_INFO,
         payload: userCompleteList
     })
+    return userCompleteList
   }
   })
 }
