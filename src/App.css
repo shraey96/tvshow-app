@@ -44,8 +44,8 @@ html{
   margin-top: 10px;
 }
 
-/* img {
+img {
   background: transparent url('https://loading.io/spinners/coolors/lg.palette-rotating-ring-loader.gif') center no-repeat;
   margin: 5px 5px 5px 5px;
-  border: 2px solid black;
-} */
+  /* border: 2px solid black; */
+}

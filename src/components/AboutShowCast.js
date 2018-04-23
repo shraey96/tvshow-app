@@ -85,7 +85,7 @@ return(
         <Grid fluid>
           <Row>
 
-{cast}
+            {cast}
           </Row>
         </Grid>
 

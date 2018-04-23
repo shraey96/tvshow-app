@@ -27,17 +27,15 @@ class Simple extends Component {
       opensnack: false
         };
 
-  this.handleChange = this.handleChange.bind(this);
-  this.handleSubmit = this.handleSubmit.bind(this);
 
   }
 
-  handleSubmit(e){
+  handleSubmit = (e) =>{
     e.preventDefault();
     this.props.history.push(`/search/${this.state.value}`);
   }
 
-  handleChange(e){
+  handleChange = (e) =>{
     this.setState({value: e.target.value})
   }
 

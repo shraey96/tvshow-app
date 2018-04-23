@@ -26,7 +26,7 @@ class People extends Component {
 
 componentWillMount(){
   console.log("Mounted AboutShow");
-
+  this.setState({loader: true});
   console.log(this.props.match.params.person);
 fetch(`http://api.tvmaze.com/people/${this.props.match.params.id}`)
   .then(res=>res.json())
@@ -72,6 +72,16 @@ let personInfo;
 let personInfo1;
 let personInfo2;
 let image;
+
+let loader;
+
+if(this.state.loader === true){
+  loader = (<img src="http://backgroundcheckall.com/wp-content/uploads/2017/12/ajax-loading-gif-transparent-background-5.gif" height="50px" width="50px"/>);
+}else {
+  loader = "";
+}
+
+
 if(this.state.personInfo){
   if(this.state.personInfo.image){
     image = <img src={this.state.personInfo.image.medium} />
@@ -111,7 +121,9 @@ if(this.state.personInfo.country){
 
 let personShows;
 let image2;
+let header;
 if(this.state.personShows.length>0){
+header = <h3>Starring In: </h3>
 personShows = this.state.personShows.map((show)=>{
   console.log(show);
   if(show.image){
@@ -142,7 +154,7 @@ personShows = this.state.personShows.map((show)=>{
       <div className="App">
 
       <h3>{this.props.match.params.person}</h3>
-
+      {loader}
         <Grid fluid>
           <Row>
           {personInfo1}
@@ -150,6 +162,7 @@ personShows = this.state.personShows.map((show)=>{
           </Row>
         </Grid>
 <hr />
+  {header}
         <Grid fluid>
           <Row>
           {personShows}

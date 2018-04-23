@@ -29,6 +29,27 @@ class SearchShowsResult extends Component {
   }
 
 componentWillMount(){
+  console.log(this.props.search);
+  console.log(this.props.match.params);
+  // let query;
+  //
+  // if(this.props.search.genre === '' || this.props.search.rating === '' || this.props.search.status === '' || this.props.search.language === ''){
+  //   query = {
+  //     genre: this.props.match.params.genre,
+  //     rating: this.props.match.params.rating,
+  //     language: this.props.match.params.language,
+  //     status: this.props.match.params.status,
+  //   };
+  // }else {
+  //   query = {
+  //     genre: this.props.search.genre,
+  //     rating: this.props.search.rating,
+  //     language: this.props.search.language,
+  //     status: this.props.search.status
+  //   };
+  // }
+  //
+  // console.log(query);
 this.setState({loader: true}, ()=>{
   let customShow = this.props.fetchShowsCustom(this.props.search);
   customShow.then((customShow)=>{

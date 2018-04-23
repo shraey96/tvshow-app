@@ -174,9 +174,9 @@ if(this.props.searchPeople.length>0){
     let image;
     let country;
     if(person.person.image){
-      image = <img src={person.person.image.medium}/>
+      image = <Link to={`/people/${person.person.name}/${person.person.id}`}><img src={person.person.image.medium}/></Link>
     }else {
-      image = <img src="https://image.freepik.com/free-icon/user-image-with-black-background_318-34564.jpg" height="300px;" width="300px;"/>
+      image = <Link to={`/people/${person.person.name}/${person.person.id}`}><img src="https://image.freepik.com/free-icon/user-image-with-black-background_318-34564.jpg" height="300px;" width="300px;"/></Link>
     }
 
     if(person.person.country){
@@ -190,10 +190,9 @@ if(this.props.searchPeople.length>0){
 <Animated animationIn="bounceInLeft" animationOut="fadeOut" isVisible={true}>
       <div>
         {image}<br/>
-        <u>Name: {person.person.name}</u>
+      <b><Link to={`/people/${person.person.name}/${person.person.id}`}>Name: {person.person.name}</Link></b><br />
+
         {country}
-        <p>Birthday: {person.person.birthday}</p>
-        <p>Gender: {person.person.gender}</p>
       </div>
 </Animated>
 

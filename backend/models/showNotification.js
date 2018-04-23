@@ -26,8 +26,8 @@ const showNotification = mongoose.Schema({
         default: false
     },
     oneDay:{
-        type: Boolean,
-        dafault: false
+      type: Boolean,
+      default: false
     }
 
 });

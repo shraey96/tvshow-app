@@ -4,9 +4,11 @@ const initialState = {
   rating: '',
   genre: '',
   status: '',
+  language: '',
   statusValue: '',
   ratingValue: '',
   genreValue: '',
+  languageValue: '',
   page: 1
 }
 
@@ -19,9 +21,11 @@ export default function(state = initialState, action){
       rating: action.payload.options.rating,
       genre: action.payload.options.genre,
       status: action.payload.options.status,
+      language: action.payload.options.language,
       statusValue: action.payload.optionsValue.status,
       ratingValue: action.payload.optionsValue.rating,
-      genreValue: action.payload.optionsValue.genre
+      genreValue: action.payload.optionsValue.genre,
+      languageValue: action.payload.optionsValue.language,
     }
 
     case 'PAGE_CHANGE':

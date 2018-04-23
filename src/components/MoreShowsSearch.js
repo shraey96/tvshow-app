@@ -24,12 +24,14 @@ class MoreShowsSearch extends Component {
       options:{
         status: '',
         rating: '',
-        genre: ''
+        genre: '',
+        language: ''
       },
       optionsValue:{
         status: 1,
         rating: 1,
-        genre: 1
+        genre: 1,
+        language: 1
       }
     }
   }
@@ -38,7 +40,8 @@ componentWillMount(){
   let optionsValue = {
     status: parseInt(this.props.search.searchValue) || parseInt(this.props.match.params.sid) || 1,
     rating: parseInt(this.props.search.ratingValue) || parseInt(this.props.match.params.rid) || 1,
-    genre: parseInt(this.props.search.genreValue)|| parseInt(this.props.match.params.gid) || 1
+    genre: parseInt(this.props.search.genreValue)|| parseInt(this.props.match.params.gid) || 1,
+    language: parseInt(this.props.search.languageValue)|| parseInt(this.props.match.params.lid) || 1,
   }
   console.log(optionsValue);
 this.setState({
@@ -50,7 +53,6 @@ this.setState({
 }
 
 componentDidMount(){
-
 
 }
 
@@ -88,12 +90,25 @@ handleRatingChange = (e, index, value) =>{
   })
 }
 
+handleLanguageChange = (e, index, value) =>{
+  let options = Object.assign({}, this.state.options);
+  let optionsValue = Object.assign({}, this.state.optionsValue);
+  options.language = e.target.textContent;
+  optionsValue.language = value;
+  this.setState({
+    options: options,
+    optionsValue: optionsValue
+  })
+}
+
+
 handleSubmit = (e) =>{
   e.preventDefault();
   console.log(this.state);
   this.props.searchAlter(this.state);
-  this.props.history.push(`/more-shows/${this.state.options.genre || 1}/${this.state.optionsValue.genre || 1}/${this.state.options.rating || 1}/${this.state.optionsValue.rating || 1}/${this.state.options.status || 1}/${this.state.optionsValue.status || 1}`);
+  this.props.history.push(`/more-shows/${this.state.options.genre || 1}/${this.state.optionsValue.genre || 1}/${this.state.options.rating || 1}/${this.state.optionsValue.rating || 1}/${this.state.options.status || 1}/${this.state.optionsValue.status || 1}/${this.state.options.language || 1}/${this.state.optionsValue.language || 1}`);
 }
+
 
   render() {
 
@@ -166,13 +181,75 @@ handleSubmit = (e) =>{
         </Col>
 
         <Col xs={12} md={3}>
-<RaisedButton label="Search" className="form-field search-button" primary={true} onClick={this.handleSubmit}/>
+          <DropDownMenu value={this.state.optionsValue.language} onChange={this.handleLanguageChange}>
+            <MenuItem value={1} primaryText="Show Language" />
+            <MenuItem value={2} primaryText="Arabic" />
+            <MenuItem value={3} primaryText="Albanian" />
+            <MenuItem value={4} primaryText="Armenian" />
+            <MenuItem value={5} primaryText="Azerbaijani" />
+            <MenuItem value={6} primaryText="Bosnian" />
+            <MenuItem value={7} primaryText="Catalan" />
+            <MenuItem value={8} primaryText="Chinese" />
+            <MenuItem value={9} primaryText="Croatian" />
+            <MenuItem value={10} primaryText="Czech" />
+            <MenuItem value={11} primaryText="Danish" />
+            <MenuItem value={12} primaryText="Divehi" />
+            <MenuItem value={13} primaryText="Dutch" />
+            <MenuItem value={14} primaryText="English" />
+            <MenuItem value={15} primaryText="Estonian" />
+            <MenuItem value={16} primaryText="Finnish" />
+            <MenuItem value={17} primaryText="French" />
+            <MenuItem value={18} primaryText="Georgian" />
+            <MenuItem value={19} primaryText="German" />
+            <MenuItem value={20} primaryText="Greek" />
+            <MenuItem value={21} primaryText="Hebrew" />
+            <MenuItem value={22} primaryText="Hindi" />
+            <MenuItem value={23} primaryText="Hungarian" />
+            <MenuItem value={24} primaryText="Icelandic" />
+            <MenuItem value={25} primaryText="Irish" />
+            <MenuItem value={26} primaryText="Italian" />
+            <MenuItem value={27} primaryText="Japanese" />
+            <MenuItem value={28} primaryText="Javanese" />
+            <MenuItem value={29} primaryText="Kazakh" />
+            <MenuItem value={30} primaryText="Kongo" />
+            <MenuItem value={31} primaryText="Korean" />
+            <MenuItem value={32} primaryText="Latin" />
+            <MenuItem value={33} primaryText="Lithuanian" />
+            <MenuItem value={34} primaryText="Norwegian" />
+            <MenuItem value={35} primaryText="Pashto" />
+            <MenuItem value={36} primaryText="Norwegian" />
+            <MenuItem value={37} primaryText="Persian" />
+            <MenuItem value={38} primaryText="Polish" />
+            <MenuItem value={39} primaryText="Portuguese" />
+            <MenuItem value={40} primaryText="Romanian" />
+            <MenuItem value={41} primaryText="Russian" />
+            <MenuItem value={42} primaryText="Serbian" />
+            <MenuItem value={43} primaryText="Slovak" />
+            <MenuItem value={44} primaryText="Slovenian" />
+            <MenuItem value={45} primaryText="Spanish" />
+            <MenuItem value={46} primaryText="Swedish" />
+            <MenuItem value={47} primaryText="Tagalog" />
+            <MenuItem value={48} primaryText="Tamil" />
+            <MenuItem value={49} primaryText="Thai" />
+            <MenuItem value={50} primaryText="Turkish" />
+            <MenuItem value={51} primaryText="Ukrainian" />
+            <MenuItem value={52} primaryText="Urdu" />
+            <MenuItem value={53} primaryText="Vietnamese" />
+            <MenuItem value={54} primaryText="Welsh" />
+            <MenuItem value={55} primaryText="Scottish Gaelic" />
+          </DropDownMenu>
         </Col>
+
+        </Row>
+        <Row>
+          <Col xs={12} md={12}>
+        <RaisedButton label="Search" className="form-field search-button" primary={true} onClick={this.handleSubmit}/>
+          </Col>
         </Row>
         </form>
 
 
-      </Grid>
+        </Grid>
 
 
       </div>

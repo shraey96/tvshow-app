@@ -109,10 +109,16 @@ export function fetchShowsCustom(query){
     query.status = '';
   }
 
+  if(query.language === 'Show Language'){
+    query.language = '';
+  }
+
+
   console.log("##### FETCH SHOWS CUSTOM");
   return function(dispatch){
 
-return    fetch(`${urlToUse}/users/shows?page=${query.page}&rating=${query.rating}&genres=${query.genre}&status=${query.status}`)
+return fetch(`${urlToUse}/users/shows?page=${query.page}&rating=${query.rating}&genres=${query.genre}&status=${query.status}&language=${query.language}`)
+// return fetch(`${urlToUse}/users/shows?page=${query.page}&rating=${query.rating}&genres=${query.genre}&status=${query.status}  `)
     .then(res=>res.json())
     .then(show=>
 {

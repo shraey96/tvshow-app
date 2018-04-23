@@ -46,7 +46,7 @@ class Main extends Component {
 <Route exact path="/people/:person/:id" component={People}/>
 <Route exact path="/:username/myshows" component={MyShows}/>
 <Route exact path="/more-shows" component={MoreShows}/>
-<Route exact path="/more-shows/:genre/:gid/:rating/:rid/:status/:sid" component={MoreShows}/>
+<Route exact path="/more-shows/:genre/:gid/:rating/:rid/:status/:sid/:language/:lid" component={MoreShows}/>
 
   </Switch>
 </main>

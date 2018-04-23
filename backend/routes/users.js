@@ -17,7 +17,7 @@ function ensureAuthenticated(req, res, next){
 	} else {
 		res.send({
             success:false,
-            msg:"notauthenticated"
+            msg:"not authenticated"
         });
 	}
 }
@@ -31,31 +31,86 @@ router.get('/shows', function(req, res){
   let query;
   console.log("req.query: ", req.query);
 
-  if(req.query.genres || req.query.status || req.query.rating){
+  if(req.query.genres || req.query.status || req.query.rating || req.query.language){
     console.log("some query present");
 
-    if(req.query.genres && req.query.status && req.query.rating){
-      console.log("all 3 present");
-      query = {tvShowStatus: req.query.status, tvShowRating: {$gte: req.query.rating}, tvShowGenres: req.query.genres};
-    }else if(req.query.genres && req.query.status){
-      console.log("genres and status present");
-      query = {tvShowGenres: req.query.genres, tvShowStatus: req.query.status};
-    }else if(req.query.genres && req.query.rating){
-      console.log("genres and rating present");
-      query = {tvShowGenres: req.query.genres, tvShowRating: {$gte: req.query.rating}};
-    }else if(req.query.status && req.query.rating){
-      console.log("status and rating present");
-      query = {tvShowStatus: req.query.status, tvShowRating: {$gte: req.query.rating}};
-    }else if(req.query.genres){
-      console.log("genres present");
-      query = {tvShowGenres: req.query.genres};
-    }else if(req.query.status){
-      console.log("status present");
-      query = {tvShowStatus: req.query.status};
-    }else if(req.query.rating){
-      console.log("rating present");
-      query = {tvShowRating: {$gte: req.query.rating}};
-    }
+		if(req.query.genres && req.query.status && req.query.rating && req.query.language){
+			console.log("all 3 present");
+			query = {tvShowStatus: req.query.status, tvShowRating: {$gte: req.query.rating}, tvShowGenres: req.query.genres, tvShowLanguage: req.query.language};
+		}
+
+		else if(req.query.genres && req.query.status && req.query.rating){
+			console.log("genres, status and rating present");
+			query = {tvShowStatus: req.query.status, tvShowRating: {$gte: req.query.rating}, tvShowGenres: req.query.genres};
+		}else if(req.query.status && req.query.rating && req.query.language){
+			console.log("status, rating and language present");
+			query = {tvShowStatus: req.query.status, tvShowRating: {$gte: req.query.rating}, tvShowLanguage: req.query.language};
+		}else if(req.query.genres && req.query.rating && req.query.language){
+			console.log("genres, rating and language present");
+			query = {tvShowRating: {$gte: req.query.rating}, tvShowGenres: req.query.genres, tvShowLanguage: req.query.language};
+		}else if(req.query.genres && req.query.status && req.query.language){
+			console.log("genres, status and language present");
+			query = {tvShowStatus: req.query.status, tvShowGenres: req.query.genres, tvShowLanguage: req.query.language};
+		}
+
+		else if(req.query.genres && req.query.status){
+			console.log("genres and status present");
+			query = {tvShowGenres: req.query.genres, tvShowStatus: req.query.status};
+		}else if(req.query.genres && req.query.rating){
+			console.log("genres and rating present");
+			query = {tvShowGenres: req.query.genres, tvShowRating: {$gte: req.query.rating}};
+		}else if(req.query.genres && req.query.language){
+			console.log("genres and language present");
+			query = {tvShowGenres: req.query.genres, tvShowLanguage: req.query.language};
+		}
+		else if(req.query.status && req.query.rating){
+			console.log("status and rating present");
+			query = {tvShowStatus: req.query.status, tvShowRating: {$gte: req.query.rating}};
+		}else if(req.query.status && req.query.language){
+			console.log("status and language present");
+			query = {tvShowStatus: req.query.status,  tvShowLanguage: req.query.language};
+		}
+		else if(req.query.language && req.query.rating){
+			console.log("language and rating present");
+			query = {tvShowLanguage: req.query.language, tvShowRating: {$gte: req.query.rating}};
+		}
+
+		else if(req.query.genres){
+			console.log("genres present");
+			query = {tvShowGenres: req.query.genres};
+		}else if(req.query.status){
+			console.log("status present");
+			query = {tvShowStatus: req.query.status};
+		}else if(req.query.rating){
+			console.log("rating present");
+			query = {tvShowRating: {$gte: req.query.rating}};
+		}else if(req.query.language){
+			console.log("language present");
+			query = {tvShowLanguage: req.query.language};
+		}
+
+    // if(req.query.genres && req.query.status && req.query.rating){
+    //   console.log("all 3 present");
+    //   query = {tvShowStatus: req.query.status, tvShowRating: {$gte: req.query.rating}, tvShowGenres: req.query.genres};
+    // }else if(req.query.genres && req.query.status){
+    //   console.log("genres and status present");
+    //   query = {tvShowGenres: req.query.genres, tvShowStatus: req.query.status};
+    // }else if(req.query.genres && req.query.rating){
+    //   console.log("genres and rating present");
+    //   query = {tvShowGenres: req.query.genres, tvShowRating: {$gte: req.query.rating}};
+    // }else if(req.query.status && req.query.rating){
+    //   console.log("status and rating present");
+    //   query = {tvShowStatus: req.query.status, tvShowRating: {$gte: req.query.rating}};
+    // }else if(req.query.genres){
+    //   console.log("genres present");
+    //   query = {tvShowGenres: req.query.genres};
+    // }else if(req.query.status){
+    //   console.log("status present");
+    //   query = {tvShowStatus: req.query.status};
+    // }else if(req.query.rating){
+    //   console.log("rating present");
+    //   query = {tvShowRating: {$gte: req.query.rating}};
+    // }
 
     showAuto.find({})
     .count()
@@ -92,76 +147,76 @@ router.get('/shows', function(req, res){
 
 
 
-router.get('/auto', function(req, res){
-
-let page = 0;
-
-
-fetchAndStoreShow()
-  function fetchAndStoreShow(){
-    console.log("#### FETCHING SHOWS ####");
-    var options = {
-    uri: 'http://api.tvmaze.com/shows?page=' + page,
-    json: true
-    };
-
-rp(options)
-    .then(function (show) {
-      console.log("Fetched Shows");
-      console.log("Total shows found: ", show.length);
-
-        let showPromise = show.map((each_show)=>{
-          let objToCreate = {
-            tvShowId: each_show.id,
-            tvShowIMDB: each_show.externals.imdb,
-            tvShowImageUrl: each_show.image.medium || '',
-            tvShowName: each_show.name,
-            tvShowStatus: each_show.status,
-            tvShowGenres: each_show.genres,
-            tvShowLanguage: each_show.language,
-            tvShowRating: each_show.rating.average || '',
-            tvShowPremiered: each_show.premiered
-          }
-
-          return showAuto.create(objToCreate);
-
-        })
-
-        Promise.all(showPromise)
-        .then((done)=>{
-          // res.send({done})
-          console.log("DONE FETCHING AND STORING!");
-          if(page===145){
-              console.log("Fetched All shows");
-              console.log("page: ", page);
-              res.json({succes: true, done: "ALL"})
-          }else {
-              page++;
-              console.log("page: ", page);
-              setTimeout(()=>{
-                fetchAndStoreShow();
-              },1500)
-          }
-          // if(page<2){
-          //   page++;
-          //   console.log("page: ", page);
-          //   fetchAndStoreShow()
-          // }else {
-          //   console.log("Fetched All shows");
-          //   console.log("page: ", page);
-          //   res.json({succes: true, done: "ALL"})
-          // }
-        })
-
-    })
-    .catch(function (err) {
-        // API call failed...
-    });
-
-  }
-
-
-})
+// router.get('/auto', function(req, res){
+//
+// let page = 0;
+//
+//
+// fetchAndStoreShow()
+//   function fetchAndStoreShow(){
+//     console.log("#### FETCHING SHOWS ####");
+//     var options = {
+//     uri: 'http://api.tvmaze.com/shows?page=' + page,
+//     json: true
+//     };
+//
+// rp(options)
+//     .then(function (show) {
+//       console.log("Fetched Shows");
+//       console.log("Total shows found: ", show.length);
+//
+//         let showPromise = show.map((each_show)=>{
+//           let objToCreate = {
+//             tvShowId: each_show.id,
+//             tvShowIMDB: each_show.externals.imdb,
+//             tvShowImageUrl: each_show.image.medium || '',
+//             tvShowName: each_show.name,
+//             tvShowStatus: each_show.status,
+//             tvShowGenres: each_show.genres,
+//             tvShowLanguage: each_show.language,
+//             tvShowRating: each_show.rating.average || '',
+//             tvShowPremiered: each_show.premiered
+//           }
+//
+//           return showAuto.create(objToCreate);
+//
+//         })
+//
+//         Promise.all(showPromise)
+//         .then((done)=>{
+//           // res.send({done})
+//           console.log("DONE FETCHING AND STORING!");
+//           if(page===145){
+//               console.log("Fetched All shows");
+//               console.log("page: ", page);
+//               res.json({succes: true, done: "ALL"})
+//           }else {
+//               page++;
+//               console.log("page: ", page);
+//               setTimeout(()=>{
+//                 fetchAndStoreShow();
+//               },1500)
+//           }
+//           // if(page<2){
+//           //   page++;
+//           //   console.log("page: ", page);
+//           //   fetchAndStoreShow()
+//           // }else {
+//           //   console.log("Fetched All shows");
+//           //   console.log("page: ", page);
+//           //   res.json({succes: true, done: "ALL"})
+//           // }
+//         })
+//
+//     })
+//     .catch(function (err) {
+//         // API call failed...
+//     });
+//
+//   }
+//
+//
+// })
 
 
 router.get('/tvseries',ensureAuthenticated, function(req, res){
@@ -374,6 +429,7 @@ function proceedToAdd(show){
 
                               req.body.show_ref = show._id;
                               req.body.user_id = req.user._id;
+															req.body.tvShowId = req.body.tvid;
                               ShowNotification.create(req.body).then((notification)=>{
                                 console.log("notification created");
                               })
