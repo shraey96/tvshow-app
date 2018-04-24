@@ -263,11 +263,7 @@ router.put('/episodeWatched',ensureAuthenticated, function(req, res){
 
         .then((done) => {
             if(done){
-              console.log(done);
-                // res.send({
-                //     succes: true,
-                //     msg: "Episode Added"
-                  // });
+
                   TvShow.findOne({user_id: req.user._id})
                   .populate('tvShowInfo.show_ref')
                   .then((user)=>{
@@ -290,7 +286,7 @@ router.put('/episodeWatched',ensureAuthenticated, function(req, res){
         TvShow.update(
             { user_id: req.user._id ,
             "tvShowInfo.tvShowId":req.body.tvid},
-            { $pull: { "tvShowInfo.$.episodeWatched" : { $each: req.body.episodeid  } }},
+            { $pullAll: { "tvShowInfo.$.episodeWatched" : req.body.episodeid  }},
         )
             .then((done) => {
                 if(done){

@@ -202,8 +202,6 @@ return function(dispatch){
 
 export function followEpisode(data){
 
-  data.request = "add";
-
 
   return function(dispatch){
 

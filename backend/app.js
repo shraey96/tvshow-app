@@ -70,8 +70,8 @@ app.get('*', function(req, res, next){
 	next();
 });
 
-app.get('/', function(req, res){
-res.send({user: req.user})
+app.get('/api/v1', function(req, res){
+res.send({msg: "Welcome to tvshowapp API"})
 });
 
 
