@@ -6,6 +6,7 @@ import registerServiceWorker from './registerServiceWorker';
 import WebFontLoader from 'webfontloader';
 import {Provider} from 'react-redux';
 import {BrowserRouter} from 'react-router-dom';
+import {HashRouter} from 'react-router-dom';
 
 import store from './store';
 
@@ -14,14 +15,16 @@ WebFontLoader.load({
     families: ['Roboto:300,400,500,700', 'Material Icons'],
   },
 });
-
-
+    // <BrowserRouter>
+  // </BrowserRouter>
 ReactDOM.render(
 
 <Provider store={store}>
-  <BrowserRouter>
+
+    <HashRouter>
     <App />
-  </BrowserRouter>
+
+  </HashRouter>
 </Provider>
 
 , document.getElementById('root'));

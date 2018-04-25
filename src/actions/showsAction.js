@@ -117,7 +117,10 @@ export function fetchShowsCustom(query){
   console.log("##### FETCH SHOWS CUSTOM");
   return function(dispatch){
 
-return fetch(`${urlToUse}/users/shows?page=${query.page}&rating=${query.rating}&genres=${query.genre}&status=${query.status}&language=${query.language}`)
+return fetch(`${urlToUse}/users/shows?page=${query.page}&rating=${query.rating}&genres=${query.genre}&status=${query.status}&language=${query.language}`, {
+  method: 'get',
+  credentials: 'include',
+})
 // return fetch(`${urlToUse}/users/shows?page=${query.page}&rating=${query.rating}&genres=${query.genre}&status=${query.status}  `)
     .then(res=>res.json())
     .then(show=>
