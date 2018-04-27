@@ -158,12 +158,12 @@ col1 = (
 col2 = (
     <Col xs={12} md={6} sm={4}>
       <div className="about_show">
-      <p className="about_show_name">Name: {currentShow.name} </p>
+      <p className="about_show_name">{currentShow.name} </p>
       <p className="about_show_lang">({currentShow.language})</p>
       <p className="about_show_lang">Run time: {currentShow.runtime} minutes</p>
       <a href={currentShow.officialSite}>officialSite</a>
       <p className="about_show_lang"><img align="middle" src="http://www.iconsplace.com/download/orange-rating-star-512.png" height="25px" width="25px"></img>{currentShow.rating.average}</p>
-      <p className="about_show_summary">Summary: {striptags(this.props.currentShow.summary)} </p>
+      <p className="about_show_summary">{striptags(this.props.currentShow.summary)} </p>
 
       </div>
     </Col>
@@ -200,8 +200,7 @@ info3 = (
 
 <MuiThemeProvider>
       <div className="App">
-
-      <h3 className="about_show_header">{this.props.match.params.tvshow}</h3>
+<br />
         <Grid fluid>
           <Row>
 {col1}

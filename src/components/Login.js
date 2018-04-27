@@ -35,6 +35,7 @@ constructor(){
  responseGoogle = (response) => {
     console.log(response);
     console.log(response.getBasicProfile());
+    
   }
 
   Login = (e) =>{

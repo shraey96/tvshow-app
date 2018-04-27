@@ -20,9 +20,9 @@ if(props.user.isUserLoggedIn === true){
   if(props.user.userFollows.length>0){
   usershows = props.user.userFollows.map((shows)=>{
     console.log(shows);
-    image = <Link to={`/shows/${shows.show_ref.tvShowName}/${shows.tvShowId}`}><img src={shows.show_ref.tvShowImageUrl}/></Link>
+    image = <Link to={`/shows/${shows.show_ref.tvShowName}/${shows.tvShowId}`}><img className="show_img" src={shows.show_ref.tvShowImageUrl}/></Link>
     if(shows.show_ref.tvShowImageUrl === "" || !shows.show_ref.tvShowImageUrl){
-       image = <Link to={`/shows/${shows.show_ref.tvShowName}/${shows.tvShowId}`}><img src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/vintage-tv-poster-irina-march.jpg" height="295px" width="210px"/></Link>
+       image = <Link to={`/shows/${shows.show_ref.tvShowName}/${shows.tvShowId}`}><img className="show_img" src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/vintage-tv-poster-irina-march.jpg" height="295px" width="210px"/></Link>
     }
     percentageWatched = Percentage(shows.episodeWatched.length, shows.show_ref.totalEpisodeCount)
     return(

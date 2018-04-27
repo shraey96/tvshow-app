@@ -17,8 +17,8 @@ html{
 
 body::after {
   content: "";
-  /* background: url(https://www.scienceabc.com/wp-content/uploads/2017/09/Child-watching-tv-feaured-image.jpg); */
-  background: url(http://www.hd1080pwallpaper.in/wp-content/uploads/2016/04/Old-school-TV-stands.jpg);
+  background: url(https://www.scienceabc.com/wp-content/uploads/2017/09/Child-watching-tv-feaured-image.jpg);
+  /* background: url(http://www.hd1080pwallpaper.in/wp-content/uploads/2016/04/Old-school-TV-stands.jpg); */
   opacity: 0.3;
   top: 0;
   left: 0;
