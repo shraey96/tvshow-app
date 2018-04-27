@@ -123,6 +123,7 @@ handleSubmit = (e) =>{
         <form onSubmit={this.handleSubmit}>
         <Row>
         <Col xs={12} md={3}>
+        <p className="show_dropdown_header">Show Status</p>
         <DropDownMenu value={this.state.optionsValue.status} onChange={this.handleStatusChange}>
         <MenuItem value={1} primaryText="Show Status" />
         <MenuItem value={2} primaryText="Running" />
@@ -133,6 +134,7 @@ handleSubmit = (e) =>{
         </Col>
 
         <Col xs={12} md={3}>
+          <p className="show_dropdown_header">Show Genre</p>
           <DropDownMenu value={this.state.optionsValue.genre} onChange={this.handleGenreChange}>
           <MenuItem value={1} primaryText="Show Genre" />
           <MenuItem value={2} primaryText="Action" />
@@ -166,6 +168,7 @@ handleSubmit = (e) =>{
         </Col>
 
         <Col xs={12} md={3}>
+          <p className="show_dropdown_header">Show Rating</p>
           <DropDownMenu value={this.state.optionsValue.rating} onChange={this.handleRatingChange}>
           <MenuItem value={1} primaryText="Show Rating" />
           <MenuItem value={2} primaryText="9+" />
@@ -181,6 +184,7 @@ handleSubmit = (e) =>{
         </Col>
 
         <Col xs={12} md={3}>
+          <p className="show_dropdown_header">Show Language</p>
           <DropDownMenu value={this.state.optionsValue.language} onChange={this.handleLanguageChange}>
             <MenuItem value={1} primaryText="Show Language" />
             <MenuItem value={2} primaryText="Arabic" />

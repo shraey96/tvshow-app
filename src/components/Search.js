@@ -9,6 +9,7 @@ import Snackbar from 'material-ui/Snackbar';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {Animated} from "react-animated-css";
+import RaisedButton from 'material-ui/RaisedButton';
 
 class Search extends Component {
   constructor(){
@@ -21,6 +22,7 @@ class Search extends Component {
     }
   }
 componentWillMount(){
+  console.log(this.props);
 console.log("Mounted AboutShow");
 let searchQuery = this.props.fetchSearchQueryInfo((this.props.match.params.query));
 console.log(searchQuery);
@@ -115,46 +117,36 @@ showsHeader = (<h2>Shows</h2>);
       if(this.props.user.userFollows.length>0){
           for(var i = 0; i<this.props.user.userFollows.length; i++){
               if(show.show.id === parseInt(this.props.user.userFollows[i].tvShowId)){
-                button = (<button onClick={()=>{this.unFollow(show)}}>UnFollow</button>);
+                button = (<RaisedButton label="UnFollow" secondary={true}  onClick={()=>{this.unFollow(show)}}/>);
                 break;
               }else {
-                button = (<button onClick={()=>{this.Follow(show)}}>Follow</button>);
+                button = (<RaisedButton label="Follow" primary={true}  onClick={()=>{this.Follow(show)}}/>);
               }
           }
         }else {
-          button = (<button onClick={()=>{this.Follow(show)}}>Follow</button>);
+          button = (<RaisedButton label="Follow" primary={true}  onClick={()=>{this.Follow(show)}}/>);
         }
 
     }else {
       console.log("NO");
-      button = (<button onClick={()=>{this.Follow(show)}}>Follow</button>);
+      button = (<RaisedButton label="Follow" primary={true}  onClick={()=>{this.Follow(show)}}/>);
     }
 
     let image;
     if(show.show.image){
-      image = <Link to={`/shows/${show.show.name}/${show.show.id}`}><img src={show.show.image.medium}/></Link>
+      image = <Link to={`/shows/${show.show.name}/${show.show.id}`}><img className="show_img" src={show.show.image.medium}/></Link>
     }else {
-      image = <Link to={`/shows/${show.show.name}/${show.show.id}`}><img src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/vintage-tv-poster-irina-march.jpg" height="295px" width="210px"/></Link>
+      image = <Link to={`/shows/${show.show.name}/${show.show.id}`}><img className="show_img" src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/vintage-tv-poster-irina-march.jpg" height="295px" width="210px"/></Link>
     }
     return(
 
-      <Col xs={12} md={3} key={show.show.id}>
+      <Col xs={12} md={3} sm={4} key={show.show.id}>
 
 <Animated animationIn="bounceInLeft" animationOut="fadeOut" isVisible={true}>
-      <div>
+      <div className="tvpopular">
         {image} <br/>
-        <u><Link to={`/shows/${show.show.name}/${show.show.id}`}>Name: {show.show.name}</Link></u>
-        <p>Language: {show.show.language}</p>
-        <p>Rating: {show.show.rating.average}</p>
-        <p>Time: {show.show.schedule.time}</p>
-        <p>Days:
-         {show.show.schedule.days.map((day)=>{
-          return ( day + ',')
-        })}
-        <br />
+      <p className="show_name"><Link className="tvpopularLink" to={`/shows/${show.show.name}/${show.show.id}`}>{show.show.name}</Link></p>
         {button}
-        </p>
-
       </div>
 </Animated>
 
@@ -174,13 +166,13 @@ if(this.props.searchPeople.length>0){
     let image;
     let country;
     if(person.person.image){
-      image = <Link to={`/people/${person.person.name}/${person.person.id}`}><img src={person.person.image.medium}/></Link>
+      image = <Link to={`/people/${person.person.name}/${person.person.id}`}><img className="show_img" src={person.person.image.medium}/></Link>
     }else {
-      image = <Link to={`/people/${person.person.name}/${person.person.id}`}><img src="https://image.freepik.com/free-icon/user-image-with-black-background_318-34564.jpg" height="300px;" width="300px;"/></Link>
+      image = <Link to={`/people/${person.person.name}/${person.person.id}`}><img className="show_img" src="https://image.freepik.com/free-icon/user-image-with-black-background_318-34564.jpg" height="300px;" width="300px;"/></Link>
     }
 
     if(person.person.country){
-      country = <p>Country: {person.person.country.name}</p>
+      country = <p style={{"color":"white"}}>{person.person.country.name}</p>
     }else {
       country = '';
     }
@@ -190,7 +182,7 @@ if(this.props.searchPeople.length>0){
 <Animated animationIn="bounceInLeft" animationOut="fadeOut" isVisible={true}>
       <div>
         {image}<br/>
-      <b><Link to={`/people/${person.person.name}/${person.person.id}`}>Name: {person.person.name}</Link></b><br />
+      <b className="show_name"><Link className="tvpopularLink" to={`/people/${person.person.name}/${person.person.id}`}>{person.person.name}</Link></b><br />
 
         {country}
       </div>

@@ -70,6 +70,8 @@ constructor(){
       return
     }
 
+
+
     let data = {
       username : this.state.username,
       email : this.state.email,
@@ -89,6 +91,13 @@ constructor(){
     //         console.log(country);
     //       })
 
+    let emailValidation = this.ValidateEmail(this.state.email);
+
+    if(emailValidation === false){
+      this.setState({open: true, msg: `Invalid Email!`});
+      return
+    }
+
     let registerUser = this.props.RegisterUser(data);
     registerUser.then((register)=>{
       if(register.success === true){
@@ -102,6 +111,15 @@ constructor(){
       }
     })
   }
+
+  ValidateEmail = (mail) =>{
+
+ if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
+  {
+    return (true)
+  }
+    return (false)
+}
 
   handleUserNameChange = (e) =>{
     this.setState({ username : e.target.value});
@@ -132,14 +150,12 @@ constructor(){
 <MuiThemeProvider>
 <div className="App FullHeight">
 
-<u><h3>Register Component</h3></u>
-
 <br /><br />
 
         <Grid fluid>
           <Row>
 <Col xs={12} md={8} sm={4}>
-<h3>Register On Binged!</h3>
+<h3 className="register_header">Register On Binged!</h3>
 
 <form onSubmit={(e)=>this.Login(e)}>
 
@@ -174,7 +190,7 @@ constructor(){
 
 <Col xs={12} md={4} sm={4}>
 <div>
-<h3>Register With Social Media!</h3>
+<h3 className="register_header">Register With Social Media!</h3>
 <br />
 <br />
 <FacebookLogin
@@ -193,13 +209,15 @@ constructor(){
  onFailure={this.responseGoogle}
 />
 
+<div style={{"color":"white"}}>
 <ul>
-  <h3>Keep track of all your favourite shows!</h3>
+  <h3 className="register_info">Keep track of all your favourite shows!</h3>
 <li> Follow the shows you like!</li>
-<li> Get to know about show/episodes/cast/people!</li>
+<li> Get to know about shows/episodes/cast/people!</li>
 <li> Get live-email notifications for the next episode!</li>
 <li> Stay up to date on future episode dates!</li>
 </ul>
+</div>
 
 </div>
 </Col>

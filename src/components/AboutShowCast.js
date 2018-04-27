@@ -50,11 +50,11 @@ cast = this.state.cast.map((cast)=>{
 let image;
 
 if(cast.character.image){
-  image = <Link to={`/people/${cast.person.name}/${cast.person.id}`}><img src={cast.character.image.medium}/></Link>
+  image = <Link to={`/people/${cast.person.name}/${cast.person.id}`}><img src={cast.character.image.medium} className="show_img"/></Link>
 }else if(cast.person.image){
-  image = <Link to={`/people/${cast.person.name}/${cast.person.id}`}><img src={cast.person.image.medium}/></Link>;
+  image = <Link to={`/people/${cast.person.name}/${cast.person.id}`}><img src={cast.person.image.medium} className="show_img"/></Link>;
 }else{
-  image = <Link to={`/people/${cast.person.name}/${cast.person.id}`}><img src="https://image.freepik.com/free-icon/user-image-with-black-background_318-34564.jpg" height="300px;" width="300px;"/></Link>;
+  image = <Link to={`/people/${cast.person.name}/${cast.person.id}`}><img src="https://image.freepik.com/free-icon/user-image-with-black-background_318-34564.jpg" height="300px;" width="300px;" className="show_img"/></Link>;
 }
 return(
   <Col xs={12} md={3} sm={4} key={cast.character.id}>
@@ -62,8 +62,9 @@ return(
 <Animated animationIn="bounceInLeft" animationOut="fadeOut" isVisible={true}>
     <div className="tvpopular">
     {image}
-    <h4><b><Link to={`/people/${cast.person.name}/${cast.person.id}`}>{cast.person.name}</Link></b></h4> as
-    <h5>{cast.character.name}</h5>
+    <h4 className="show_name"><b><Link className="tvpopularLink" to={`/people/${cast.person.name}/${cast.person.id}`}>{cast.person.name}</Link></b></h4>
+      <p style={{"color":"white"}}>as</p>
+    <h5 style={{"color":"white"}}>{cast.character.name}</h5>
     </div>
 </Animated>
 
@@ -80,7 +81,7 @@ return(
 <MuiThemeProvider>
       <div className="App">
 
-      <h3>{this.props.match.params.tvshow} Cast</h3>
+      <h3 className="about_show_header">{this.props.match.params.tvshow} Cast</h3>
       {loader}
         <Grid fluid>
           <Row>

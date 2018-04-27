@@ -3,7 +3,7 @@ import urlToUse from '../config';
 
 export function fetchShows(query){
   return function(dispatch){
-  return    fetch(`http://api.tvmaze.com/schedule`)
+  return    fetch(`https://api.tvmaze.com/schedule`)
       .then(res=>res.json())
       .then(shows=>
 {
@@ -33,7 +33,7 @@ export function fetchShows(query){
 
 export function fetchShowByID(showid){
   return function(dispatch){
-      fetch(`http://api.tvmaze.com/shows/${showid}?embed=cast`)
+      fetch(`https://api.tvmaze.com/shows/${showid}?embed=cast`)
       .then(res=>res.json())
       .then(show=>
 {
@@ -51,7 +51,7 @@ export function fetchShowByID(showid){
 export function fetchEpisodeByNumber(showID, season, episode){
   return function(dispatch){
 
-return    fetch(`http://api.tvmaze.com/shows/${showID}/episodebynumber?season=${season}&number=${episode}`)
+return    fetch(`https://api.tvmaze.com/shows/${showID}/episodebynumber?season=${season}&number=${episode}`)
     .then(res=>res.json())
     .then(show=>
 {
@@ -68,7 +68,7 @@ return    fetch(`http://api.tvmaze.com/shows/${showID}/episodebynumber?season=${
 
 
 export function fetchSearchQueryInfo(query){
-let urls = [`http://api.tvmaze.com/search/shows?q=${query}`, `http://api.tvmaze.com/search/people?q=${query}`];
+let urls = [`https://api.tvmaze.com/search/shows?q=${query}`, `https://api.tvmaze.com/search/people?q=${query}`];
 
   return function(dispatch){
 

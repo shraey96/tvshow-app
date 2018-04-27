@@ -88,14 +88,13 @@ constructor(){
 <MuiThemeProvider>
 <div className="App FullHeight">
 
-<u><h3>Login Component</h3></u>
 
 <br /><br />
 
         <Grid fluid>
           <Row>
 <Col xs={12} md={8} sm={4}>
-<h3>Login To Binged!</h3>
+<h3 className="login_header">Login To Binged!</h3>
 
 <form onSubmit={(e)=>this.Login(e)}>
 
@@ -122,7 +121,7 @@ constructor(){
 <Col xs={12} md={4} sm={4}>
 
 <div>
-<h3>Login With Social Media!</h3>
+<h3 className="login_header">Login With Social Media!</h3>
 <br />
 <br />
 <FacebookLogin

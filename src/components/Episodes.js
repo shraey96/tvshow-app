@@ -25,32 +25,50 @@ class Episodes extends Component {
   constructor(){
     super();
     this.state = {
+      loader: false,
       value : '',
       msg : '',
       open: false,
+      episodes: []
     }
 
   }
 
 componentWillMount(){
-    console.log("Mounted");
+    console.log("Mounted episodes page");
+    console.log(this.props.match.params);
+    this.fetchEpisodesByID(this.props.shows.currentShow.id || this.props.match.params.id)
   }
 
+  fetchEpisodesByID(showid){
+    this.setState({loader: true})
+
+    fetch(`https://api.tvmaze.com/shows/${this.props.match.params.id}/episodes`)
+    .then(res=>res.json())
+    .then(episode=>{
+
+      this.setState({episodes: episode.reverse(), loader: false});
+
+      })
+  }
+
+
 handleWatch = (episode_num, showid, type) =>{
+
   console.log("episode watch: ", episode_num, type);
   if(this.props.user.isUserLoggedIn === true){
     let episodes = [];
     if(type === 0 ){
       episodes.push(episode_num);
     }else {
-      for(let i=0; i<this.props.episodes.length; i++){
-          console.log(this.props.episodes[i].id );
-        if(this.props.episodes[i].id === episode_num){
+      for(let i=0; i<this.state.episodes.length; i++){
+          console.log(this.state.episodes[i].id );
+        if(this.state.episodes[i].id === episode_num){
           console.log("done");
           break;
         }else {
           console.log("push");
-          episodes.push(this.props.episodes[i].id);
+          episodes.push(this.state.episodes[i].id);
         }
       }
       episodes.push(episode_num)
@@ -60,9 +78,9 @@ handleWatch = (episode_num, showid, type) =>{
   let data = {
     tvid: showid,
     episodeid: episodes,
-    imdb: this.props.shows.currentShow.externals.imdb,
-    tvname: this.props.shows.currentShow.name,
-    tvimg: this.props.shows.currentShow.image.medium,
+    // imdb: this.props.shows.currentShow.externals.imdb,
+    // tvname: this.props.shows.currentShow.name,
+    // tvimg: this.props.shows.currentShow.image.medium,
     request: 'add'
   };
 
@@ -87,14 +105,14 @@ handleUnWatch = (episode_num, showid, type) =>{
   if(type === 0){
     episodes.push(episode_num);
   }else {
-    for(let i=0; i<this.props.episodes.length; i++){
-        console.log(this.props.episodes[i].id );
-      if(this.props.episodes[i].id === episode_num){
+    for(let i=0; i<this.state.episodes.length; i++){
+        console.log(this.state.episodes[i].id );
+      if(this.state.episodes[i].id === episode_num){
         console.log("done");
         break;
       }else {
         console.log("push");
-        episodes.push(this.props.episodes[i].id);
+        episodes.push(this.state.episodes[i].id);
       }
     }
     episodes.push(episode_num)
@@ -127,16 +145,15 @@ this.setState({
   render() {
 
 
-
     let episodes='';
-    let showid = (this.props.showid);
+    let showid = (this.props.shows.currentShow.id || this.props.match.params.id);
     let presentShowArray = [];
     let button;
     let buttonAll;
 
 if(this.props.user.isUserLoggedIn === true){
    presentShowArray = this.props.user.userFollows.filter((follow)=>{
-    return  parseInt(follow.tvShowId) === parseInt(this.props.showid)
+    return  parseInt(follow.tvShowId) === parseInt(this.props.shows.currentShow.id || this.props.match.params.id)
   })
   console.log(presentShowArray);
   if(!presentShowArray[0]){
@@ -149,15 +166,15 @@ if(this.props.user.isUserLoggedIn === true){
 }
 
 let loader;
-if(this.props.loader === true){
+if(this.state.loader === true){
   loader = <img src="http://backgroundcheckall.com/wp-content/uploads/2017/12/ajax-loading-gif-transparent-background-5.gif" height="50px" width="50px"/>
 }else {
   loader = <h3>Episodes</h3>;
 }
 
-  console.log(this.props.episodes);
+  console.log(this.state.episodes);
   let header;
-    if(this.props.episodes.length>0){
+    if(this.state.episodes.length>0){
       let count;
       let tag;
       // header = (<tr>
@@ -169,25 +186,25 @@ if(this.props.loader === true){
       //     <th>Watched?</th>
       //     </tr>);
 
-      header = (
-        <TableHeader displaySelectAll={false}>
-        <TableRow>
-        <TableHeaderColumn></TableHeaderColumn>
-        <TableHeaderColumn>Episode Name</TableHeaderColumn>
-        <TableHeaderColumn>Episode Airdate</TableHeaderColumn>
-        <TableHeaderColumn>Watched?</TableHeaderColumn>
-        </TableRow>
-        </TableHeader>
-        )
+      // header = (
+      //   <TableHeader displaySelectAll={false}>
+      //   <TableRow>
+      //   <TableHeaderColumn></TableHeaderColumn>
+      //   <TableHeaderColumn>Episode Name</TableHeaderColumn>
+      //   <TableHeaderColumn>Episode Airdate</TableHeaderColumn>
+      //   <TableHeaderColumn>Watched?</TableHeaderColumn>
+      //   </TableRow>
+      //   </TableHeader>
+      //   )
 
-      if(this.props.episodes[0]){
+      if(this.state.episodes[0]){
         console.log("present");
         count=0;
       }
 
       let newEpisodeArray = []
 
-      episodes = this.props.episodes.map((episode, i)=>{
+      episodes = this.state.episodes.map((episode, i)=>{
 
         // if(count === episode.season){
         //   newEpisodeArray.push(episode.id);
@@ -219,53 +236,82 @@ if(this.props.loader === true){
           tag = (<h3></h3>)
         }else {
           count=episode.season
-          tag= (<div><h3>Season: {count}</h3></div>)
+          tag= (<div><h1>Season: {count}</h1></div>)
         }
 
 
         return(
 
-       <TableRow key={episode.id}>
-       <TableRowColumn>{tag}</TableRowColumn>
-       <TableRowColumn>
-         <Link className="tvpopularLink" to={`/shows/${this.props.showName}/${this.props.showid}/${episode.season}/episode/${episode.number}`}>
-         {episode.name}
-         </Link>  (S{episode.season}E{episode.number})
+       // <TableRow key={episode.id}>
+       // <TableRowColumn>{tag}</TableRowColumn>
+       // <TableRowColumn>
+       //   <Link className="tvpopularLink" to={`/shows/${this.props.showName}/${this.props.showid}/${episode.season}/episode/${episode.number}`}>
+       //   {episode.name}
+       //   </Link>  (S{episode.season}E{episode.number})
+       //
+       // </TableRowColumn>
+       // <TableRowColumn>{episode.airdate}</TableRowColumn>
+       // <TableRowColumn>{button} {buttonAll}</TableRowColumn>
+       // </TableRow>
 
-       </TableRowColumn>
-       <TableRowColumn>{episode.airdate}</TableRowColumn>
-       <TableRowColumn>{button} {buttonAll}</TableRowColumn>
-       </TableRow>
+       <div key={episode.id} style={{"border": "1px solid black"}}>
+       <h3>{tag}</h3>
+       <Link className="tvpopularLink" to={`/shows/${this.props.match.params.tvshow}/${this.props.match.params.id}/${episode.season}/episode/${episode.number}`}>
+           {episode.name}
+       </Link><br />
+       (S{episode.season}E{episode.number})
+       <p>{episode.airdate}</p>
+       {button} {buttonAll}
+       <br />
+       </div>
 
         )
       })
     }
     else {
       episodes = "";
-      header= ""
+      header= "";
     }
 
 
 
 
-    return (
-      <div>
-        {loader}
-      <Table>
-        {header}
-       <TableBody displayRowCheckbox={false}>
-      {episodes}
-      </TableBody>
-      </Table>
 
-      <Snackbar
+// <Table>
+//   {header}
+//  <TableBody displayRowCheckbox={false}>
+// {episodes}
+// </TableBody>
+// </Table>
+
+
+    return (
+
+      <MuiThemeProvider>
+      <div className="App">
+        {loader}
+        <Grid fluid>
+          <Row>
+            <Col xs={12} md={12}>
+                {episodes}
+            </Col>
+          </Row>
+        </Grid>
+
+
+
+
+
+                <Snackbar
                 open={this.state.open}
                 message={this.state.msg}
                 autoHideDuration={2000}
                 onRequestClose={this.handleRequestClose}
-        />
+                    />
 
       </div>
+
+      </MuiThemeProvider>
 
     );
   }

@@ -16,6 +16,7 @@ import MoreShows from './MoreShows';
 import AboutShowCast from './AboutShowCast';
 import AboutShowCrew from './AboutShowCrew';
 import People from './People';
+import Episodes from './Episodes';
 
 import '../App.css';
 
@@ -26,7 +27,7 @@ import '../App.css';
 
 class Main extends Component {
   render() {
-    // <Route exact path="/shows" component={Shows}/>
+
     return (
       <div className="App">
 
@@ -39,6 +40,7 @@ class Main extends Component {
 <Route exact path="/register" component={Register}/>
 <Route exact path="/search/:query" component={Search}/>
 <Route exact path="/shows/:tvshow/:id" component={AboutShow}/>
+<Route exact path="/shows/episodes/:tvshow/:id" component={Episodes}/>
 <Route exact path="/shows/cast/:tvshow/:id" component={AboutShowCast}/>
 <Route exact path="/shows/crew/:tvshow/:id" component={AboutShowCrew}/>
 <Route exact path="/shows/:tvshowname/:tvshowid/:season/episode/:enum" component={AboutShowEpisode}/>

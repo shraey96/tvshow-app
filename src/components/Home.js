@@ -135,9 +135,9 @@ if(this.props.user.isUserLoggedIn === true){
 
    let image;
   if(tvshow.show.image){
-     image = <Link to={`/shows/${tvshow.show.name}/${tvshow.show.id}`}><img src={tvshow.show.image.medium}/></Link>
+     image = <Link to={`/shows/${tvshow.show.name}/${tvshow.show.id}`}><img src={tvshow.show.image.medium} className="show_img"/></Link>
 }else {
-     image = <Link to={`/shows/${tvshow.show.name}/${tvshow.show.id}`}><img src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/vintage-tv-poster-irina-march.jpg" height="295px" width="210px"/></Link>
+     image = <Link to={`/shows/${tvshow.show.name}/${tvshow.show.id}`}><img src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/vintage-tv-poster-irina-march.jpg" height="295px" width="210px" className="show_img"/></Link>
 }
     return (
       <Col xs={12} md={3} sm={4} key={tvshow.id}>
@@ -146,8 +146,8 @@ if(this.props.user.isUserLoggedIn === true){
         <div className="tvpopular">
         {image}
         <br/>
-        <p><Link className="tvpopularLink" to={`/shows/${tvshow.show.name}/${tvshow.show.id}/${tvshow.season}/episode/${tvshow.number}`}><b>{tvshow.name}</b></Link> </p>
-        <p><Link className="tvpopularLink" to={`/shows/${tvshow.show.name}/${tvshow.show.id}`}>{tvshow.show.name}</Link> </p>
+        <p className="show_name"><Link className="tvpopularLink"  to={`/shows/${tvshow.show.name}/${tvshow.show.id}`}>{tvshow.show.name}</Link> </p>
+        <p className="episode_name"><Link className="tvpopularLink" to={`/shows/${tvshow.show.name}/${tvshow.show.id}/${tvshow.season}/episode/${tvshow.number}`}><b>{tvshow.name}</b></Link> </p>
         <p className="tvpopularLink"> <u>S{tvshow.season}E{tvshow.number}</u> </p>
         {button}
 
@@ -172,7 +172,7 @@ if(this.props.user.isUserLoggedIn === true){
 <MuiThemeProvider>
       <div className="App">
 
-    <u><h3 className="headingPopular">Popular shows airing tonight!</h3></u>
+    <h3 className="headingPopular">Popular shows airing tonight!</h3>
 
 {loader}
 

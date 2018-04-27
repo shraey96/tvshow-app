@@ -8,6 +8,7 @@ import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
+import AutoComplete from 'material-ui/AutoComplete';
 
 import {Link} from 'react-router-dom';
 import {withRouter} from 'react-router-dom';
@@ -24,7 +25,8 @@ class Simple extends Component {
     this.state = {
       open: false,
       value : '',
-      opensnack: false
+      opensnack: false,
+      dataSource: []
         };
 
 
@@ -35,8 +37,38 @@ class Simple extends Component {
     this.props.history.push(`/search/${this.state.value}`);
   }
 
-  handleChange = (e) =>{
-    this.setState({value: e.target.value})
+  componentWillReceiveProps(nextProps){
+    console.log("nextProps NAVBAR $##############", nextProps);
+  }
+
+  handleChange = (value) =>{
+    // console.log(value);
+  //   value  = value.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+  //     return letter.toUpperCase();
+  // });
+  // value = value.toString();
+  // console.log(value);
+    this.setState({value: value}, ()=>{
+      // `http://api.tvmaze.com/search/shows?q=${query}`
+      let showArray = []
+      fetch(`http://api.tvmaze.com/search/shows?q=${this.state.value}`)
+          .then(res=>res.json())
+          .then(show=>
+            {
+              show.forEach((show)=>{
+                let objToPush = {
+                  id: show.show.id,
+                  name: show.show.name
+                }
+                // showArray.push(show.show.name);
+                showArray.push(objToPush);
+              })
+              this.setState({dataSource: showArray}, ()=>{
+                console.log(this.state.dataSource);
+              })
+
+            })
+      })
   }
 
   handleToggle = () => this.setState({open: !this.state.open});
@@ -54,6 +86,13 @@ class Simple extends Component {
         });
       }
     })
+  }
+
+  onNewRequest = (selectedValue) => {
+    if(selectedValue.name || selectedValue.id){
+    this.props.history.push(`/shows/${selectedValue.name}/${selectedValue.id}`);
+    }
+    this.setState({dataSource: []})
   }
 
   handleRequestClose = () => {
@@ -157,11 +196,20 @@ user = userNotLoggedIn;
 }else {
 user = userLoggedIn;
 }
+// <TextField hintText="Search for a show or person" name="search" onChange={this.handleChange}/>
 
     const rightButtons = (
         <div>
           <form onSubmit={this.handleSubmit}>
-            <TextField hintText="Search for a show or person" name="search" onChange={this.handleChange}/>
+
+              <AutoComplete
+                  hintText="Search for a show or person.."
+                  dataSource={this.state.dataSource}
+                  onUpdateInput={this.handleChange}
+                  onNewRequest={ this.onNewRequest}
+                  dataSourceConfig={ {text: 'name', value: 'id'} }
+                  filter={AutoComplete.caseInsensitiveFilter}
+              />
           </form>
         </div>
       );

@@ -21,10 +21,10 @@ ReactDOM.render(
 
 <Provider store={store}>
 
-    <HashRouter>
+  <HashRouter>
     <App />
-
   </HashRouter>
+
 </Provider>
 
 , document.getElementById('root'));

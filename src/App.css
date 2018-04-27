@@ -1,14 +1,36 @@
+@import url(https://fonts.googleapis.com/css?family=Chicle);
+@import url(https://fonts.googleapis.com/css?family=Gothic+A1);
+
 .App {
   text-align: center;
+  font-family: 'Gothic A1', sans-serif!important;
 }
 
 html{
   /* background: linear-gradient(to right, #000000 , #53346d); */
   /* background: linear-gradient(to right, #141e30 , #243b55); */
-  /* background: linear-gradient(to right, #000000, #434343); */
-  background: linear-gradient(to right, #114357, #F29492);
+  background: linear-gradient(to right, #000000, #434343);
+  /* background: linear-gradient(to right, #114357, #F29492); */
   /* background: linear-gradient(to right, #232526, #232526); */
+  font-family: 'Gothic A1', sans-serif;
 }
+
+body::after {
+  content: "";
+  /* background: url(https://www.scienceabc.com/wp-content/uploads/2017/09/Child-watching-tv-feaured-image.jpg); */
+  background: url(http://www.hd1080pwallpaper.in/wp-content/uploads/2016/04/Old-school-TV-stands.jpg);
+  opacity: 0.3;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+  background-repeat: no-repeat;
+  /* background-size: contain; */
+   background-size:cover;
+}
+
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
@@ -46,6 +68,114 @@ html{
 
 img {
   background: transparent url('https://loading.io/spinners/coolors/lg.palette-rotating-ring-loader.gif') center no-repeat;
+  /* background: transparent url('http://digitalsynopsis.com/wp-content/uploads/2016/06/loading-animations-preloader-gifs-ui-ux-effects-28.gif') center no-repeat;  */
+  /* background: transparent url('http://digitalsynopsis.com/wp-content/uploads/2016/06/loading-animations-preloader-gifs-ui-ux-effects-28.gif') center no-repeat;  */
   margin: 5px 5px 5px 5px;
   /* border: 2px solid black; */
+}
+
+.tvpopular{
+  height: 450px;
+}
+
+.tvpopularLink{
+  color: white;
+}
+
+.show_dropdown_header{
+  color: white;
+  font-size: 20px;
+}
+
+a{
+  text-decoration: none;
+}
+
+.episode_name{
+  font-size: 12px;
+}
+
+.show_name{
+  font-size: 22px;
+}
+
+.show_img {
+  opacity: 1;
+  transition: .5s ease;
+  backface-visibility: hidden;
+}
+
+.show_img:hover{
+  opacity: 0.5;
+}
+
+.show_img:hover .middle {
+  opacity: 1;
+}
+
+div.title {
+    display: none;
+    position: relative;
+    text-align: center;
+    top: -170px;
+}
+
+div.title:hover, a.wrapper:hover + div {
+    display: block!important;
+}
+
+.form-field label{
+  color: white!important;
+}
+
+.form-field input[type="text"]{
+  color: white!important;
+}
+
+
+.about_show_name{
+  color: white;
+  font-size: 25px;
+}
+
+.about_show_header{
+  color: white;
+}
+
+.about_show_lang{
+  color: white;
+  font-size: 15px;
+}
+
+.about_show_summary{
+  font-family: 'Gothic A1', sans-serif;
+  color: white;
+  font-size: 20px;
+}
+
+.about_show_info a{
+  color: white;
+  font-size: 25px;
+}
+
+.register_header{
+  color: white;
+  font-size: 30px;
+}
+
+.register_info{
+  color: white;
+}
+
+
+.login_header{
+  color: white;
+  font-size: 30px;
+}
+
+
+.headingPopular{
+color: white;
+font-size: 30px;
+margin-top: 15px;
 }

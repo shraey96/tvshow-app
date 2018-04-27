@@ -3,7 +3,7 @@ import '../App.css';
 
 import {connect} from 'react-redux';
 import {fetchShowByID} from '../actions/showsAction';
-
+import {withRouter} from 'react-router-dom';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import {Link} from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -13,34 +13,44 @@ import Snackbar from 'material-ui/Snackbar';
 import Episodes from './Episodes';
 import RaisedButton from 'material-ui/RaisedButton';
 
+import { SocialIcon } from 'react-social-icons';
+import ShareButton from 'react-social-share-buttons';
+
 class AboutShow extends Component {
 
   constructor(){
     super()
     this.state = {
       loader: false,
-      episodes : []
+      episodes : [],
+      showid: ''
     }
   }
 
 componentWillMount(){
   console.log("Mounted AboutShow");
+  console.log(this.props);
   this.props.fetchShowByID(this.props.match.params.id);
 }
 
 componentDidMount(){
-  console.log("############", this.props.currentShow);
-  this.setState({loader: true})
 
-  fetch(`http://api.tvmaze.com/shows/${this.props.match.params.id}/episodes`)
-  .then(res=>res.json())
-  .then(episode=>{
 
-    this.setState({episodes: episode.reverse(), loader: false});
-
-    })
 
 }
+
+componentWillReceiveProps(nextProps){
+   console.log("############", this.props.currentShow);
+   console.log("############", this.props.currentShow);
+  if(nextProps.match.params.id !== this.props.match.params.id){
+    this.props.fetchShowByID(nextProps.match.params.id);
+
+    // this.fetchEpisodesByID(nextProps.match.params.id);
+
+  }
+}
+
+
 
 Follow = (tvShowInfo) => {
   if(this.props.user.isUserLoggedIn === false){
@@ -91,6 +101,9 @@ console.log(this.props.user);
 console.log(this.props.shows);
 let userShowInfo = this.props.user.userFollows;
 let button;
+let info1;
+let info2;
+let info3;
 
 if(this.props.user.isUserLoggedIn === true){
   if(userShowInfo.length>0){
@@ -132,28 +145,55 @@ col1 = (
     <Col xs={12} md={6}>
       <div>
         {image}<br/>
-        {button}
+        {button}<br/>
+        <br/>
+      <SocialIcon url="https://jaketrent.com" network="facebook" />
+      <SocialIcon url="test.com" network="google" />
+      <SocialIcon url="https://jaketrent.com" network="twitter" />
+
       </div>
     </Col>
 
   )
 col2 = (
-  <Col xs={12} md={6}>
-      <p>Name: {currentShow.name} </p>
-      <p>Language: {currentShow.language} </p>
-      <p>Run time: {currentShow.runtime} minutes</p>
+    <Col xs={12} md={6} sm={4}>
+      <div className="about_show">
+      <p className="about_show_name">Name: {currentShow.name} </p>
+      <p className="about_show_lang">({currentShow.language})</p>
+      <p className="about_show_lang">Run time: {currentShow.runtime} minutes</p>
       <a href={currentShow.officialSite}>officialSite</a>
-      <p>Rating: {currentShow.rating.average}</p>
-      <p>Summary: {striptags(this.props.currentShow.summary)} </p>
-      <p><Link to={`/shows/cast/${currentShow.name}/${currentShow.id}`}>Cast</Link></p>
-      <p><Link to={`/shows/crew/${currentShow.name}/${currentShow.id}`}>Crew</Link></p>
-      <p></p>
+      <p className="about_show_lang"><img align="middle" src="http://www.iconsplace.com/download/orange-rating-star-512.png" height="25px" width="25px"></img>{currentShow.rating.average}</p>
+      <p className="about_show_summary">Summary: {striptags(this.props.currentShow.summary)} </p>
+
+      </div>
     </Col>
   )
+
+info1 = (
+  <Col xs={12} md={4} sm={4}>
+  <p className="about_show_info"><Link to={`/shows/cast/${currentShow.name}/${currentShow.id}`}>Cast</Link></p>
+  </Col>
+  )
+
+info2 = (
+  <Col xs={12} md={4} sm={4}>
+  <p className="about_show_info"><Link to={`/shows/crew/${currentShow.name}/${currentShow.id}`}>Crew</Link></p>
+  </Col>
+  )
+
+info3 = (
+  <Col xs={12} md={4} sm={4}>
+  <p className="about_show_info"><Link to={`/shows/episodes/${currentShow.name}/${currentShow.id}`}>Episodes</Link></p>
+  </Col>
+  )
+
 }else {
   currentShowInfo = "";
   col1='';
   col2='';
+  info1='';
+  info2='';
+  info3='';
 }
 
     return (
@@ -161,21 +201,25 @@ col2 = (
 <MuiThemeProvider>
       <div className="App">
 
-      <u><h3>About Show</h3></u>
+      <h3 className="about_show_header">{this.props.match.params.tvshow}</h3>
         <Grid fluid>
           <Row>
 {col1}
 {col2}
 <br/>
           </Row>
+<br /><br /><br />
+          <Row>
+            {info1}
+            {info2}
+            {info3}
+          </Row>
+
         </Grid>
 
 <Grid fluid>
 <Row>
 
-<Col md={12} xs={12}>
-<Episodes episodes={this.state.episodes} showid={this.props.match.params.id} loader={this.state.loader} showName={this.props.match.params.tvshow}></Episodes>
-</Col>
 
 </Row>
 </Grid>
@@ -184,7 +228,7 @@ col2 = (
 
       </div>
 
-      <Snackbar
+        <Snackbar
                 open={this.state.open}
                 message={this.state.msg}
                 autoHideDuration={2000}
@@ -204,4 +248,6 @@ const mapStateToProps = function(state){
 }
 
 
-export default connect(mapStateToProps, {fetchShowByID,UserFollowShow, UserUnFollowShow})(AboutShow);
+// export default connect(mapStateToProps, {fetchShowByID,UserFollowShow, UserUnFollowShow})(AboutShow);
+// export default withRouter(connect(mapStateToProps, {LogoutUser})(Simple))
+export default withRouter(connect(mapStateToProps,  {fetchShowByID, UserFollowShow, UserUnFollowShow})(AboutShow))

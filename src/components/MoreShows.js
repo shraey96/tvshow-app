@@ -19,14 +19,6 @@ class MoreShows extends Component {
     }
   }
 
-componentWillMount(){
-
-}
-
-componentDidMount(){
-
-
-}
 
   render() {
 
@@ -35,7 +27,7 @@ componentDidMount(){
 
 <MuiThemeProvider>
       <div className="App">
-MoreShows
+        <br />
 <MoreShowsSearch />
 <SearchShowsResult />
       </div>
