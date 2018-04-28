@@ -15,6 +15,7 @@ const momentTimezone = require('moment-timezone');
 
 const users = require('./routes/users');
 const feedbacks = require('./routes/feedbacks');
+const forgotPassword = require('./routes/forgotPassword')
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.database, { useMongoClient: true });
@@ -79,6 +80,7 @@ res.send({msg: "Welcome to tvshowapp API"})
 // route files
 app.use('/users', users);
 app.use('/feedbacks', feedbacks);
+app.use('/forgotPassword', forgotPassword);
 
 // start server
 app.listen(3005, function(){

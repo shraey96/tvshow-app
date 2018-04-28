@@ -554,36 +554,36 @@ router.post('/register', function(req, res, next){
 
         }else{
             bcrypt.genSalt(10, function(err, salt){
-                            bcrypt.hash(req.body.password, salt, function(err, hash){
-                                if(err){
-                                    console.log(err);
-                                }
-                                req.body.password = hash;
-                                User.create(req.body)
-                                .then((newuser)=>{
-                                    res.send({
-                                        success:true,
-                                        msg:"User Created.",
-                                    })
-                                    let newUser = {
-                                      user_id: newuser._id,
-                                      tvShowInfo:[]
-                                    }
+                    bcrypt.hash(req.body.password, salt, function(err, hash){
+                        if(err){
+                            console.log(err);
+                        }
+                        req.body.password = hash;
+                        User.create(req.body)
+                        .then((newuser)=>{
+                            res.send({
+                                success:true,
+                                msg:"User Created.",
+                            })
+                            let newUser = {
+                                user_id: newuser._id,
+                                tvShowInfo:[]
+                            }
 
-                                    TvShow.create(newUser)
-                                    .then((userRegister)=>{
-                                        req.body.password = req.body.checkPassword;
-                                        passport.authenticate("local", function(err, user, info){
-                                            if(err){return next(err); }
-                                                req.logIn(user, function(err){
-                                                    if(err){ return next(err);}
-                                                })
-                                        })(req, res, next);
-                                    })
-                                })
+                            TvShow.create(newUser)
+                            .then((userRegister)=>{
+                                req.body.password = req.body.checkPassword;
+                                passport.authenticate("local", function(err, user, info){
+                                    if(err){return next(err); }
+                                        req.logIn(user, function(err){
+                                            if(err){ return next(err);}
+                                        })
+                                })(req, res, next);
+                            })
+                        })
 
 
-                            });
+                    });
                 });
             }
         })
