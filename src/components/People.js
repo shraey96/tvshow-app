@@ -109,7 +109,7 @@ if(this.state.personInfo.country){
           <p>{this.state.personInfo.name}</p>
           <p>{country}</p>
           <p>Birthday: {this.state.personInfo.birthday || ''}</p>
-          <br/>
+        
           </div>
   </Animated>
 

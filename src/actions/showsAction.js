@@ -33,7 +33,7 @@ export function fetchShows(query){
 
 export function fetchShowByID(showid){
   return function(dispatch){
-      fetch(`https://api.tvmaze.com/shows/${showid}?embed=cast`)
+  return    fetch(`https://api.tvmaze.com/shows/${showid}?embed=cast`)
       .then(res=>res.json())
       .then(show=>
 {
@@ -41,7 +41,11 @@ export function fetchShowByID(showid){
         type: FETCH_SHOWS_ID,
         payload: show
       })
+
+      return show
 }
+
+
     )
 
   }

@@ -374,6 +374,10 @@ function proceedToAdd(show){
                 req.body.show_ref = show._id;
                 req.body.user_id = req.user._id;
                 req.body.tvShowId = req.body.tvid;
+								req.body.oneSignalDay = !req.user.oneSignalNotif;
+								req.body.oneSignalHour = !req.user.oneSignalNotif;
+								req.body.emailDay = !req.user.emailNotif;
+								req.body.emailHour = !req.user.emailNotif;
                 ShowNotification.create(req.body).then((notification)=>{
                     console.log("notification created!");
                 })
@@ -426,6 +430,10 @@ function proceedToAdd(show){
                               req.body.show_ref = show._id;
                               req.body.user_id = req.user._id;
 															req.body.tvShowId = req.body.tvid;
+															req.body.oneSignalDay = !req.user.oneSignalNotif;
+															req.body.oneSignalHour = !req.user.oneSignalNotif;
+															req.body.emailDay = !req.user.emailNotif;
+															req.body.emailHour = !req.user.emailNotif;
                               ShowNotification.create(req.body).then((notification)=>{
                                 console.log("notification created");
                               })
@@ -567,7 +575,9 @@ router.post('/login', function(req, res, next){
                         msg: "authenticated.",
                         result: userData
                     });
-										console.log(userData);
+
+
+
                 });
             })
     })(req, res, next);
@@ -575,19 +585,23 @@ router.post('/login', function(req, res, next){
 });
 
 // Logout
-
 router.get('/logout', function(req, res){
+	console.log("LOGOUT: ", req.user._id);
+	User.update({_id: req.user._id},{$unset: {os_id: 1}})
     req.logout();
     res.send({
         success:true,
         msg:"User Logged Out."
     });
+
 });
 
-router.get('/test', function(req, res){
-    res.send({
-        user:req.user
-    });
+router.put('/login/osid', function(req, res){
+User.update({_id: req.user._id},{os_id: req.body.osid})
+.then((done)=>{
+	res.json({succes: true, msg: "OS_ID updated!"});
+})
+
 });
 
 router.post('/notification', function(req, res){

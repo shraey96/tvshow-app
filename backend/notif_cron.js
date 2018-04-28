@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const moment = require('moment-timezone');
-
 const config = require('./config/database');
-
+const push = require('./push');
+const hbs = require('nodemailer-express-handlebars');
 const nodemailer = require('nodemailer');
 const cron = require('node-cron');
 
@@ -19,8 +19,9 @@ let db = mongoose.connection;
 //check for db errors
 db.once('open', function(){
 	console.log('Connected to MongoDB');
-		// notifQueryDate();
-		// notifQueryHour();
+		notifQueryDate();
+		notifQueryHour();
+		// hourTest()
 });
 db.on('error', function(err){
 	console.log(err);
@@ -28,25 +29,123 @@ db.on('error', function(err){
 
 cron.schedule('* * * * *', function(){
   console.log('running a task every minute');
-	notifQueryDate();
-	notifQueryHour();
+
+});
+webPushDay()
+function webPushDay(){
+
+console.log("webPushDay");
+let d = new Date();
+let todaysDate = moment(d, 'YYYY.MM.DD').tz('Asia/Calcutta');
+
+let todayAll = moment(d).tz('Asia/Calcutta').format("MMMM Do YYYY, h:mm");
+
+
+console.log("#################### running webPushDay Query");
+ShowNotification.find({oneSignalDay: false})
+.populate('user_id', '-password')
+.populate('show_ref')
+.then((notif_users)=>{
+if(!notif_users){
+	console.log("No users");
+}else {
+
+notif_users.forEach((notif_user)=>{
+	let remindersDate = [];
+	notif_user.show_ref.episodes.forEach((user_notif_episodes)=>{
+
+
+		let showDate = moment(user_notif_episodes.airstamp, 'YYYY.MM.DD').tz('Asia/Calcutta');
+		let showDateTime = moment(user_notif_episodes.airstamp, 'YYYY.MM.DD, h:mm').tz('Asia/Calcutta')
+
+			if(showDate.isSame(todaysDate, 'day')){
+
+				if(notif_user.user_id.os_id){
+					console.log(notif_user.show_ref.tvShowName);
+					let message = `${notif_user.show_ref.tvShowName} S${user_notif_episodes.season}E${user_notif_episodes.number} will be released today!`
+					push.sendWebPush([notif_user.user_id.os_id], message, function(err, response){
+						if(response){
+							ShowNotification.update({_id: notif_user._id, tvShowId: notif_user.show_ref.tvShowId}, {oneSignalDay: true})
+							.then((msg)=>{
+								console.log(msg);
+							})
+						}
+					})
+
+
+				}
+
+			}
+
+	})
+
+
+})
+}
+
 });
 
-// let d = new Date();
-// console.log(d);
-// console.log(moment(d).tz('Asia/Calcutta').format("MMMM Do YYYY, h:mm:ss a"));
+}
 
-// let todaysDate = moment(d).tz('Asia/Calcutta').format("MMMM Do YYYY");
-// let todaysDate = moment(d, 'YYYY.MM.DD').tz('Asia/Calcutta');
-// console.log(todaysDate, typeof todaysDate);
-//
-// let todayAll = moment(d).tz('Asia/Calcutta').format("MMMM Do YYYY, h:mm");
-// console.log(todayAll);
+function webPushHour(){
 
-// console.log(moment.tz.guess(d));
-// console.log(moment.tz.guess("2014-04-07T02:00:00+00:00"));
-// console.log(moment());
-// runNotifQuery()
+console.log("webPushHour");
+let d = new Date();
+let todaysDate = moment(d, 'YYYY.MM.DD').tz('Asia/Calcutta');
+
+let todayAll = moment(d).tz('Asia/Calcutta').format("MMMM Do YYYY, h:mm");
+
+
+console.log("#################### running webPushHour Query");
+ShowNotification.find({oneSignalHour: false})
+.populate('user_id', '-password')
+.populate('show_ref')
+.then((notif_users)=>{
+if(!notif_users){
+	console.log("No users");
+}else {
+
+notif_users.forEach((notif_user)=>{
+	let remindersDate = [];
+	notif_user.show_ref.episodes.forEach((user_notif_episodes)=>{
+
+
+		let showDate = moment(user_notif_episodes.airstamp, 'YYYY.MM.DD').tz('Asia/Calcutta');
+		let showDateTime = moment(user_notif_episodes.airstamp, 'YYYY.MM.DD, h:mm').tz('Asia/Calcutta')
+
+			if(showDate.isSame(todaysDate, 'day')){
+
+				if(showDateTime.diff(todayAll) <= 3600000){
+					if(notif_user.user_id.os_id){
+						console.log(notif_user.show_ref.tvShowName);
+						let message = `${notif_user.show_ref.tvShowName} S${user_notif_episodes.season}E${user_notif_episodes.number} will be released today!`
+						push.sendWebPush([notif_user.user_id.os_id], message, function(err, response){
+							if(response){
+								ShowNotification.update({_id: notif_user._id, tvShowId: notif_user.show_ref.tvShowId}, {oneSignalHour: true})
+								.then((msg)=>{
+									console.log(msg);
+								})
+							}
+						})
+					}
+			}
+
+
+
+			}
+
+	})
+
+
+})
+}
+
+});
+
+}
+
+
+
 function notifQueryDate(){
 	console.log("notifQueryDate");
 	let d = new Date();
@@ -67,26 +166,18 @@ ShowNotification.find({oneDay: false})
   }else {
   // console.log(notif_users);
   notif_users.forEach((notif_user)=>{
-    // console.log(notif_user.show_ref.episodes[0]);
+		console.log(notif_user);
 		let remindersDate = [];
     notif_user.show_ref.episodes.forEach((user_notif_episodes)=>{
-
-      // for hourly notif
 
 
 			let showDate = moment(user_notif_episodes.airstamp, 'YYYY.MM.DD').tz('Asia/Calcutta');
 			let showDateTime = moment(user_notif_episodes.airstamp, 'YYYY.MM.DD, h:mm').tz('Asia/Calcutta')
-			// console.log(showDateTime);
-        // console.log((today).isValid());
-				// console.log(lessThanOneHourAgo(showDateTime));
-				// console.log(showDate.isSame(todaysDate));
-				// console.log(showDate, todaysDate);
+
 				if(showDate.isSame(todaysDate, 'day')){
 					// call mailer function
 					mailerDate(notif_user, user_notif_episodes)
-						// if(lessThanOneHourAgo(showDateTime, todayAll) === true){
-						// 	mailerHour(notif_user)
-						// }
+
 				}
 
     })
@@ -104,8 +195,6 @@ function notifQueryHour(){
 	let todaysDate = moment(d, 'YYYY.MM.DD').tz('Asia/Calcutta');
 	console.log(todaysDate, typeof todaysDate);
 
-	// let todayAll = moment(d).tz('Asia/Calcutta').format("MMMM Do YYYY, h:mm");
-	// console.log(todayAll);
 
 	let todayAll = moment(d).tz('Asia/Calcutta');
 	console.log(todayAll);
@@ -122,38 +211,19 @@ function notifQueryHour(){
 	    // console.log(notif_user.show_ref.episodes[0]);
 	    notif_user.show_ref.episodes.forEach((user_notif_episodes)=>{
 
-	      // for hourly notif
-
 
 				let showDate = moment(user_notif_episodes.airstamp, 'YYYY.MM.DD').tz('Asia/Calcutta');
 				let showDateTime = moment(user_notif_episodes.airstamp, 'YYYY.MM.DD, h:mm').tz('Asia/Calcutta')
-				// console.log(showDateTime);
-				// console.log(todayAll.hour());
-				// console.log(showDateTime.hour());
-				showDateTime = (showDateTime.add(1, 'hours'));
-				console.log(showDateTime.hours(), todayAll.hours());
-				console.log(showDateTime.add(60, 'minutes'));
-				// console.log(showDateTime.hours());
-				// console.log(showDateTime.hour() >= todayAll.hour());
-	        // console.log((today).isValid());
-					// console.log(lessThanOneHourAgo(showDateTime, todayAll));
+
+				showDateTime = (showDateTime.add(1, 'hour'));
+
 					if(showDate.isSame(todaysDate, 'day')){
-						// call mailer function
-						// mailerDate(notif_user)
-						if(showDateTime.hours() === todayAll.hours()){
-							console.log('SENDING HOUR');
+
+
+							if(showDateTime.diff(todayAll) <= 3600000){
 							mailerHour(notif_user, user_notif_episodes);
 						}
 
-						if(showDateTime.hours() === todayAll.hours()){
-							// console.log("Y");
-							if(showDateTime.minutes() === todayAll.minutes())
-							console.log('SENDING MINUTE');
-							mailerHour(notif_user, user_notif_episodes);
-						}
-							// if(lessThanOneHourAgo(showDateTime, todayAll) === true){
-							// 	mailerHour(notif_user)
-							// }
 					}
 
 	    })
@@ -180,8 +250,8 @@ ShowNotification.update({_id: notif_user._id, tvShowId: notif_user.show_ref.tvSh
 var transporter = nodemailer.createTransport({
  service: 'gmail',
  auth: {
-        user: 'shraey96@gmail.com',
-        pass: ''
+	 user: 'nitish@creativeappography.com',
+	 pass: 'nitish@123'
     }
 });
 
@@ -190,7 +260,7 @@ const mailOptions = {
   to: `${notif_user.user_id.email}`, // list of receivers
   subject: 'Notification fron Binged.xyz!', // Subject line
 	text: `${notif_user.show_ref.tvShowName}`,
-  html: `<p>${notif_user.show_ref.tvShowName} S${episodes.season}E${episodes.number} will be released today! Go watch it now!</p>`// plain text body
+  html: `<p>${notif_user.show_ref.tvShowName} S${episodes.season}E${episodes.number} will be released today! Don't miss it!</p>`// plain text body
 };
 
 transporter.sendMail(mailOptions, function (err, info) {
@@ -202,10 +272,10 @@ transporter.sendMail(mailOptions, function (err, info) {
 
 }
 
-function mailerHour(notif_user){
+function mailerHour(notif_user, episodes){
 console.log("notif hour sent!");
 
-ShowNotification.update({_id: notif_user._id}, {oneHour: true})
+ShowNotification.update({_id: notif_user._id, tvShowId: notif_user.show_ref.tvShowId}, {oneHour: true})
 .then((msg)=>{
 	console.log(msg);
 })
@@ -213,8 +283,8 @@ ShowNotification.update({_id: notif_user._id}, {oneHour: true})
 var transporter = nodemailer.createTransport({
  service: 'gmail',
  auth: {
-        user: 'shraey96@gmail.com',
-        pass: ''
+        user: 'nitish@creativeappography.com',
+        pass: 'nitish@123'
     }
 });
 
@@ -233,8 +303,4 @@ transporter.sendMail(mailOptions, function (err, info) {
      console.log(info);
 });
 
-}
-
-function lessThanOneHourAgo(date, todayAll){
-    return moment(date).isAfter(moment(todayAll).subtract(1, 'hours'));
 }

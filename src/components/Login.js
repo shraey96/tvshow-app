@@ -28,14 +28,14 @@ constructor(){
 
 }
 
-  responseFacebook = (response) =>{
+ responseFacebook = (response) =>{
     console.log(response);
   }
 
  responseGoogle = (response) => {
     console.log(response);
     console.log(response.getBasicProfile());
-    
+
   }
 
   Login = (e) =>{
@@ -113,8 +113,8 @@ constructor(){
         errorText= {this.state.passwordError}
       /><br />
     <br />
-    <RaisedButton label="Login" primary={true} onClick={this.Login}/>
-
+    <RaisedButton label="Login" primary={true} onClick={this.Login}/><br/><br/>
+<Link to={`/register`} className="auth_redirect">Register</Link><br/><br/>
 </form>
 
 </Col>
@@ -129,7 +129,9 @@ constructor(){
    appId="415911222188406"
    autoLoad={false}
    fields="name,email,picture"
-   callback={this.responseFacebook} />
+   callback={this.responseFacebook}
+   className="facebookLogin"
+   />
 
     <br/>
     <br/>
@@ -139,6 +141,7 @@ constructor(){
  buttonText="Login with Google"
  onSuccess={this.responseGoogle}
  onFailure={this.responseGoogle}
+ className="googleLogin"
 />
 
 </div>

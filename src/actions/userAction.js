@@ -3,6 +3,28 @@ import urlToUse from '../config';
 
 export function LoginUser(email, password) {
 
+  // let OneSignal = window.OneSignal || [];
+  // OneSignal.push(function() {
+  //   OneSignal.init({
+  //     appId: "19de5a98-baae-4f0c-91f6-9f3127e36de3",
+  //     autoRegister: false,
+  //     notifyButton: {
+  //       enable: true,
+  //     },
+  //   });
+  //
+  //   OneSignal.getUserId(function(userId) {
+  //     console.log(userId);
+  //
+  //
+  //
+  //
+  //
+  //   })
+  //
+  // });
+
+
     let data = {
         email: email,
         password: password
@@ -12,7 +34,7 @@ export function LoginUser(email, password) {
 
     return function(dispatch) {
 
-  return  fetch(`${urlToUse}/users/login`, {
+      return  fetch(`${urlToUse}/users/login`, {
                 method: 'post',
                 credentials: 'include',
                 headers: {
@@ -23,6 +45,10 @@ export function LoginUser(email, password) {
             .then(userData => userData.json())
             .then((userData) => {
                 console.log(userData);
+
+
+sendOSID();
+
                 if(userData.success === true){
                         dispatch({
                             type: LOGIN_USER,
@@ -35,28 +61,7 @@ export function LoginUser(email, password) {
                   return userData
                 }
 
-              // return    fetch(`${urlToUse}/users/tvseries`, {credentials: 'include'})
-              //     .then((userCompleteList) => userCompleteList.json())
-              //     .then((userCompleteList)=>{
-              //
-              //       let data = {
-              //         login: userData,
-              //         userInfo: userCompleteList
-              //       }
-              //
-              //       dispatch({
-              //           type: LOGIN_USER,
-              //           payload: data
-              //       })
-              //
-              //       console.log(data);
-              //       if(data.login.success === true){
-              //         localStorage.setItem('isUserLoggedIn', true);
-              //       }
-              //
-              //       return userData
-              //
-              //     })
+
 
             })
 
@@ -255,4 +260,45 @@ export function unFollowEpisode(data){
         })
 
   }
+}
+
+
+function sendOSID(){
+  console.log("Sending osID");
+  let OneSignal = window.OneSignal || [];
+  OneSignal.push(function() {
+    OneSignal.init({
+      appId: "19de5a98-baae-4f0c-91f6-9f3127e36de3",
+      autoRegister: false,
+      notifyButton: {
+        enable: true,
+      },
+    });
+
+    OneSignal.getUserId(function(userId) {
+
+      let data = {
+        osid: userId
+      };
+
+      fetch(`${urlToUse}/users/login/osid`, {
+                method: 'put',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(osid => osid.json())
+            .then((osid) => {
+                console.log(osid);
+              })
+
+
+
+    })
+
+  });
+
+
 }

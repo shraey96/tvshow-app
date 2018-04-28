@@ -148,7 +148,7 @@ if(this.props.user.isUserLoggedIn === true){
         <br/>
         <p className="show_name"><Link className="tvpopularLink"  to={`/shows/${tvshow.show.name}/${tvshow.show.id}`}>{tvshow.show.name}</Link> </p>
         <p className="episode_name"><Link className="tvpopularLink" to={`/shows/${tvshow.show.name}/${tvshow.show.id}/${tvshow.season}/episode/${tvshow.number}`}><b>{tvshow.name}</b></Link> </p>
-        <p className="tvpopularLink"> <u>S{tvshow.season}E{tvshow.number}</u> </p>
+        <p className="episode_num"> <u>S{tvshow.season}E{tvshow.number}</u> </p>
         {button}
 
         </div>

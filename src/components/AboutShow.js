@@ -29,8 +29,14 @@ class AboutShow extends Component {
 
 componentWillMount(){
   console.log("Mounted AboutShow");
-  console.log(this.props);
-  this.props.fetchShowByID(this.props.match.params.id);
+  this.setState({loader: true})
+  let fetchShowByID = this.props.fetchShowByID(this.props.match.params.id);
+  fetchShowByID.then((response)=>{
+    // console.log(response);
+    if(response){
+      this.setState({loader: false});
+    }
+  })
 }
 
 componentDidMount(){
@@ -43,8 +49,14 @@ componentWillReceiveProps(nextProps){
    console.log("############", this.props.currentShow);
    console.log("############", this.props.currentShow);
   if(nextProps.match.params.id !== this.props.match.params.id){
-    this.props.fetchShowByID(nextProps.match.params.id);
-
+    this.setState({loader: true})
+    let fetchShowByID = this.props.fetchShowByID(nextProps.match.params.id);
+    fetchShowByID.then((response)=>{
+      // console.log(response);
+      if(response){
+        this.setState({loader: false});
+      }
+    })
     // this.fetchEpisodesByID(nextProps.match.params.id);
 
   }
@@ -105,6 +117,14 @@ let info1;
 let info2;
 let info3;
 
+let loader;
+
+if(this.state.loader === true){
+  loader = (<img src="http://backgroundcheckall.com/wp-content/uploads/2017/12/ajax-loading-gif-transparent-background-5.gif" height="50px" width="50px"/>);
+}else {
+  loader = "";
+}
+
 if(this.props.user.isUserLoggedIn === true){
   if(userShowInfo.length>0){
       for(var i = 0; i<userShowInfo.length; i++){
@@ -138,7 +158,7 @@ if(currentShow.image){
 }else {
   image = '';
 }
-
+console.log(currentShow);
 col1 = (
 
 
@@ -161,7 +181,8 @@ col2 = (
       <p className="about_show_name">{currentShow.name} </p>
       <p className="about_show_lang">({currentShow.language})</p>
       <p className="about_show_lang">Run time: {currentShow.runtime} minutes</p>
-      <a href={currentShow.officialSite}>officialSite</a>
+      <i><a href={currentShow.officialSite} className="about_show_official">officialSite</a></i>
+      <p className="about_show_lang">Air's On: {currentShow.network.name}</p>
       <p className="about_show_lang"><img align="middle" src="http://www.iconsplace.com/download/orange-rating-star-512.png" height="25px" width="25px"></img>{currentShow.rating.average}</p>
       <p className="about_show_summary">{striptags(this.props.currentShow.summary)} </p>
 
@@ -201,6 +222,7 @@ info3 = (
 <MuiThemeProvider>
       <div className="App">
 <br />
+{loader}
         <Grid fluid>
           <Row>
 {col1}

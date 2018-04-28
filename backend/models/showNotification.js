@@ -21,11 +21,19 @@ const showNotification = mongoose.Schema({
         type: Boolean,
         default: false
     },
-    oneHour:{
+    emailHour:{
         type: Boolean,
         default: false
     },
-    oneDay:{
+    emailDay:{
+      type: Boolean,
+      default: false
+    },
+    oneSignalHour:{
+      type: Boolean,
+      default: false
+    },
+    oneSignalDay:{
       type: Boolean,
       default: false
     }

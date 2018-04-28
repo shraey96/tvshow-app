@@ -182,8 +182,8 @@ constructor(){
         onChange={this.handleCPasswordChange}
       /><br />
     <br />
-    <RaisedButton label="Register" primary={true} onClick={this.Register}/>
-
+    <RaisedButton label="Register" primary={true} onClick={this.Register}/><br/><br/>
+    <Link to={`/login`} className="auth_redirect">Login</Link>
 </form>
 
 </Col>
@@ -207,6 +207,7 @@ constructor(){
  buttonText="Login with Google"
  onSuccess={this.responseGoogle}
  onFailure={this.responseGoogle}
+ className="googleLogin"
 />
 
 <div style={{"color":"white"}}>

@@ -7,7 +7,7 @@ import {Link} from 'react-router-dom';
 
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import { withRouter } from 'react-router-dom';
-
+import {Animated} from "react-animated-css";
 import '../App.css';
 
 const MyShows = (props) => {
@@ -27,14 +27,15 @@ if(props.user.isUserLoggedIn === true){
     percentageWatched = Percentage(shows.episodeWatched.length, shows.show_ref.totalEpisodeCount)
     return(
       <Col xs={12} md={3}  key={shows._id}>
-
+<Animated animationIn="bounceInLeft" animationOut="fadeOut" isVisible={true}>
         <div className="tvpopular">
         {image}
         <br/>
-        <p><Link className="tvpopularLink" to={`/shows/${shows.show_ref.tvShowName}/${shows.show_ref.tvShowId}`}>{shows.show_ref.tvShowName}</Link> </p>
-        <p>Percentage Watched: {percentageWatched}</p>
+        <p className="my_shows"><Link className="tvpopularLink" to={`/shows/${shows.show_ref.tvShowName}/${shows.show_ref.tvShowId}`}>{shows.show_ref.tvShowName}</Link> </p>
+        <p className="my_shows_percent">Percentage Watched: {percentageWatched}</p>
         </div>
         <br/>
+      </Animated>
       </Col>
     )
 
@@ -56,7 +57,7 @@ console.log(props.user.userFollows);
 
   return (
     <div className="App">
-      MyShows
+      <h3 className="headingPopular">My Shows</h3>
     <br/>
     <br/>
 

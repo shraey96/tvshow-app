@@ -15,9 +15,29 @@ const UserSchema = mongoose.Schema({
         type:String,
         require:true
     },
+    googe_id:{
+      type: String,
+      require:false
+    },
+    googe_token:{
+      type: String,
+      require:false
+    },
     profile_Img:{
         type:String,
         require:false
+    },
+    os_id:{
+      type:String,
+      require: false
+    },
+    oneSignalNotif:{
+      type: Boolean,
+      default: true,
+    },
+    emailNotif:{
+      type: Boolean,
+      default: true
     },
     country:{
         type:String,

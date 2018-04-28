@@ -10,15 +10,8 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 import {followEpisode, unFollowEpisode} from '../actions/userAction';
 import Snackbar from 'material-ui/Snackbar';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import RaisedButton from 'material-ui/RaisedButton';
 
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
 
 class Episodes extends Component {
 
@@ -169,7 +162,7 @@ let loader;
 if(this.state.loader === true){
   loader = <img src="http://backgroundcheckall.com/wp-content/uploads/2017/12/ajax-loading-gif-transparent-background-5.gif" height="50px" width="50px"/>
 }else {
-  loader = <h3>Episodes</h3>;
+  loader = <h3 className="show_episode_header">{this.props.match.params.tvshow} Episodes</h3>;
 }
 
   console.log(this.state.episodes);
@@ -225,11 +218,17 @@ if(this.state.loader === true){
 
         let episodeIn = (presentShowArray.indexOf(episode.id))
         if(episodeIn>-1){
-          button = (<button onClick={()=>{this.handleUnWatch(episode.id, showid, 0)}}>UnWatch</button>);
-          buttonAll = (<button onClick={()=>{this.handleUnWatch(episode.id, showid, 1)}}>UnWatch All</button>);
+          // button = (<button onClick={()=>{this.handleUnWatch(episode.id, showid, 0)}}>UnWatch</button>);
+          button = (<RaisedButton label="UnWatch" secondary={true}  onClick={()=>{this.handleUnWatch(episode.id, showid, 0)}}/>);
+          // buttonAll = (<button onClick={()=>{this.handleUnWatch(episode.id, showid, 1)}}>UnWatch All</button>);
+          button = (<RaisedButton label="UnWatch All" secondary={true}  onClick={()=>{this.handleUnWatch(episode.id, showid, 1)}}/>);
         }else {
-          button = (<button onClick={()=>{this.handleWatch(episode.id, showid, 0)}}>Watch</button>);
-          buttonAll = (<button onClick={()=>{this.handleWatch(episode.id, showid, 1)}}>Watch All</button>);
+          // button = (<button onClick={()=>{this.handleWatch(episode.id, showid, 0)}}>Watch</button>);
+          button = (<RaisedButton label="Watch" primary={true}  onClick={()=>{this.handleWatch(episode.id, showid, 0)}}/>);
+
+            // buttonAll = (<button onClick={()=>{this.handleWatch(episode.id, showid, 1)}}>Watch All</button>);
+          buttonAll = (<RaisedButton label="Watch All" primary={true}  onClick={()=>{this.handleWatch(episode.id, showid, 0)}}/>);
+
         }
 
         if(count===episode.season){
@@ -239,28 +238,19 @@ if(this.state.loader === true){
           tag= (<div><h1>Season: {count}</h1></div>)
         }
 
-
+        console.log(episode);
         return(
 
-       // <TableRow key={episode.id}>
-       // <TableRowColumn>{tag}</TableRowColumn>
-       // <TableRowColumn>
-       //   <Link className="tvpopularLink" to={`/shows/${this.props.showName}/${this.props.showid}/${episode.season}/episode/${episode.number}`}>
-       //   {episode.name}
-       //   </Link>  (S{episode.season}E{episode.number})
-       //
-       // </TableRowColumn>
-       // <TableRowColumn>{episode.airdate}</TableRowColumn>
-       // <TableRowColumn>{button} {buttonAll}</TableRowColumn>
-       // </TableRow>
-
-       <div key={episode.id} style={{"border": "1px solid black"}}>
+       <div key={episode.id} className="episodes">
        <h3>{tag}</h3>
-       <Link className="tvpopularLink" to={`/shows/${this.props.match.params.tvshow}/${this.props.match.params.id}/${episode.season}/episode/${episode.number}`}>
+       <Link className="episodePopularLink" to={`/shows/${this.props.match.params.tvshow}/${this.props.match.params.id}/${episode.season}/episode/${episode.number}`}>
            {episode.name}
        </Link><br />
-       (S{episode.season}E{episode.number})
+     <div className="episodeInfo">
+       <p>(S{episode.season}E{episode.number})</p>
        <p>{episode.airdate}</p>
+       <p>Airtime: {episode.airtime}</p>
+       </div>
        {button} {buttonAll}
        <br />
        </div>
@@ -289,6 +279,7 @@ if(this.state.loader === true){
 
       <MuiThemeProvider>
       <div className="App">
+        <br/>
         {loader}
         <Grid fluid>
           <Row>

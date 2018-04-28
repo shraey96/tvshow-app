@@ -7,28 +7,26 @@
 }
 
 html{
-  /* background: linear-gradient(to right, #000000 , #53346d); */
-  /* background: linear-gradient(to right, #141e30 , #243b55); */
-  background: linear-gradient(to right, #000000, #434343);
-  /* background: linear-gradient(to right, #114357, #F29492); */
-  /* background: linear-gradient(to right, #232526, #232526); */
-  font-family: 'Gothic A1', sans-serif;
-}
-
-body::after {
   content: "";
-  background: url(https://www.scienceabc.com/wp-content/uploads/2017/09/Child-watching-tv-feaured-image.jpg);
-  /* background: url(http://www.hd1080pwallpaper.in/wp-content/uploads/2016/04/Old-school-TV-stands.jpg); */
-  opacity: 0.3;
+  /* background: url(https://www.scienceabc.com/wp-content/uploads/2017/09/Child-watching-tv-feaured-image.jpg); */
+  background: linear-gradient(rgba(91,98, 116, 0.7),rgba(97,98,116,0.7)), url(https://www.scienceabc.com/wp-content/uploads/2017/09/Child-watching-tv-feaured-image.jpg);
+  /* background: linear-gradient(rgba(91,98, 116, 0.5),rgba(97,98,116,0.5)), url(http://www.hd1080pwallpaper.in/wp-content/uploads/2016/04/Old-school-TV-stands.jpg); */
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
+  opacity: 1;
   position: absolute;
   z-index: -1;
   background-repeat: no-repeat;
+  background-attachment: fixed;
   /* background-size: contain; */
    background-size:cover;
+
+}
+
+body{
+
 }
 
 
@@ -80,6 +78,14 @@ img {
 
 .tvpopularLink{
   color: white;
+  -moz-transition: all .2s ease-in;
+  -o-transition: all .2s ease-in;
+  -webkit-transition: all .2s ease-in;
+  transition: all .3s ease-in;
+}
+
+.tvpopularLink:hover{
+  color: green;
 }
 
 .show_dropdown_header{
@@ -94,6 +100,11 @@ a{
 .episode_name{
   font-size: 12px;
 }
+
+.episode_num{
+  color: white;
+}
+
 
 .show_name{
   font-size: 22px;
@@ -153,9 +164,21 @@ div.title:hover, a.wrapper:hover + div {
   font-size: 20px;
 }
 
-.about_show_info a{
-  color: white;
+.about_show_official{
+  font-size: 15px!important;
+}
+
+.about_show_info a, .about_show_official{
+  color: orange;
   font-size: 25px;
+  -moz-transition: all .2s ease-in;
+  -o-transition: all .2s ease-in;
+  -webkit-transition: all .2s ease-in;
+  transition: all .3s ease-in;
+}
+
+.about_show_info a:hover, .about_show_official:hover{
+  color: green;
 }
 
 .register_header{
@@ -178,4 +201,119 @@ div.title:hover, a.wrapper:hover + div {
 color: white;
 font-size: 30px;
 margin-top: 15px;
+}
+
+.Calendar{
+  margin-left: 25px;
+  margin-right: 25px;
+  margin-top: 25px;
+}
+
+.rbc-btn-group button{
+  color: white!important;
+}
+
+.rbc-date-cell{
+  color: white!important;
+}
+
+.rbc-toolbar-label{
+  color: white!important;
+  font-size: 30px;
+}
+
+.rbc-month-header{
+  font-size: 26px!important;
+  color: orange;
+}
+
+
+.auth_redirect{
+  color: orange;
+  font-size: 20px;
+  -moz-transition: all .2s ease-in;
+  -o-transition: all .2s ease-in;
+  -webkit-transition: all .2s ease-in;
+  transition: all .3s ease-in;
+}
+
+.auth_redirect:hover{
+  color: green;
+  font-size: 20px;
+}
+
+.episodes{
+  border: 1px solid white;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  margin-top: 20px;
+
+}
+
+.show_episode_header{
+  color: white;
+  font-size:30px;
+}
+
+.episodePopularLink{
+  color: orange;
+  font-size: 30px;
+  -moz-transition: all .2s ease-in;
+  -o-transition: all .2s ease-in;
+  -webkit-transition: all .2s ease-in;
+  transition: all .3s ease-in;
+}
+
+.episodePopularLink:hover{
+  color: green;
+}
+
+.episodeInfo{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.episodeInfo p{
+  font-size: 20px;
+  color: white;
+}
+
+.my_shows{
+  font-size: 20px;
+}
+
+.my_shows_percent{
+  color: white;
+  font-size: 15px;
+}
+
+.googleLogin{
+  display: inline-block;
+  background: rgb(209, 72, 54);
+  color: rgb(255, 255, 255);
+  width: 240px;
+  height: 50px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 2px;
+  border: 1px solid transparent;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: Roboto;
+  text-transform: uppercase;
+}
+
+.about_header{
+  color:white;
+  font-size: 30px;
+}
+
+.about_info{
+  color: white;
+  font-size: 17px;
+}
+
+.about_contact{
+  color: white;
+  font-size:20px;
 }
