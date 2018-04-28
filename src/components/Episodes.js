@@ -221,13 +221,13 @@ if(this.state.loader === true){
           // button = (<button onClick={()=>{this.handleUnWatch(episode.id, showid, 0)}}>UnWatch</button>);
           button = (<RaisedButton label="UnWatch" secondary={true}  onClick={()=>{this.handleUnWatch(episode.id, showid, 0)}}/>);
           // buttonAll = (<button onClick={()=>{this.handleUnWatch(episode.id, showid, 1)}}>UnWatch All</button>);
-          button = (<RaisedButton label="UnWatch All" secondary={true}  onClick={()=>{this.handleUnWatch(episode.id, showid, 1)}}/>);
+          buttonAll = (<RaisedButton label="UnWatch All" secondary={true}  onClick={()=>{this.handleUnWatch(episode.id, showid, 1)}}/>);
         }else {
           // button = (<button onClick={()=>{this.handleWatch(episode.id, showid, 0)}}>Watch</button>);
           button = (<RaisedButton label="Watch" primary={true}  onClick={()=>{this.handleWatch(episode.id, showid, 0)}}/>);
 
             // buttonAll = (<button onClick={()=>{this.handleWatch(episode.id, showid, 1)}}>Watch All</button>);
-          buttonAll = (<RaisedButton label="Watch All" primary={true}  onClick={()=>{this.handleWatch(episode.id, showid, 0)}}/>);
+          buttonAll = (<RaisedButton label="Watch All" primary={true}  onClick={()=>{this.handleWatch(episode.id, showid, 1)}}/>);
 
         }
 

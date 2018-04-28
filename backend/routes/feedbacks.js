@@ -6,7 +6,7 @@ let Feedback = require('../models/feedback');
 router.post('/', function(req, res){
     Feedback.create(req.body)
         .then((newFeedback)=>{
-            res.send({
+            res.json({
                 success:true,
                 msg:"Feedback Added.",
             });

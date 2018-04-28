@@ -105,11 +105,10 @@ if(this.state.personInfo.country){
 
   personInfo2 = (<Col xs={12} md={12} sm={4}>
   <Animated animationIn="bounceInLeft" animationOut="fadeOut" isVisible={true}>
-          <div className="tvpopular">
-          <p>{this.state.personInfo.name}</p>
+          <div className="people_info">
           <p>{country}</p>
           <p>Birthday: {this.state.personInfo.birthday || ''}</p>
-        
+
           </div>
   </Animated>
 
@@ -127,17 +126,17 @@ header = <h3>Starring In: </h3>
 personShows = this.state.personShows.map((show)=>{
   console.log(show);
   if(show.image){
-    image2 = <Link to={`/shows/${show.name}/${show.id}`}><img src={show.image.medium} /></Link>;
+    image2 = <Link to={`/shows/${show.name}/${show.id}`}><img src={show.image.medium} className="show_img"/></Link>;
   }else {
-    image2 = '';
+    image2 = <img src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/vintage-tv-poster-irina-march.jpg" height="295px" width="210px" className="show_img"/>;
   }
   return(
     <Col xs={12} md={4} sm={4}>
     <Animated animationIn="bounceInLeft" animationOut="fadeOut" isVisible={true}>
             <div className="tvpopular">
             {image2}<br/>
-            <b>{show.name}</b>
-            <p>Rating: {show.rating.average || '' }</p>
+          <b style={{"color": "white", "font-size":"20px"}}>{show.name}</b>
+            <p><img align="middle" src="https://www.iconsplace.com/download/orange-rating-star-512.png" height="25px" width="25px"></img> <span style={{"color":"white"}}>{show.rating.average || 'n/a'} </span></p>
             <br/>
             </div>
     </Animated>
@@ -153,7 +152,7 @@ personShows = this.state.personShows.map((show)=>{
 <MuiThemeProvider>
       <div className="App">
 
-      <h3>{this.props.match.params.person}</h3>
+      <h3 className="headingPopular">{this.props.match.params.person}</h3>
       {loader}
         <Grid fluid>
           <Row>

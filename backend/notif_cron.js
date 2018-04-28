@@ -22,7 +22,7 @@ db.once('open', function(){
 		// notifQueryDate();
 		// notifQueryHour();
 		// webPushDay()
-		sendHBSMail()
+		// webPushHour()
 });
 db.on('error', function(err){
 	console.log(err);
@@ -31,54 +31,13 @@ db.on('error', function(err){
 cron.schedule('* * * * *', function(){
   console.log('running a task every minute');
 
+	// notifQueryDate();
+	// notifQueryHour();
+	// webPushDay()
+	// webPushHour()
+
+
 });
-
-
-function sendHBSMail(){
-
-	let mailer = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'nitish@creativeappography.com',
-      pass: 'nitish@123'
-    }
-  });
-
-  mailer.use('compile', hbs({
-    viewPath: './templates',
-    extName: '.hbs'
-  }))
-
-	let mailOptions = {
-	 from: 'nitish@creativeappography.com',
-	 to: 'shraey96@gmail.com',
-	 subject: 'Binged Notification',
-	 template: 'show_notif_mail',
-	 context: {
-		 // data: imageUrl,
-		 // c1: c1Percent,
-		 // c2: c2Percent,
-		 // c3: c3Percent,
-		 // c1Count: c1,
-		 // c2Count: c2,
-		 // c3Count: c3
-	 }
-	};
-
-	mailer.sendMail(mailOptions, (err, done)=>{
-			if(err){
-				console.log(err);
-				return
-			}else {
-				console.log("Sent mail to: ", user_email);
-			}
-	})
-
-}
-
-
-
-
 
 
 function webPushDay(){
@@ -213,9 +172,7 @@ ShowNotification.find({oneDay: false})
   if(!notif_users){
     console.log("No users");
   }else {
-  // console.log(notif_users);
   notif_users.forEach((notif_user)=>{
-		console.log(notif_user);
 		let remindersDate = [];
     notif_user.show_ref.episodes.forEach((user_notif_episodes)=>{
 
@@ -255,9 +212,7 @@ function notifQueryHour(){
 	  if(!notif_users){
 	    console.log("No users");
 	  }else {
-	  // console.log(notif_users);
 	  notif_users.forEach((notif_user)=>{
-	    // console.log(notif_user.show_ref.episodes[0]);
 	    notif_user.show_ref.episodes.forEach((user_notif_episodes)=>{
 
 
@@ -285,39 +240,76 @@ function notifQueryHour(){
 
 }
 
-// runNotifQuery()
 
 function mailerDate(notif_user, episodes){
 console.log("Notif Sent!");
-// console.log("notif_user: ", notif_user);
-// console.log("episodes: ", episodes);
 ShowNotification.update({_id: notif_user._id, tvShowId: notif_user.show_ref.tvShowId}, {oneDay: true})
 .then((msg)=>{
-	// console.log(msg);
+	console.log(msg);
 })
 
-var transporter = nodemailer.createTransport({
- service: 'gmail',
- auth: {
-	 user: 'nitish@creativeappography.com',
-	 pass: 'nitish@123'
-    }
+let mailer = nodemailer.createTransport({
+	service: 'gmail',
+	auth: {
+		user: 'nitish@creativeappography.com',
+		pass: 'nitish@123'
+	}
 });
 
-const mailOptions = {
-  from: 'sender@email.com', // sender address
-  to: `${notif_user.user_id.email}`, // list of receivers
-  subject: 'Notification fron Binged.xyz!', // Subject line
-	text: `${notif_user.show_ref.tvShowName}`,
-  html: `<p>${notif_user.show_ref.tvShowName} S${episodes.season}E${episodes.number} will be released today! Don't miss it!</p>`// plain text body
+mailer.use('compile', hbs({
+	viewPath: './templates',
+	extName: '.hbs'
+}))
+
+let mailOptions = {
+ from: 'nitish@creativeappography.com',
+ to: `${notif_user.user_id.email}`,
+ subject: `Notification fron Binged.xyz ${notif_user.show_ref.tvShowName} S${episodes.season}E${episodes.number}`,
+ template: 'show_notif_mail',
+ context: {
+poster_img : notif_user.show_ref.tvShowImageUrl,
+show_name : notif_user.show_ref.tvShowName,
+episode_season : episodes.season,
+episode_number : episodes.number,
+episode_name : episodes.name,
+episode_airdate : episodes.airdate,
+episode_airtime : episodes.airtime,
+message: "Show will be released in One Day!"
+ }
 };
 
-transporter.sendMail(mailOptions, function (err, info) {
-   if(err)
-     console.log("err: ",  err);
-   else
-     console.log("Mail Sent: ", info);
-});
+mailer.sendMail(mailOptions, (err, done)=>{
+		if(err){
+			console.log(err);
+			return
+		}else {
+			console.log("Sent mail to: ", done);
+		}
+})
+
+
+// var transporter = nodemailer.createTransport({
+//  service: 'gmail',
+//  auth: {
+// 	 user: 'nitish@creativeappography.com',
+// 	 pass: 'nitish@123'
+//     }
+// });
+//
+// const mailOptions = {
+//   from: 'sender@email.com', // sender address
+//   to: `${notif_user.user_id.email}`, // list of receivers
+//   subject: 'Notification fron Binged.xyz!', // Subject line
+// 	text: `${notif_user.show_ref.tvShowName}`,
+//   html: `<p>${notif_user.show_ref.tvShowName} S${episodes.season}E${episodes.number} will be released today! Don't miss it!</p>`// plain text body
+// };
+//
+// transporter.sendMail(mailOptions, function (err, info) {
+//    if(err)
+//      console.log("err: ",  err);
+//    else
+//      console.log("Mail Sent: ", info);
+// });
 
 }
 
@@ -329,27 +321,67 @@ ShowNotification.update({_id: notif_user._id, tvShowId: notif_user.show_ref.tvSh
 	console.log(msg);
 })
 
-var transporter = nodemailer.createTransport({
- service: 'gmail',
- auth: {
-        user: 'nitish@creativeappography.com',
-        pass: 'nitish@123'
-    }
+let mailer = nodemailer.createTransport({
+	service: 'gmail',
+	auth: {
+		user: 'nitish@creativeappography.com',
+		pass: 'nitish@123'
+	}
 });
 
-const mailOptions = {
-  from: 'sender@email.com', // sender address
-  to: `${notif_user.user_id.email}`, // list of receivers
-  subject: 'Notification fron Binged.xyz!', // Subject line
-	text: `${notif_user.show_ref.tvShowName}`,
-  html:`<p>${notif_user.show_ref.tvShowName} S${episodes.season}E${episodes.number} will be releasing in 1 hour! You don't wanna miss it, do you?!</p>`// plain text body
+mailer.use('compile', hbs({
+	viewPath: './templates',
+	extName: '.hbs'
+}))
+
+let mailOptions = {
+ from: 'nitish@creativeappography.com',
+ to: `${notif_user.user_id.email}`,
+ subject: `Notification fron Binged.xyz ${notif_user.show_ref.tvShowName} S${episodes.season}E${episodes.number}`,
+ template: 'show_notif_mail',
+ context: {
+poster_img : notif_user.show_ref.tvShowImageUrl,
+show_name : notif_user.show_ref.tvShowName,
+episode_season : episodes.season,
+episode_number : episodes.number,
+episode_name : episodes.name,
+episode_airdate : episodes.airdate,
+episode_airtime : episodes.airtime,
+message: "Show will be released in One Hour!"
+ }
 };
 
-transporter.sendMail(mailOptions, function (err, info) {
-   if(err)
-     console.log(err)
-   else
-     console.log(info);
-});
+mailer.sendMail(mailOptions, (err, done)=>{
+		if(err){
+			console.log(err);
+			return
+		}else {
+			console.log("Sent mail to: ", done);
+		}
+})
+
+
+// var transporter = nodemailer.createTransport({
+//  service: 'gmail',
+//  auth: {
+//         user: 'nitish@creativeappography.com',
+//         pass: 'nitish@123'
+//     }
+// });
+//
+// const mailOptions = {
+//   from: 'sender@email.com', // sender address
+//   to: `${notif_user.user_id.email}`, // list of receivers
+//   subject: 'Notification fron Binged.xyz!', // Subject line
+// 	text: `${notif_user.show_ref.tvShowName}`,
+//   html:`<p>${notif_user.show_ref.tvShowName} S${episodes.season}E${episodes.number} will be releasing in 1 hour! You don't wanna miss it, do you?!</p>`// plain text body
+// };
+//
+// transporter.sendMail(mailOptions, function (err, info) {
+//    if(err)
+//      console.log(err)
+//    else
+//      console.log(info);
+// });
 
 }

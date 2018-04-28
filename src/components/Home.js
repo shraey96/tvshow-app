@@ -175,7 +175,7 @@ if(this.props.user.isUserLoggedIn === true){
     <h3 className="headingPopular">Popular shows airing tonight!</h3>
 
 {loader}
-
+<br/>
 <Grid fluid>
   <Row>
     {popularShowsAiringTonight}

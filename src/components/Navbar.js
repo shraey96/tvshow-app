@@ -80,8 +80,9 @@ class Simple extends Component {
     logoutUser.then((logout)=>{
       if(logout.success === true){
         this.setState({opensnack: true, msg: `Logout Success!`}, ()=>{
+          this.handleClose();
           setTimeout(()=>{
-             this.props.history.push('/')
+             this.props.history.push('/');
           }, 1000)
         });
       }
@@ -108,37 +109,37 @@ let user;
 let userNotLoggedIn =  (
   <div>
       <Link className="sideLink" to={`/`}>
-      <MenuItem>
+      <MenuItem onClick={this.handleClose}>
       Home
       </MenuItem>
       </Link>
 
       <Link className="sideLink" to={`/more-shows`}>
-      <MenuItem>
+      <MenuItem  onClick={this.handleClose}>
       More Shows
       </MenuItem>
       </Link>
 
       <Link className="sideLink" to={`/register/`}>
-      <MenuItem>
+      <MenuItem  onClick={this.handleClose}>
       Register
       </MenuItem>
       </Link>
 
       <Link className="sideLink" to={`/login/`}>
-      <MenuItem>
+      <MenuItem  onClick={this.handleClose}>
       Login
       </MenuItem>
       </Link>
 
       <Link className="sideLink" to={`/calendar/`}>
-      <MenuItem>
+      <MenuItem  onClick={this.handleClose}>
       Calendar
       </MenuItem>
       </Link>
 
       <Link className="sideLink" to={`/about/`}>
-      <MenuItem>
+      <MenuItem  onClick={this.handleClose}>
       About
       </MenuItem>
       </Link>
@@ -148,37 +149,37 @@ let userNotLoggedIn =  (
 let userLoggedIn = (
   <div>
       <Link className="sideLink" to={`/`}>
-      <MenuItem>
+      <MenuItem  onClick={this.handleClose}>
       Home
       </MenuItem>
       </Link>
 
       <Link className="sideLink" to={`/more-shows`}>
-      <MenuItem>
+      <MenuItem  onClick={this.handleClose}>
       More Shows
       </MenuItem>
       </Link>
 
       <Link className="sideLink" to={`/login/`}>
-      <MenuItem>
+      <MenuItem  onClick={this.handleClose}>
       Welcome {this.props.user.userProfile.username}
       </MenuItem>
       </Link>
 
       <Link className="sideLink" to={`/${this.props.user.userProfile.username}/myshows`}>
-      <MenuItem>
+      <MenuItem  onClick={this.handleClose}>
       My Shows
       </MenuItem>
       </Link>
 
       <Link className="sideLink" to={`/calendar/`}>
-      <MenuItem>
+      <MenuItem  onClick={this.handleClose}>
       Calendar
       </MenuItem>
       </Link>
 
       <Link className="sideLink" to={`/about/`}>
-      <MenuItem>
+      <MenuItem  onClick={this.handleClose}>
       About
       </MenuItem>
       </Link>

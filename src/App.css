@@ -77,7 +77,8 @@ img {
 }
 
 .tvpopularLink{
-  color: white;
+  /* color: orange; */
+  color: #dac297;
   -moz-transition: all .2s ease-in;
   -o-transition: all .2s ease-in;
   -webkit-transition: all .2s ease-in;
@@ -326,4 +327,13 @@ margin-top: 15px;
 
 .about_show_episode_main{
   color: pink
+}
+
+.people_info{
+  margin-bottom: 50px;
+}
+
+.people_info p{
+  color: white;
+  font-size:15px;
 }

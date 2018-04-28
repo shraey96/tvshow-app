@@ -19,7 +19,9 @@ integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJ
     order: 2;
   }
 }
-
+.topnav li a{
+  font-size: 30px;
+}
 
 ul.topnav {
     list-style-type: none;
@@ -68,14 +70,13 @@ p{
 }
 
 .show_poster{
-  margin-right: 60%;
-  height: 540px;
-  width: 295px;
+  margin-right: 40%;
+  padding-left: 70px
 }
 
-.all_stuff{
+/* .all_stuff{
   background-color: black
-}
+} */
 
 .container {
   display: flex;
@@ -84,6 +85,14 @@ p{
 .section {
   flex: 1; /*grow*/
   padding: 20px 20px 20px 20px;
+}
+
+.showInfo{
+  font-size: 20px;
+}
+
+.showInfo p{
+  margin-top: 10px;
 }
 
 @media (max-width: 768px) { /*breakpoint*/
@@ -98,31 +107,33 @@ p{
 </head>
 
 <body>
+<div class="all_stuff">
 
-
-<div>
   <ul class="topnav">
     <li><a class="active" href="https://www.binged.xyz">Binged Notifications</a></li>
   </ul>
 
   <center>
   <div>
-    <h3>
-   Silicon Valley<br>
-    </h3>
+    <h2>
+   {{show_name}}
+   <br>
+ </h2>
   </div>
   </center>
 
 <br><br>
 
-  <div style="margin:0 auto; width:250px;">
+  <div style="margin:0 auto; width:350px;" class="showInfo">
     <center>
-    <img class="show_poster" src="http://screencrush.com/files/2016/03/Silicon-Valley-poster-pic.jpg"  />
-    <p>Silicon Valley (S05E01)</p>
-    <p>Episode Name: XYZ</p>
-    <p>Air's On: HBO</p>
-    <p>Airtime: 22:00</p>
-    <p>Airdate: 12 </p>
+    <img class="show_poster" src={{poster_img}}  /><br>
+    <p>{{show_name}} (S{{episode_season}}E{{episode_number}})</p><br>
+    <p><i>{{episode_name}}</i></p><br>
+    <p>Air Date: {{episode_airdate}}</p><br>
+    <p>Air Time:{{episode_airtime}}</p><br>
+    <br>
+    <br>
+    <i>{{message}}</i>
     </center>
   </div>
 
@@ -138,7 +149,7 @@ p{
 <br>
 <hr>
 
-
+<p>*This is an auto-generted mail. Please do not reply to this email.</p>
 
 
 

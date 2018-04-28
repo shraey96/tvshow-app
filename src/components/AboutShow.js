@@ -16,6 +16,10 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { SocialIcon } from 'react-social-icons';
 import ShareButton from 'react-social-share-buttons';
 
+import { Google } from 'react-social-sharing';
+import { Twitter } from 'react-social-sharing';
+import { Facebook } from 'react-social-sharing';
+
 class AboutShow extends Component {
 
   constructor(){
@@ -156,9 +160,11 @@ if(currentShow){
 if(currentShow.image){
   image = <img src={currentShow.image.medium}/>
 }else {
-  image = '';
+  image = <img src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/vintage-tv-poster-irina-march.jpg" height="295px" width="210px"/>;
 }
-console.log(currentShow);
+
+let shareURL = (window.location.href);
+
 col1 = (
 
 
@@ -167,9 +173,9 @@ col1 = (
         {image}<br/>
         {button}<br/>
         <br/>
-      <SocialIcon url="https://jaketrent.com" network="facebook" />
-      <SocialIcon url="test.com" network="google" />
-      <SocialIcon url="https://jaketrent.com" network="twitter" />
+<Facebook link={shareURL}/>
+<Google link={shareURL}/>
+<Twitter link={shareURL}/>
 
       </div>
     </Col>
@@ -182,8 +188,8 @@ col2 = (
       <p className="about_show_lang">({currentShow.language})</p>
       <p className="about_show_lang">Run time: {currentShow.runtime} minutes</p>
       <i><a href={currentShow.officialSite} className="about_show_official">officialSite</a></i>
-      <p className="about_show_lang">Air's On: {currentShow.network.name}</p>
-      <p className="about_show_lang"><img align="middle" src="http://www.iconsplace.com/download/orange-rating-star-512.png" height="25px" width="25px"></img>{currentShow.rating.average}</p>
+      <p className="about_show_lang">Air's On: <span style={{"color":"red"}}>{currentShow.network.name}</span></p>
+      <p className="about_show_lang"><img align="middle" src="https://www.iconsplace.com/download/orange-rating-star-512.png" height="25px" width="25px"></img>{currentShow.rating.average}</p>
       <p className="about_show_summary">{striptags(this.props.currentShow.summary)} </p>
 
       </div>
