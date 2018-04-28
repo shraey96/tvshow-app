@@ -238,6 +238,44 @@ router.get('/tvseries',ensureAuthenticated, function(req, res){
     })
 });
 
+router.get('/profile',ensureAuthenticated, function(req, res){
+    User.findOne({_id:req.user._id})
+    .then((user)=>{
+        if(user){
+            res.send({
+                success:true,
+                info:user
+            })
+        }else{
+            res.send({
+                success:false,
+                info: 'User not Found'
+            })
+        }
+    })
+});
+
+router.put('/profile',ensureAuthenticated, function(req, res){
+    User.update({_id: req.user._id}, req.body, function(err, raw) {
+        if (err) {
+          res.send(err);
+        }
+        User.findOne({_id:req.user._id})
+        .then((user)=>{
+            if(user){
+                res.send({
+                    success:true,
+                    info:user
+                })
+            }else{
+                res.send({
+                    success:false,
+                    info: 'User not Found'
+                })
+            }
+        })
+      });   
+});
 
 
 router.put('/episodeWatched',ensureAuthenticated, function(req, res){
