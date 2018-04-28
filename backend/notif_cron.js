@@ -19,9 +19,10 @@ let db = mongoose.connection;
 //check for db errors
 db.once('open', function(){
 	console.log('Connected to MongoDB');
-		notifQueryDate();
-		notifQueryHour();
-		// hourTest()
+		// notifQueryDate();
+		// notifQueryHour();
+		// webPushDay()
+		sendHBSMail()
 });
 db.on('error', function(err){
 	console.log(err);
@@ -31,7 +32,55 @@ cron.schedule('* * * * *', function(){
   console.log('running a task every minute');
 
 });
-webPushDay()
+
+
+function sendHBSMail(){
+
+	let mailer = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'nitish@creativeappography.com',
+      pass: 'nitish@123'
+    }
+  });
+
+  mailer.use('compile', hbs({
+    viewPath: './templates',
+    extName: '.hbs'
+  }))
+
+	let mailOptions = {
+	 from: 'nitish@creativeappography.com',
+	 to: 'shraey96@gmail.com',
+	 subject: 'Binged Notification',
+	 template: 'show_notif_mail',
+	 context: {
+		 // data: imageUrl,
+		 // c1: c1Percent,
+		 // c2: c2Percent,
+		 // c3: c3Percent,
+		 // c1Count: c1,
+		 // c2Count: c2,
+		 // c3Count: c3
+	 }
+	};
+
+	mailer.sendMail(mailOptions, (err, done)=>{
+			if(err){
+				console.log(err);
+				return
+			}else {
+				console.log("Sent mail to: ", user_email);
+			}
+	})
+
+}
+
+
+
+
+
+
 function webPushDay(){
 
 console.log("webPushDay");
@@ -293,7 +342,7 @@ const mailOptions = {
   to: `${notif_user.user_id.email}`, // list of receivers
   subject: 'Notification fron Binged.xyz!', // Subject line
 	text: `${notif_user.show_ref.tvShowName}`,
-  html:`<p>${notif_user.show_ref.tvShowName} S${episodes.season}E${episodes.number} will be releasing in 1 hour! Go watch it now!</p>`// plain text body
+  html:`<p>${notif_user.show_ref.tvShowName} S${episodes.season}E${episodes.number} will be releasing in 1 hour! You don't wanna miss it, do you?!</p>`// plain text body
 };
 
 transporter.sendMail(mailOptions, function (err, info) {

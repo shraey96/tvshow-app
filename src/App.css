@@ -317,3 +317,13 @@ margin-top: 15px;
   color: white;
   font-size:20px;
 }
+
+.about_show_episode p{
+  color: white;
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+.about_show_episode_main{
+  color: pink
+}

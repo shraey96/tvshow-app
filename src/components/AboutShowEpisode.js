@@ -68,10 +68,10 @@ col1 = (
 
   col2 = (
     <Col xs={12} md={12}>
-      <div id={currentShowEpisode.id}>
+      <div id={currentShowEpisode.id} className="about_show_episode">
       <p>Name: {currentShowEpisode.name} </p>
       <p>Season: {currentShowEpisode.season} </p>
-      <p>Number: {currentShowEpisode.number} </p>
+      <p>Episode Number: {currentShowEpisode.number} </p>
       <p>Run time: {currentShowEpisode.runtime} minutes</p>
       <p>Airdate: {currentShowEpisode.airdate}</p>
       <p>Sumamry: {striptags(currentShowEpisode.summary)} </p>
@@ -91,8 +91,9 @@ col1 = (
     return (
       <div className="App FullHeight">
 
-      <u><h3>{this.props.match.params.tvshowname} S{this.props.currentShowEpisode.season}E{this.props.currentShowEpisode.number}</h3></u>
-        <Grid fluid>
+      <h3 className="headingPopular">{this.props.match.params.tvshowname} (S{this.props.currentShowEpisode.season}E{this.props.currentShowEpisode.number})</h3>
+<br/>
+      <Grid fluid>
           <Row>
 {col1}
 {col2}

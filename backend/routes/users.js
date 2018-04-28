@@ -601,7 +601,6 @@ User.update({_id: req.user._id},{os_id: req.body.osid})
 .then((done)=>{
 	res.json({succes: true, msg: "OS_ID updated!"});
 })
-
 });
 
 router.post('/notification', function(req, res){
