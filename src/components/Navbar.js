@@ -146,6 +146,8 @@ let userNotLoggedIn =  (
 </div>
     )
 
+
+
 let userLoggedIn = (
   <div>
       <Link className="sideLink" to={`/`}>
@@ -162,7 +164,7 @@ let userLoggedIn = (
 
       <Link className="sideLink" to={`/${this.props.user.userProfile.username}/profile`}>
       <MenuItem  onClick={this.handleClose}>
-      Welcome {this.props.user.userProfile.username}
+      {this.props.user.userProfile.username}'s Profile
       </MenuItem>
       </Link>
 

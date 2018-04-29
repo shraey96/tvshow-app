@@ -159,6 +159,12 @@ constructor(){
 
   render() {
 
+    // <FacebookLogin
+    //    appId="415911222188406"
+    //    autoLoad={false}
+    //    fields="name,email,picture"
+    //    callback={this.responseFacebook} />
+
     return (
 
 <MuiThemeProvider>
@@ -207,11 +213,7 @@ constructor(){
 <h3 className="register_header">Register With Social Media!</h3>
 <br />
 <br />
-<FacebookLogin
-   appId="415911222188406"
-   autoLoad={false}
-   fields="name,email,picture"
-   callback={this.responseFacebook} />
+
 
     <br/>
     <br/>

@@ -99,6 +99,16 @@ constructor(){
 
   render() {
 
+    // <FacebookLogin
+    //    appId="415911222188406"
+    //    autoLoad={false}
+    //    fields="name,email,picture"
+    //    callback={this.responseFacebook}
+    //    className="facebookLogin"
+    //    />
+
+
+
     return (
 
 <MuiThemeProvider>
@@ -130,6 +140,7 @@ constructor(){
     <br />
     <RaisedButton label="Login" primary={true} onClick={this.Login}/><br/><br/>
 <Link to={`/register`} className="auth_redirect">Register</Link><br/><br/>
+<Link to={`/forgot-password`} className="auth_redirect">Forgot Password?</Link><br/><br/>
 </form>
 
 </Col>
@@ -140,13 +151,7 @@ constructor(){
 <h3 className="login_header">Login With Social Media!</h3>
 <br />
 <br />
-<FacebookLogin
-   appId="415911222188406"
-   autoLoad={false}
-   fields="name,email,picture"
-   callback={this.responseFacebook}
-   className="facebookLogin"
-   />
+
 
     <br/>
     <br/>

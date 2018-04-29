@@ -25,16 +25,16 @@ mailer.use('compile', hbs({
 }))
 
 router.post('/', function(req, res){
-    var randomPassword = randomstring.generate(6);
+    let randomPassword = randomstring.generate(6);
+
     console.log(randomPassword);
     bcrypt.genSalt(10, function(err, salt){
         bcrypt.hash(randomPassword, salt, function(err, hash){
             if(err){
                 console.log(err);
             }
-            req.body.password = hash;
-        });
-    });
+            let password = hash;
+
     User.findOne({'email': req.body.email})
     .then((user)=>{
         if(!user){
@@ -43,7 +43,9 @@ router.post('/', function(req, res){
                 msg:"email not found",
             })
         }else{
-            User.update({_id: user._id}, req.body, function(err, raw) {
+
+            User.update({_id: user._id}, {password: password}, function(err, raw) {
+							console.log(raw);
                 let mailOptions = {
                     from: 'nitish@creativeappography.com',
                     to: `${req.body.email}`,
@@ -71,6 +73,10 @@ router.post('/', function(req, res){
             })
         }
     })
+
+	});
+});
+
 
 })
 

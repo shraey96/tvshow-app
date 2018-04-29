@@ -9,6 +9,7 @@ import AboutShowEpisode from './AboutShowEpisode';
 import Search from './Search';
 import Login from './Login';
 import Register from './Register';
+import ForgotPassword from './ForgotPassword';
 import About from './About';
 import MyShows from './MyShows';
 import Calendar from './Calendar';
@@ -38,6 +39,7 @@ class Main extends Component {
 
 <Route exact path="/about" component={About}/>
 <Route exact path="/login" component={Login}/>
+<Route exact path="/forgot-password" component={ForgotPassword}/>
 <Route exact path="/register" component={Register}/>
 <Route exact path="/search/:query" component={Search}/>
 <Route exact path="/shows/:tvshow/:id" component={AboutShow}/>

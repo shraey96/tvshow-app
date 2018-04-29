@@ -53,7 +53,6 @@ fetchProfile(){
 }
 
 updateToggles(type, bool){
-  this.setState({loader: true})
   let data;
 
   console.log("update toggle");
@@ -78,7 +77,7 @@ updateToggles(type, bool){
         .then(profile => profile.json())
         .then((profile) => {
           if(profile.success===true){
-          this.setState({loader: false, profileInfo:profile.info})
+          this.setState({profileInfo:profile.info})
           this.props.userProfile(profile.info);
         }
           })
@@ -124,16 +123,18 @@ if(this.state.loader === true){
 if(this.props.user.isUserLoggedIn === true){
 
  imgCol = (
-  <Col xs={12} md={4}  sm={4}>
-  <img src={this.state.profileInfo.profile_Img || 'http://backgroundcheckall.com/wp-content/uploads/2017/12/ajax-loading-gif-transparent-background-5.gif'} />
+  <Col xs={12} md={4}  sm={12}>
+  <img className="user_profile_img" src={this.state.profileInfo.profile_Img || 'https://www.shareicon.net/download/2016/09/01/822711_user_512x512.png'} />
   </Col>
 )
 
 profileInfo = (
-    <Col xs={12} md={8}  sm={4}>
-    <p><span>{this.state.profileInfo.username}</span> </p>
-    <p><span>{this.state.profileInfo.email}</span> </p>
+    <Col xs={12} md={8}  sm={12}>
+    <div className="user_profile">
+    <p className="user_profile_main"><span>{this.state.profileInfo.username}</span> </p>
+    <p className="user_profile_main"><span>{this.state.profileInfo.email}</span> </p>
     <p>Date Joined: <span>{moment(this.state.profileInfo.created_at).format('MMMM Do YYYY')}</span> </p>
+    </div>
     </Col>
 )
 
@@ -146,6 +147,7 @@ settings = (
   labelPosition="left"
   onToggle={this.onToggleWeb}
   toggled={this.state.profileInfo.oneSignalNotif}
+  className="toggle"
   />
 
   <Toggle
@@ -153,6 +155,7 @@ settings = (
   labelPosition="left"
   onToggle={this.onToggleEmail}
   toggled={this.state.profileInfo.emailNotif}
+  className="toggle"
   />
   </Col>
 
@@ -167,7 +170,8 @@ settings = (
 
 <MuiThemeProvider>
       <div className="App">
-<h3>My Profile Page</h3>
+      <br/>
+<h3>My Profile</h3>
 <br />
   {loader}
         <Grid fluid>

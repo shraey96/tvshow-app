@@ -80,7 +80,7 @@ res.send({msg: "Welcome to tvshowapp API"})
 // route files
 app.use('/users', users);
 app.use('/feedbacks', feedbacks);
-app.use('/forgotPassword', forgotPassword);
+app.use('/forgotpassword', forgotPassword);
 
 // start server
 app.listen(3005, function(){

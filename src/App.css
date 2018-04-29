@@ -337,3 +337,25 @@ margin-top: 15px;
   color: white;
   font-size:15px;
 }
+
+.user_profile p{
+  color: white;
+  font-size: 17px;
+  margin-top: 40px;
+}
+
+.user_profile_main{
+  font-size: 35px!important;
+}
+
+.toggle{
+  font-size: 20px;
+  color: white!important;
+  margin-top: 25px;
+}
+
+.user_profile_img{
+height: 250px;
+width: 250px;
+ border-radius: 20%;
+}

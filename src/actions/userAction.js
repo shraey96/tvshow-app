@@ -47,9 +47,10 @@ export function LoginUser(email, password) {
                 console.log(userData);
 
 
-sendOSID();
+
 
                 if(userData.success === true){
+                  sendOSID();
                         dispatch({
                             type: LOGIN_USER,
                             payload: userData
@@ -87,9 +88,10 @@ console.log(credentials);
               console.log(userData);
 
 
-              sendOSID();
+
 
               if(userData.success === true){
+                sendOSID();
                       dispatch({
                           type: LOGIN_USER_GOOGLE,
                           payload: userData
