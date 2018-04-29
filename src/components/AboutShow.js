@@ -10,11 +10,11 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {UserFollowShow, UserUnFollowShow} from '../actions/userAction';
 import striptags from 'striptags';
 import Snackbar from 'material-ui/Snackbar';
-import Episodes from './Episodes';
+// import Episodes from './Episodes';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import { SocialIcon } from 'react-social-icons';
-import ShareButton from 'react-social-share-buttons';
+// import { SocialIcon } from 'react-social-icons';
+// import ShareButton from 'react-social-share-buttons';
 
 import { Google } from 'react-social-sharing';
 import { Twitter } from 'react-social-sharing';
@@ -124,7 +124,7 @@ let info3;
 let loader;
 
 if(this.state.loader === true){
-  loader = (<img src="https://s3.amazonaws.com/binged-images/ajax-loading-gif-transparent-background-5.gif" height="50px" width="50px"/>);
+  loader = (<img alt="n/a" src="https://s3.amazonaws.com/binged-images/ajax-loading-gif-transparent-background-5.gif" height="50px" width="50px"/>);
 }else {
   loader = "";
 }
@@ -151,16 +151,15 @@ if(this.props.user.isUserLoggedIn === true){
 
 
 let currentShow = this.props.currentShow;
-let currentShowInfo;
 let col1;
 let col2;
 
 if(currentShow){
   let image;
 if(currentShow.image){
-  image = <img src={currentShow.image.medium}/>
+  image = <img alt="n/a" src={currentShow.image.medium}/>
 }else {
-  image = <img src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/vintage-tv-poster-irina-march.jpg" height="295px" width="210px"/>;
+  image = <img alt="n/a" src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/vintage-tv-poster-irina-march.jpg" height="295px" width="210px"/>;
 }
 
 let shareURL = (window.location.href);
@@ -189,7 +188,7 @@ col2 = (
       <p className="about_show_lang">Run time: {currentShow.runtime} minutes</p>
       <i><a href={currentShow.officialSite} className="about_show_official">officialSite</a></i>
       <p className="about_show_lang">Air's On: <span style={{"color":"red"}}>{currentShow.network.name}</span></p>
-      <p className="about_show_lang"><img align="middle" src="https://www.iconsplace.com/download/orange-rating-star-512.png" height="25px" width="25px"></img>{currentShow.rating.average}</p>
+      <p className="about_show_lang"><img alt="n/a" align="middle" src="https://www.iconsplace.com/download/orange-rating-star-512.png" height="25px" width="25px"></img>{currentShow.rating.average}</p>
       <p className="about_show_summary">{striptags(this.props.currentShow.summary)} </p>
 
       </div>
@@ -215,7 +214,7 @@ info3 = (
   )
 
 }else {
-  currentShowInfo = "";
+  // currentShowInfo = "";
   col1='';
   col2='';
   info1='';

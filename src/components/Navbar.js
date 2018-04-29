@@ -26,7 +26,8 @@ class Simple extends Component {
       open: false,
       value : '',
       opensnack: false,
-      dataSource: []
+      dataSource: [],
+      msg: ''
         };
 
 
@@ -164,7 +165,7 @@ let userLoggedIn = (
 
       <Link className="sideLink" to={`/${this.props.user.userProfile.username}/profile`}>
       <MenuItem  onClick={this.handleClose}>
-      {this.props.user.userProfile.username}'s Profile
+      {this.props.user.userProfile.username}s Profile
       </MenuItem>
       </Link>
 
@@ -217,12 +218,20 @@ user = userLoggedIn;
         </div>
       );
 
+
+      // <AppBar
+      //   title="Binged"
+      //   iconClassNameRight="muidocs-icon-navigation-expand-more"
+      //   onLeftIconButtonClick = {this.handleToggle}
+      //   onRequestChange={(open) => this.setState({open})}
+      //   iconElementRight={rightButtons}
+      // />
+
     return(
        <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-
+         <div>
     <AppBar
       title="Binged"
-      iconClassNameRight="muidocs-icon-navigation-expand-more"
       onLeftIconButtonClick = {this.handleToggle}
       onRequestChange={(open) => this.setState({open})}
       iconElementRight={rightButtons}
@@ -242,7 +251,7 @@ user = userLoggedIn;
             autoHideDuration={2000}
             onRequestClose={this.handleRequestClose}
     />
-
+</div>
       </MuiThemeProvider>
     )
   }

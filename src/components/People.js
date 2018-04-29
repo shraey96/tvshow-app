@@ -7,10 +7,10 @@ import {fetchShowByID} from '../actions/showsAction';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import {Link} from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import striptags from 'striptags';
+// import striptags from 'striptags';
 
-import Episodes from './Episodes';
-import Cast from './Cast';
+// import Episodes from './Episodes';
+// import Cast from './Cast';
 import {Animated} from "react-animated-css";
 
 class People extends Component {
@@ -68,7 +68,7 @@ componentDidMount(){
 
   render() {
 
-let personInfo;
+// let personInfo;
 let personInfo1;
 let personInfo2;
 let image;
@@ -76,7 +76,7 @@ let image;
 let loader;
 
 if(this.state.loader === true){
-  loader = (<img src="https://s3.amazonaws.com/binged-images/ajax-loading-gif-transparent-background-5.gif" height="50px" width="50px"/>);
+  loader = (<img alt="n/a" src="https://s3.amazonaws.com/binged-images/ajax-loading-gif-transparent-background-5.gif" height="50px" width="50px"/>);
 }else {
   loader = "";
 }
@@ -84,7 +84,7 @@ if(this.state.loader === true){
 
 if(this.state.personInfo){
   if(this.state.personInfo.image){
-    image = <img src={this.state.personInfo.image.medium} />
+    image = <img alt="n/a" src={this.state.personInfo.image.medium} />
   }else {
     image = '';
   }
@@ -126,9 +126,9 @@ header = <h3>Starring In: </h3>
 personShows = this.state.personShows.map((show)=>{
   console.log(show);
   if(show.image){
-    image2 = <Link to={`/shows/${show.name}/${show.id}`}><img src={show.image.medium} className="show_img"/></Link>;
+    image2 = <Link to={`/shows/${show.name}/${show.id}`}><img alt="n/a" src={show.image.medium} className="show_img"/></Link>;
   }else {
-    image2 = <img src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/vintage-tv-poster-irina-march.jpg" height="295px" width="210px" className="show_img"/>;
+    image2 = <img alt="n/a" src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/vintage-tv-poster-irina-march.jpg" height="295px" width="210px" className="show_img"/>;
   }
   return(
     <Col xs={12} md={4} sm={4}>
@@ -136,7 +136,7 @@ personShows = this.state.personShows.map((show)=>{
             <div className="tvpopular">
             {image2}<br/>
           <b style={{"color": "white", "font-size":"20px"}}>{show.name}</b>
-            <p><img align="middle" src="https://www.iconsplace.com/download/orange-rating-star-512.png" height="25px" width="25px"></img> <span style={{"color":"white"}}>{show.rating.average || 'n/a'} </span></p>
+            <p><img alt="n/a" align="middle" src="https://www.iconsplace.com/download/orange-rating-star-512.png" height="25px" width="25px"></img> <span style={{"color":"white"}}>{show.rating.average || 'n/a'} </span></p>
             <br/>
             </div>
     </Animated>

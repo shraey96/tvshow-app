@@ -160,13 +160,13 @@ if(this.props.user.isUserLoggedIn === true){
 
 let loader;
 if(this.state.loader === true){
-  loader = <img src="https://s3.amazonaws.com/binged-images/ajax-loading-gif-transparent-background-5.gif" height="50px" width="50px"/>
+  loader = <img alt="n/a" src="https://s3.amazonaws.com/binged-images/ajax-loading-gif-transparent-background-5.gif" height="50px" width="50px"/>
 }else {
   loader = <h3 className="show_episode_header">{this.props.match.params.tvshow} Episodes</h3>;
 }
 
   console.log(this.state.episodes);
-  let header;
+  // let header;
     if(this.state.episodes.length>0){
       let count;
       let tag;
@@ -195,26 +195,9 @@ if(this.state.loader === true){
         count=0;
       }
 
-      let newEpisodeArray = []
 
       episodes = this.state.episodes.map((episode, i)=>{
 
-        // if(count === episode.season){
-        //   newEpisodeArray.push(episode.id);
-        // }else {
-        //   newEpisodeArray = [];
-        // }
-        // console.log(newEpisodeArray);
-        // console.log(presentShowArray);
-        //
-        // let found = newEpisodeArray.some(r=> presentShowArray.indexOf(r) >= 0)
-        // console.log(found);
-        // console.log(episode);
-        // if(found === true){
-        //   buttonAll = (<button onClick={()=>{this.handleUnWatch(episode.id, showid)}}>UnWatch All</button>);
-        // }else {
-        //   buttonAll = (<button onClick={()=>{this.handleSeasonWatch(episode.id, showid)}}>Watch All</button>);
-        // }
 
         let episodeIn = (presentShowArray.indexOf(episode.id))
         if(episodeIn>-1){
@@ -232,7 +215,7 @@ if(this.state.loader === true){
         }
 
         if(count===episode.season){
-          tag = (<h3></h3>)
+          tag = '';
         }else {
           count=episode.season
           tag= (<div><h1>Season: {count}</h1></div>)
@@ -260,7 +243,7 @@ if(this.state.loader === true){
     }
     else {
       episodes = "";
-      header= "";
+      // header= "";
     }
 
 

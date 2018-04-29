@@ -98,7 +98,7 @@ let show = this.props.shows.shows;
 let loader;
 
 if(this.state.loader === true){
-  loader = (<img src="https://s3.amazonaws.com/binged-images/ajax-loading-gif-transparent-background-5.gif" height="50px" width="50px"/>);
+  loader = (<img src="https://s3.amazonaws.com/binged-images/ajax-loading-gif-transparent-background-5.gif" height="50px" width="50px" alt="n/a"/>);
 }else {
   loader = "";
 }
@@ -135,9 +135,9 @@ if(this.props.user.isUserLoggedIn === true){
 
    let image;
   if(tvshow.show.image){
-     image = <Link to={`/shows/${tvshow.show.name}/${tvshow.show.id}`}><img src={tvshow.show.image.medium} className="show_img"/></Link>
+     image = <Link to={`/shows/${tvshow.show.name}/${tvshow.show.id}`}><img alt="n/a" src={tvshow.show.image.medium} className="show_img"/></Link>
 }else {
-     image = <Link to={`/shows/${tvshow.show.name}/${tvshow.show.id}`}><img src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/vintage-tv-poster-irina-march.jpg" height="295px" width="210px" className="show_img"/></Link>
+     image = <Link to={`/shows/${tvshow.show.name}/${tvshow.show.id}`}><img alt="n/a" src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/vintage-tv-poster-irina-march.jpg" height="295px" width="210px" className="show_img"/></Link>
 }
     return (
       <Col xs={12} md={3} sm={4} key={tvshow.id}>

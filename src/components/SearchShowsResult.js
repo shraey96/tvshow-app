@@ -10,7 +10,7 @@ import {Animated} from "react-animated-css";
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import Snackbar from 'material-ui/Snackbar';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import MoreShowsSearch from './MoreShowsSearch';
+// import MoreShowsSearch from './MoreShowsSearch';
 import { withRouter } from 'react-router-dom';
 import RaisedButton from 'material-ui/RaisedButton';
 // import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -144,7 +144,7 @@ let pagenationTag;
 let userShowInfo = this.props.user.userFollows;
 
 if(this.state.loader === true){
-  loader = (<img src="https://s3.amazonaws.com/binged-images/ajax-loading-gif-transparent-background-5.gif" height="50px" width="50px"/>);
+  loader = (<img alt="n/a" src="https://s3.amazonaws.com/binged-images/ajax-loading-gif-transparent-background-5.gif" height="50px" width="50px"/>);
 }else {
   loader = "";
 }
@@ -182,9 +182,9 @@ if(this.props.shows.searchShowCustom.length!==0){
     let image;
     let rating;
     if(tvshow.tvShowImageUrl){
-       image = <Link to={`/shows/${tvshow.tvShowName}/${tvshow.tvShowId}`}><img className="show_img" src={tvshow.tvShowImageUrl}/></Link>
+       image = <Link to={`/shows/${tvshow.tvShowName}/${tvshow.tvShowId}`}><img alt="n/a" className="show_img" src={tvshow.tvShowImageUrl}/></Link>
   }else {
-       image = <Link to={`/shows/${tvshow.tvShowName}/${tvshow.tvShowId}`}><img className="show_img" src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/vintage-tv-poster-irina-march.jpg" height="295px" width="210px"/></Link>
+       image = <Link to={`/shows/${tvshow.tvShowName}/${tvshow.tvShowId}`}><img alt="n/a" className="show_img" src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/vintage-tv-poster-irina-march.jpg" height="295px" width="210px"/></Link>
   }
 
   if(tvshow.tvShowRating){
@@ -201,7 +201,7 @@ if(this.props.shows.searchShowCustom.length!==0){
           <br/>
           <p className="show_name"><Link className="tvpopularLink" to={`/shows/${tvshow.tvShowName}}/${tvshow.tvShowId}`}>{tvshow.tvShowName}</Link> </p>
 
-          <p style={{"color" : "white"}}><img align="middle" src="http://www.iconsplace.com/download/orange-rating-star-512.png" height="25px" width="25px"></img>{rating}</p>
+          <p style={{"color" : "white"}}><img alt="n/a" align="middle" src="http://www.iconsplace.com/download/orange-rating-star-512.png" height="25px" width="25px"></img>{rating}</p>
           <p>{button}</p>
           </div>
   </Animated>
