@@ -53,7 +53,7 @@ passport.use(new CustomStrategy(
               let objToCreate = {
                 username: guser.name,
                 email: guser.email,
-                profile_Img: guser.picture + '?sz=500',
+                profile_Img: guser.picture + '?sz=250',
                 google_id: req.body.google_id
               }
               User.create(objToCreate)

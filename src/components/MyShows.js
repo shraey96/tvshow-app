@@ -26,7 +26,7 @@ if(props.user.isUserLoggedIn === true){
     }
     percentageWatched = Percentage(shows.episodeWatched.length, shows.show_ref.totalEpisodeCount)
     return(
-      <Col xs={12} md={3}  key={shows._id}>
+      <Col xs={12} md={3}  sm={4} key={shows._id}>
 <Animated animationIn="bounceInLeft" animationOut="fadeOut" isVisible={true}>
         <div className="tvpopular">
         {image}
@@ -42,7 +42,7 @@ if(props.user.isUserLoggedIn === true){
   })
 }else {
   usershows = (
-    <Col xs={12} md={12}>
+    <Col xs={12} md={12}  sm={4}>
         <h3 style={{"color":"white"}}>Looks like you haven't followed any shows!</h3>
     </Col>
   )

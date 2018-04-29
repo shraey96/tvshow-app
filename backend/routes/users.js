@@ -15,7 +15,7 @@ function ensureAuthenticated(req, res, next){
 	if(req.isAuthenticated()){
 		return next();
 	} else {
-		res.send({
+		res.json({
             success:false,
             msg:"not authenticated"
         });
@@ -184,7 +184,7 @@ router.get('/shows', function(req, res){
 //
 //         Promise.all(showPromise)
 //         .then((done)=>{
-//           // res.send({done})
+//           // res.json({done})
 //           console.log("DONE FETCHING AND STORING!");
 //           if(page===145){
 //               console.log("Fetched All shows");
@@ -225,12 +225,12 @@ router.get('/tvseries',ensureAuthenticated, function(req, res){
     .populate('tvShowInfo.show_ref')
     .then((user)=>{
         if(user){
-            res.send({
+            res.json({
                 success:true,
                 info:user
             })
         }else{
-            res.send({
+            res.json({
                 success:false,
                 info: ''
             })
@@ -242,12 +242,12 @@ router.get('/profile', ensureAuthenticated, function(req, res){
     User.findOne({_id:req.user._id})
     .then((user)=>{
         if(user){
-            res.send({
+            res.json({
                 success:true,
                 info:user
             })
         }else{
-            res.send({
+            res.json({
                 success:false,
                 info: 'User not Found'
             })
@@ -258,17 +258,17 @@ router.get('/profile', ensureAuthenticated, function(req, res){
 router.put('/profile', ensureAuthenticated, function(req, res){
     User.update({_id: req.user._id}, req.body, function(err, raw) {
         if (err) {
-          res.send(err);
+          res.json(err);
         }
         User.findOne({_id:req.user._id})
         .then((user)=>{
             if(user){
-                res.send({
+                res.json({
                     success:true,
                     info:user
                 })
             }else{
-                res.send({
+                res.json({
                     success:false,
                     info: 'User not Found'
                 })
@@ -291,7 +291,7 @@ router.put('/episodeWatched',ensureAuthenticated, function(req, res){
     // let options = {new: true, upsert: true}
     //   TvShow.findOneAndUpdate (query, update, options, function(err, result){
     //     if(result){
-    //               res.send({
+    //               res.json({
     //                   succes: true,
     //                   msg: "Episode Added",
     //                   result: result
@@ -305,7 +305,7 @@ router.put('/episodeWatched',ensureAuthenticated, function(req, res){
                   TvShow.findOne({user_id: req.user._id})
                   .populate('tvShowInfo.show_ref')
                   .then((user)=>{
-                    res.send({
+                    res.json({
                         success: true,
                         msg: "Episode Added",
                         user: user
@@ -314,7 +314,7 @@ router.put('/episodeWatched',ensureAuthenticated, function(req, res){
 
 
             }else{
-                res.send({
+                res.json({
                     success:false,
                     msg: "Episode already Exist"
                 })
@@ -331,14 +331,14 @@ router.put('/episodeWatched',ensureAuthenticated, function(req, res){
                     TvShow.findOne({user_id: req.user._id})
                         .populate('tvShowInfo.show_ref')
                         .then((user)=>{
-                        res.send({
+                        res.json({
                             success: true,
                             msg: "Episode Deleted.",
                             user: user
                         });
                     });
                 }else{
-                    res.send({
+                    res.json({
                         success:false,
                         msg: "Episode Not Found"
                     })
@@ -404,7 +404,7 @@ function proceedToAdd(show){
                 TvShow.findOne({user_id: req.user._id})
                 .populate('tvShowInfo.show_ref')
                 .then((user)=>{
-                res.send({
+                res.json({
                     success: true,
                     msg: "Show followed.",
                     result: user
@@ -434,7 +434,7 @@ function proceedToAdd(show){
           .populate('tvShowInfo.show_ref')
            .then((tv)=>{
                if(tv){
-                   res.send({
+                   res.json({
                       success: true,
                       msg: "Show Exist.",
                       tv:tv
@@ -456,7 +456,7 @@ function proceedToAdd(show){
                               TvShow.findOne({user_id: req.user._id})
                               .populate('tvShowInfo.show_ref')
                               .then((user)=>{
-                                res.send({
+                                res.json({
                                   success: true,
                                   msg: "Show followed.",
                                   result: user
@@ -506,7 +506,7 @@ router.post('/userTvInfo/unfollow',ensureAuthenticated, function (req, res) {
             TvShow.findOne({user_id: req.user._id})
                 .populate('tvShowInfo.show_ref')
                 .then((user)=>{
-                res.send({
+                res.json({
                     success: true,
                     msg: "Show unfollowed.",
                     result: user
@@ -527,14 +527,14 @@ router.post('/userTvInfo/unfollow',ensureAuthenticated, function (req, res) {
 //                 TvShow.findOne({user_id: req.user._id})
 //                           .populate('tvShowInfo.show_ref')
 //                           .then((user)=>{
-//                             res.send({
+//                             res.json({
 //                               success: true,
 //                               msg: "Episode Added.",
 //                               result: user
 //                             });
 //                           });
 //             }else{
-//                 res.send({
+//                 res.json({
 //                     success:false,
 //                     msg: "Episode already Exist"
 //                 })
@@ -547,7 +547,7 @@ router.post('/register', function(req, res, next){
     User.findOne({'email': req.body.email})
     .then((user)=>{
         if(user){
-            res.send({
+            res.json({
                 success:false,
                 msg:"User Already Exists.",
             })
@@ -561,7 +561,7 @@ router.post('/register', function(req, res, next){
                         req.body.password = hash;
                         User.create(req.body)
                         .then((newuser)=>{
-                            res.send({
+                            res.json({
                                 success:true,
                                 msg:"User Created.",
                             })
@@ -608,7 +608,7 @@ router.post('/login', function(req, res, next){
                     .populate('tvShowInfo.show_ref')
 										.populate('user_id')
                     .then((userData)=>{
-                    res.send({
+                    res.json({
                         success: true,
                         msg: "authenticated.",
                         result: userData
@@ -663,7 +663,7 @@ router.post('/login/google', function(req, res, next){
 								.populate('tvShowInfo.show_ref')
 								.populate('user_id')
 								.then((userData)=>{
-								res.send({
+								res.json({
 										success: true,
 										msg: "authenticated.",
 										result: userData
@@ -674,7 +674,7 @@ router.post('/login/google', function(req, res, next){
 					// 		.populate('tvShowInfo.show_ref')
 					// 		.populate('user_id')
 					// 		.then((userData)=>{
-					// 		res.send({
+					// 		res.json({
 					// 				success: true,
 					// 				msg: "authenticated.",
 					// 				result: userData
@@ -693,7 +693,7 @@ router.get('/logout', function(req, res){
 	console.log("LOGOUT: ", req.user._id);
 	User.update({_id: req.user._id},{$unset: {os_id: 1}})
     req.logout();
-    res.send({
+    res.json({
         success:true,
         msg:"User Logged Out."
     });
@@ -709,7 +709,7 @@ User.update({_id: req.user._id},{os_id: req.body.osid})
 
 router.post('/notification', function(req, res){
     ShowNotification.create(req.body).then((notification)=>{
-        res.send({
+        res.json({
             notification
         });
     });

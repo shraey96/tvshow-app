@@ -80,7 +80,12 @@ export default function(state = initialState, action){
       userProfile : action.payload.info.user_id,
       userFollows: action.payload.info.tvShowInfo
     }
-    return
+
+    case 'USER_PROFILE':
+    return{
+      ...state,
+      userProfile: action.payload
+    }
 
     default:
       return state
