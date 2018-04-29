@@ -9,8 +9,11 @@ import {Link} from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {UserFollowShow, UserUnFollowShow} from '../actions/userAction';
 import Snackbar from 'material-ui/Snackbar';
-import RaisedButton from 'material-ui/RaisedButton';
 import Toggle from 'material-ui/Toggle';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 
 import moment from 'moment';
 
@@ -22,7 +25,12 @@ class ProfilePage extends Component {
     super()
     this.state = {
       loader: false,
-      profileInfo: ''
+      profileInfo: '',
+      open: false,
+      snackopen: false,
+      msg: '',
+      oldPass: '',
+      newPass: ''
     }
   }
 
@@ -94,19 +102,59 @@ onToggleEmail = (e, value) =>{
   this.updateToggles('emailNotif', value);
 }
 
+handleOpenDialog = () =>{
+  this.setState({open:true})
+}
 
+
+ handleClose = () => {
+   this.setState({open: false});
+ };
 
 handleRequestClose = () => {
 this.setState({
-  open: false,
+  snackopen: false,
 });
 };
 
+handlePasswordChange = () =>{
+  let data = {
+    old: this.state.oldPass,
+    new: this.state.newPass
+  }
+  fetch(`${urlToUse}/users/login`, {
+            method: 'post',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(passupdate => passupdate.json())
+        .then((passupdate) => {
+            console.log(passupdate);
+            if(passupdate.success===true){
+              this.setState({snackopen: true, msg: "Password Updated Succesfully!"});
+            }else {
+              this.setState({snackopen: true, msg: "Old and New Passwords Don't Match!"});
+            }
+          })
+}
+
+handleOldPassWordChange = (e) =>{
+  console.log(e.target.value);
+  this.setState({oldPass: e.target.value});
+}
+handleNewPassWordChange = (e) =>{
+  console.log(e.target.value);
+  this.setState({newPass: e.target.value});
+}
+
   render() {
 
-console.log(this.props.user);
-console.log(this.props.shows);
-let userShowInfo = this.props.user.userFollows;
+// console.log(this.props.user);
+// console.log(this.props.shows);
+// let userShowInfo = this.props.user.userFollows;
 
 let loader;
 let imgCol;
@@ -115,7 +163,7 @@ let profileInfo;
 let settings;
 
 if(this.state.loader === true){
-  loader = (<img src="http://backgroundcheckall.com/wp-content/uploads/2017/12/ajax-loading-gif-transparent-background-5.gif" height="50px" width="50px"/>);
+  loader = (<img src="https://s3.amazonaws.com/binged-images/ajax-loading-gif-transparent-background-5.gif" height="50px" width="50px"/>);
 }else {
   loader = "";
 }
@@ -133,7 +181,8 @@ profileInfo = (
     <div className="user_profile">
     <p className="user_profile_main"><span>{this.state.profileInfo.username}</span> </p>
     <p className="user_profile_main"><span>{this.state.profileInfo.email}</span> </p>
-    <p>Date Joined: <span>{moment(this.state.profileInfo.created_at).format('MMMM Do YYYY')}</span> </p>
+    <p>Date Joined: <span>{moment(this.state.profileInfo.created_at).format('MMMM Do YYYY')}</span> </p><br/>
+    <RaisedButton label="Change Password" onClick={this.handleOpenDialog} />
     </div>
     </Col>
 )
@@ -163,8 +212,24 @@ settings = (
 
 
 }else {
-  // alert("not logged in")
+this.props.history.push('/login');
 }
+
+
+const actions = [
+     <FlatButton
+       label="Cancel"
+       primary={true}
+       onClick={this.handleClose}
+     />,
+     <FlatButton
+       label="Submit"
+       primary={true}
+       keyboardFocused={true}
+       onClick={this.handlePasswordChange}
+     />,
+   ];
+
 
     return (
 
@@ -179,6 +244,7 @@ settings = (
           {imgCol}
           {profileInfo}
           </Row>
+          <br /><br /><br /><br />
 <hr />
           <Row>
           <Col xs={12} md={4}  sm={4}>
@@ -190,19 +256,37 @@ settings = (
 
         </Grid>
 
-<Grid fluid>
-<Row>
+              <Dialog
+                  title="Change Password"
+                  actions={actions}
+                  modal={false}
+                  open={this.state.open}
+                  onRequestClose={this.handleClose}
+                >
+
+                      <TextField
+                        floatingLabelText="Old Password"
+                        type='password'
+                        onChange={this.handleOldPassWordChange}
+                        fullWidth={true}
+                      /><br />
+                      <TextField
+                        floatingLabelText="New Password"
+                        type='password'
+                        onChange={this.handleNewPassWordChange}
+                        fullWidth={true}
+                      /><br />
+                      <br />
 
 
-</Row>
-</Grid>
+                </Dialog>
 
 
 
       </div>
 
         <Snackbar
-                open={this.state.open}
+                open={this.state.snackopen}
                 message={this.state.msg}
                 autoHideDuration={2000}
                 onRequestClose={this.handleRequestClose}

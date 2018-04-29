@@ -160,7 +160,7 @@ if(this.props.user.isUserLoggedIn === true){
 
 let loader;
 if(this.state.loader === true){
-  loader = <img src="http://backgroundcheckall.com/wp-content/uploads/2017/12/ajax-loading-gif-transparent-background-5.gif" height="50px" width="50px"/>
+  loader = <img src="https://s3.amazonaws.com/binged-images/ajax-loading-gif-transparent-background-5.gif" height="50px" width="50px"/>
 }else {
   loader = <h3 className="show_episode_header">{this.props.match.params.tvshow} Episodes</h3>;
 }

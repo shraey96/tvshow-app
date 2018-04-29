@@ -10,6 +10,7 @@ const cron = require('node-cron');
 const User = require('./models/user');
 const showCache = require('./models/showCache');
 const ShowNotification = require('./models/showNotification');
+const NotifReset = require('./models/notif_reset');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.database, { useMongoClient: true });
@@ -31,10 +32,10 @@ db.on('error', function(err){
 cron.schedule('* * * * *', function(){
   console.log('running a task every minute');
 
-	// notifQueryDate();
-	// notifQueryHour();
-	// webPushDay()
-	// webPushHour()
+	notifQueryDate();
+	notifQueryHour();
+	webPushDay()
+	webPushHour()
 
 
 });
@@ -132,6 +133,14 @@ notif_users.forEach((notif_user)=>{
 								ShowNotification.update({_id: notif_user._id, tvShowId: notif_user.show_ref.tvShowId}, {oneSignalHour: true})
 								.then((msg)=>{
 									console.log(msg);
+
+									let body = {
+										user_id: notif_user._id,
+										tvShowId: notif_user.show_ref.tvShowId,
+										timeRun: showDate.add(1, 'day').toDate()
+									}
+									NotifReset.create(body)
+
 								})
 							}
 						})
@@ -165,7 +174,7 @@ function notifQueryDate(){
 
 
 console.log("#################### running Date Query");
-ShowNotification.find({oneDay: false})
+ShowNotification.find({emailDay: false})
 .populate('user_id', '-password')
 .populate('show_ref')
 .then((notif_users)=>{
@@ -176,12 +185,16 @@ ShowNotification.find({oneDay: false})
 		let remindersDate = [];
     notif_user.show_ref.episodes.forEach((user_notif_episodes)=>{
 
-
 			let showDate = moment(user_notif_episodes.airstamp, 'YYYY.MM.DD').tz('Asia/Calcutta');
 			let showDateTime = moment(user_notif_episodes.airstamp, 'YYYY.MM.DD, h:mm').tz('Asia/Calcutta')
-
+			// console.log(notif_user.show_ref.tvShowId);
+			// console.log(showDate.add(1, 'day'));
+			// console.log(showDate.add(1, 'day').toDate());
+			// console.log(showDate.format('MMMM Do YYYY'));
+			// console.log(showDate.add(1, 'day').format('MMMM Do YYYY'));
 				if(showDate.isSame(todaysDate, 'day')){
 					// call mailer function
+					// console.log("true");
 					mailerDate(notif_user, user_notif_episodes)
 
 				}
@@ -205,7 +218,7 @@ function notifQueryHour(){
 	let todayAll = moment(d).tz('Asia/Calcutta');
 	console.log(todayAll);
 
-	ShowNotification.find({oneHour: false})
+	ShowNotification.find({emailHour: false})
 	.populate('user_id', '-password')
 	.populate('show_ref')
 	.then((notif_users)=>{
@@ -225,7 +238,7 @@ function notifQueryHour(){
 
 
 							if(showDateTime.diff(todayAll) <= 3600000){
-							mailerHour(notif_user, user_notif_episodes);
+							mailerHour(notif_user, user_notif_episodes, showDate.add(1, 'day').toDate());
 						}
 
 					}
@@ -243,6 +256,8 @@ function notifQueryHour(){
 
 function mailerDate(notif_user, episodes){
 console.log("Notif Sent!");
+
+
 ShowNotification.update({_id: notif_user._id, tvShowId: notif_user.show_ref.tvShowId}, {oneDay: true})
 .then((msg)=>{
 	console.log(msg);
@@ -313,12 +328,19 @@ mailer.sendMail(mailOptions, (err, done)=>{
 
 }
 
-function mailerHour(notif_user, episodes){
+function mailerHour(notif_user, episodes, resetDate){
 console.log("notif hour sent!");
 
 ShowNotification.update({_id: notif_user._id, tvShowId: notif_user.show_ref.tvShowId}, {oneHour: true})
 .then((msg)=>{
 	console.log(msg);
+
+	let body = {
+		user_id: notif_user._id,
+    tvShowId: notif_user.show_ref.tvShowId,
+    timeRun: resetDate
+	}
+	NotifReset.create(body)
 })
 
 let mailer = nodemailer.createTransport({

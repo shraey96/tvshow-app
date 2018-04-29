@@ -1,6 +1,6 @@
 let mongoose = require('mongoose');
 
-//user schema
+//Feedback schema
 
 const FeedbackSchema = mongoose.Schema({
     name:{

@@ -1,6 +1,6 @@
 let mongoose = require('mongoose');
 
-//user schema
+//tvShowSchema schema
 
 const tvShowSchema = mongoose.Schema({
     user_id:{
@@ -18,22 +18,6 @@ const tvShowSchema = mongoose.Schema({
              type: mongoose.Schema.Types.ObjectId,
              ref:"showCache"
            },
-           // tvShowIMDB: {
-           //     type: Number,
-           //     require: false
-           // },
-           // tvShowImageUrl: {
-           //     type: String,
-           //     require:false
-           // },
-           // tvShowName: {
-           //      type: String,
-           //      require: false
-           // },
-           // totalEpisodeCount: {
-           //     type: Number,
-           //     require:false
-           // },
            episodeWatched: {
                type: Array,
                require:false
