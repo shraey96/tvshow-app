@@ -1,4 +1,4 @@
-import {LOGIN_USER, LOGOUT_USER, REGISTER_USER ,FOLLOW_SHOW, UNFOLLOW_SHOW, FOLLOW_EPISODE, UNFOLLOW_EPISODE, GET_USER_INFO} from './types';
+import {LOGIN_USER, LOGOUT_USER, REGISTER_USER ,FOLLOW_SHOW, UNFOLLOW_SHOW, FOLLOW_EPISODE, UNFOLLOW_EPISODE, GET_USER_INFO, LOGIN_USER_GOOGLE} from './types';
 import urlToUse from '../config';
 
 export function LoginUser(email, password) {
@@ -66,6 +66,46 @@ sendOSID();
             })
 
     }
+
+}
+
+
+export function LoginUserGoogle(credentials){
+console.log(credentials);
+  return function(dispatch) {
+
+    return  fetch(`${urlToUse}/users/login/google`, {
+              method: 'post',
+              credentials: 'include',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(credentials)
+          })
+          .then(userData => userData.json())
+          .then((userData) => {
+              console.log(userData);
+
+
+              sendOSID();
+
+              if(userData.success === true){
+                      dispatch({
+                          type: LOGIN_USER_GOOGLE,
+                          payload: userData
+                      })
+
+                             localStorage.setItem('isUserLoggedIn', true);
+                return userData
+              }else {
+                return userData
+              }
+
+
+
+          })
+
+  }
 
 }
 

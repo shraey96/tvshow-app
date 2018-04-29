@@ -9,7 +9,7 @@ import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Grid, Row, Col } from 'react-flexbox-grid';
-import {LoginUser, LogoutUser} from '../actions/userAction';
+import {LoginUser, LoginUserGoogle, LogoutUser} from '../actions/userAction';
 
 import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
@@ -33,8 +33,23 @@ constructor(){
   }
 
  responseGoogle = (response) => {
-    console.log(response);
-    console.log(response.getBasicProfile());
+   console.log(response);
+    let credentials = {
+      id_token: response.tokenObj.id_token,
+      google_id: response.googleId
+    }
+    let googleLogin = this.props.LoginUserGoogle(credentials)
+    googleLogin.then((login)=>{
+      if(login.success === true){
+        this.setState({open: true, msg: `Login Success!`}, ()=>{
+          setTimeout(()=>{
+             this.props.history.push('/')
+          }, 1000)
+        });
+      }else if(login.success === false){
+        this.setState({open: true, msg: `Login Failed! Invalid Credentials!`});
+      }
+    })
 
   }
 
@@ -170,4 +185,4 @@ const mapStateToProps = function(state){
 }
 
 
-export default connect(mapStateToProps, {LoginUser})(Login);
+export default connect(mapStateToProps, {LoginUser, LoginUserGoogle})(Login);

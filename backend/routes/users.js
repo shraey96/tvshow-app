@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const rp = require('request-promise');
-
+const passportGoogle = require('../config/passport-google');
 // bring in models
 let User = require('../models/user');
 let showCache = require('../models/showCache');
@@ -238,7 +238,7 @@ router.get('/tvseries',ensureAuthenticated, function(req, res){
     })
 });
 
-router.get('/profile',ensureAuthenticated, function(req, res){
+router.get('/profile', ensureAuthenticated, function(req, res){
     User.findOne({_id:req.user._id})
     .then((user)=>{
         if(user){
@@ -255,7 +255,7 @@ router.get('/profile',ensureAuthenticated, function(req, res){
     })
 });
 
-router.put('/profile',ensureAuthenticated, function(req, res){
+router.put('/profile', ensureAuthenticated, function(req, res){
     User.update({_id: req.user._id}, req.body, function(err, raw) {
         if (err) {
           res.send(err);
@@ -274,7 +274,7 @@ router.put('/profile',ensureAuthenticated, function(req, res){
                 })
             }
         })
-      });   
+      });
 });
 
 
@@ -597,7 +597,7 @@ router.post('/login', function(req, res, next){
   console.log(req.body);
     passport.authenticate("local", function(err, user, info){
         if(err){return next(err); }
-        if(!user){return res.send({
+        if(!user){return res.json({
             success:false,
             user:null,
             msg:"Wrong Email Or Password Incorrect."
@@ -606,7 +606,7 @@ router.post('/login', function(req, res, next){
                 if(err){ return next(err);}
                 TvShow.findOne({user_id: req.user._id})
                     .populate('tvShowInfo.show_ref')
-					.populate('user_id')
+										.populate('user_id')
                     .then((userData)=>{
                     res.send({
                         success: true,
@@ -621,6 +621,72 @@ router.post('/login', function(req, res, next){
     })(req, res, next);
 
 });
+
+
+// Login Google
+
+// router.post('/login/google', passport.authenticate('google', { scope : ['profile', 'email'],  function(err, user, info){
+// 	 console.log("error: ", error);
+// 	 console.log("user: ", user );
+// 	 console.log("info: ", info);
+//  }})
+//
+// )
+
+// router.post('/login/google',passportGoogle.authenticate('google', { scope: 'https://www.google.com/m8/feeds' }))
+
+// router.get('/login/google', passportGoogle.authenticate('google', {
+//     scope: ['https://www.googleapis.com/auth/userinfo.profile']
+// }));
+
+// router.post('/login/google', passport.authenticate('custom', function(req, res) {
+//     // res.redirect('/');
+// 		res.json({
+// 			succes: true,
+// 			user: req.user
+// 		})
+//   })
+// );
+
+router.post('/login/google', function(req, res, next){
+
+	passport.authenticate('custom', function(err, user, info){
+			  req.logIn(user, function(err){
+					let newUser = {
+						user_id: user._id,
+						tvShowInfo:[]
+					}
+
+					TvShow.create(newUser)
+					.then(()=>{
+						TvShow.findOne({user_id: req.user._id})
+								.populate('tvShowInfo.show_ref')
+								.populate('user_id')
+								.then((userData)=>{
+								res.send({
+										success: true,
+										msg: "authenticated.",
+										result: userData
+								});
+							})
+					})
+					// TvShow.findOne({user_id: req.user._id})
+					// 		.populate('tvShowInfo.show_ref')
+					// 		.populate('user_id')
+					// 		.then((userData)=>{
+					// 		res.send({
+					// 				success: true,
+					// 				msg: "authenticated.",
+					// 				result: userData
+					// 		});
+					// 	})
+			})
+
+	})(req, res, next);
+
+
+})
+
 
 // Logout
 router.get('/logout', function(req, res){

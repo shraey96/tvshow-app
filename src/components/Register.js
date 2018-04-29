@@ -9,7 +9,7 @@ import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Grid, Row, Col } from 'react-flexbox-grid';
-import {RegisterUser} from '../actions/userAction';
+import {RegisterUser, LoginUserGoogle} from '../actions/userAction';
 
 import TextField from 'material-ui/TextField';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -34,9 +34,23 @@ constructor(){
   }
 
  responseGoogle = (response) => {
-    console.log(response);
-    console.log(response.getBasicProfile());
-  }
+     let credentials = {
+       id_token: response.tokenObj.id_token
+     }
+     let googleLogin = this.props.LoginUserGoogle(credentials)
+     googleLogin.then((login)=>{
+       if(login.success === true){
+         this.setState({open: true, msg: `Login Success!`}, ()=>{
+           setTimeout(()=>{
+              this.props.history.push('/')
+           }, 1000)
+         });
+       }else if(login.success === false){
+         this.setState({open: true, msg: `Login Failed! Invalid Credentials!`});
+       }
+     })
+
+   }
 
   Register = (e) =>{
 
@@ -246,4 +260,4 @@ const mapStateToProps = function(state){
 }
 
 
-export default connect(mapStateToProps, {RegisterUser})(Register);
+export default connect(mapStateToProps, {RegisterUser, LoginUserGoogle})(Register);

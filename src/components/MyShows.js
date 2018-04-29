@@ -41,7 +41,11 @@ if(props.user.isUserLoggedIn === true){
 
   })
 }else {
-  usershows = "Looks like you have no shows!";
+  usershows = (
+    <Col xs={12} md={12}>
+        <h3 style={{"color":"white"}}>Looks like you haven't followed any shows!</h3>
+    </Col>
+  )
 }
 }else {
     props.history.push('/login');

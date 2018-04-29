@@ -15,11 +15,11 @@ const UserSchema = mongoose.Schema({
         type:String,
         require:true
     },
-    googe_id:{
+    google_id:{
       type: String,
       require:false
     },
-    googe_token:{
+    google_token:{
       type: String,
       require:false
     },

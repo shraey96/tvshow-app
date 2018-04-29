@@ -24,6 +24,16 @@ export default function(state = initialState, action){
       userFollows: action.payload.result.tvShowInfo
     }
 
+
+    case 'LOGIN_USER_GOOGLE':
+    console.log(action.payload);
+    return{
+      ...state,
+      isUserLoggedIn : action.payload.success,
+      userProfile : action.payload.result.user_id,
+      userFollows: action.payload.result.tvShowInfo
+    }
+
     case 'LOGOUT_USER':
     console.log("logout");
     return {

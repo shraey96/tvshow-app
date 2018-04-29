@@ -17,6 +17,7 @@ import AboutShowCast from './AboutShowCast';
 import AboutShowCrew from './AboutShowCrew';
 import People from './People';
 import Episodes from './Episodes';
+import ProfilePage from './ProfilePage';
 
 import '../App.css';
 
@@ -47,6 +48,7 @@ class Main extends Component {
 <Route exact path="/calendar" component={Calendar}/>
 <Route exact path="/people/:person/:id" component={People}/>
 <Route exact path="/:username/myshows" component={MyShows}/>
+<Route exact path="/:username/profile" component={ProfilePage}/>
 <Route exact path="/more-shows" component={MoreShows}/>
 <Route exact path="/more-shows/:genre/:gid/:rating/:rid/:status/:sid/:language/:lid" component={MoreShows}/>
 
