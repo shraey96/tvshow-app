@@ -274,7 +274,8 @@ router.put('/profile', ensureAuthenticated, function(req, res){
                 })
             }
         })
-      });
+    });
+    
 });
 
 
@@ -542,59 +543,93 @@ router.post('/userTvInfo/unfollow',ensureAuthenticated, function (req, res) {
 //         })
 // });
 
-router.post('/register', function(req, res, next){
+router.post('/register', function (req, res, next) {
     req.body.checkPassword = req.body.password;
-    User.findOne({'email': req.body.email})
-    .then((user)=>{
-        if(user){
-            res.json({
-                success:false,
-                msg:"User Already Exists.",
-            })
+    User.findOne({ 'email': req.body.email })
+        .then((user) => {
+            if (user) {
+                res.json({
+                    success: false,
+                    msg: "User Already Exists.",
+                })
 
-        }else{
-            bcrypt.genSalt(10, function(err, salt){
-                    bcrypt.hash(req.body.password, salt, function(err, hash){
-                        if(err){
+            } else {
+                bcrypt.genSalt(10, function (err, salt) {
+                    bcrypt.hash(req.body.password, salt, function (err, hash) {
+                        if (err) {
                             console.log(err);
                         }
                         req.body.password = hash;
                         User.create(req.body)
-                        .then((newuser)=>{
-                            res.json({
-                                success:true,
-                                msg:"User Created.",
+                            .then((newuser) => {
+                                res.json({
+                                    success: true,
+                                    msg: "User Created.",
+                                })
+                                let newUser = {
+                                    user_id: newuser._id,
+                                    tvShowInfo: []
+                                }
+
+                                TvShow.create(newUser)
+                                    .then((userRegister) => {
+                                        req.body.password = req.body.checkPassword;
+                                        passport.authenticate("local", function (err, user, info) {
+                                            if (err) { return next(err); }
+                                            req.logIn(user, function (err) {
+                                                if (err) { return next(err); }
+                                            })
+                                        })(req, res, next);
+                                    })
                             })
-                            let newUser = {
-                                user_id: newuser._id,
-                                tvShowInfo:[]
-                            }
-
-                            TvShow.create(newUser)
-                            .then((userRegister)=>{
-                                req.body.password = req.body.checkPassword;
-                                passport.authenticate("local", function(err, user, info){
-                                    if(err){return next(err); }
-                                        req.logIn(user, function(err){
-                                            if(err){ return next(err);}
-                                        })
-                                })(req, res, next);
-                            })
-                        })
-
-
                     });
                 });
             }
         })
-    .catch((err)=>{
-    })
-
+        .catch((err) => {
+            
+        })
 });
+
+router.put('/updatePassword', function(req, res){
+    User.findOne({_id:req.user._id})
+        .then((user)=>{
+            if(user){
+                bcrypt.compare(req.body.old, user.password, function(err, isMatch){
+                    if(err) throw err;
+                    if(isMatch){
+                        bcrypt.genSalt(10, function(err, salt){
+                            bcrypt.hash(req.body.new, salt, function(err, hash2){
+                                if(err){
+                                    console.log(err);
+                                }
+                                req.body.new = hash2; 
+                        User.update({_id: user._id}, {password: req.body.new}, function(err, raw) {
+                            res.send({
+                                success:true,
+                                msg:"password changed"
+                            })
+                        })
+                    });
+                });
+                }else{
+                    res.send({
+                        success:false,
+                        msg:"old password doesnot match"
+                    })
+                }
+            });
+            }else{
+                res.json({
+                    success:false,
+                    info: 'User not Found'
+                })
+            }
+        });
+})
 
 //Login Process
 router.post('/login', function(req, res, next){
-  console.log(req.body);
     passport.authenticate("local", function(err, user, info){
         if(err){return next(err); }
         if(!user){return res.json({

@@ -45,7 +45,6 @@ router.post('/', function(req, res){
         }else{
 
             User.update({_id: user._id}, {password: password}, function(err, raw) {
-							console.log(raw);
                 let mailOptions = {
                     from: 'nitish@creativeappography.com',
                     to: `${req.body.email}`,
