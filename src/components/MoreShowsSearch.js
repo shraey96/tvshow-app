@@ -43,11 +43,11 @@ componentWillMount(){
     genre: parseInt(this.props.search.genreValue)|| parseInt(this.props.match.params.gid) || 1,
     language: parseInt(this.props.search.languageValue)|| parseInt(this.props.match.params.lid) || 1,
   }
-  console.log(optionsValue);
+  // console.log(optionsValue);
 this.setState({
   optionsValue: optionsValue
 }, ()=>{
-  console.log(this.state);
+  // console.log(this.state);
 })
 
 }
@@ -104,7 +104,7 @@ handleLanguageChange = (e, index, value) =>{
 
 handleSubmit = (e) =>{
   e.preventDefault();
-  console.log(this.state);
+  // console.log(this.state);
   this.props.searchAlter(this.state);
   this.props.history.push(`/more-shows/${this.state.options.genre || 1}/${this.state.optionsValue.genre || 1}/${this.state.options.rating || 1}/${this.state.optionsValue.rating || 1}/${this.state.options.status || 1}/${this.state.optionsValue.status || 1}/${this.state.options.language || 1}/${this.state.optionsValue.language || 1}`);
 }

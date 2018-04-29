@@ -39,7 +39,7 @@ class Simple extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    console.log("nextProps NAVBAR $##############", nextProps);
+    // console.log("nextProps NAVBAR $##############", nextProps);
   }
 
   handleChange = (value) =>{
@@ -65,7 +65,7 @@ class Simple extends Component {
                 showArray.push(objToPush);
               })
               this.setState({dataSource: showArray}, ()=>{
-                console.log(this.state.dataSource);
+                // console.log(this.state.dataSource);
               })
 
             })
@@ -104,7 +104,7 @@ class Simple extends Component {
   };
 
   render() {
-console.log("Navbar!" , this.props.user);
+// console.log("Navbar!" , this.props.user);
 
 let user;
 let userNotLoggedIn =  (

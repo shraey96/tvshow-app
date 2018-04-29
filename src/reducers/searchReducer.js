@@ -15,7 +15,7 @@ const initialState = {
 export default function(state = initialState, action){
   switch (action.type) {
     case 'SEARCH_OPTIONS':
-    console.log(action.payload);
+    // console.log(action.payload);
     return {
       ...state,
       rating: action.payload.options.rating,
@@ -29,7 +29,7 @@ export default function(state = initialState, action){
     }
 
     case 'PAGE_CHANGE':
-    console.log(action.payload);
+    // console.log(action.payload);
     return {
       ...state,
       page: action.payload

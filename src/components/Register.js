@@ -30,7 +30,7 @@ constructor(){
 }
 
  responseFacebook = (response) =>{
-    console.log(response);
+    // console.log(response);
   }
 
  responseGoogle = (response) => {

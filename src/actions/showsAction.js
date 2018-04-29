@@ -100,7 +100,7 @@ return Promise.all([apiRequest1,apiRequest2]).then(function(values){
 }
 
 export function fetchShowsCustom(query){
-  console.log(query);
+  // console.log(query);
   if(query.rating === 'Show Rating'){
     query.rating = '';
   }
@@ -118,7 +118,7 @@ export function fetchShowsCustom(query){
   }
 
 
-  console.log("##### FETCH SHOWS CUSTOM");
+  // console.log("##### FETCH SHOWS CUSTOM");
   return function(dispatch){
 
 return fetch(`${urlToUse}/users/shows?page=${query.page}&rating=${query.rating}&genres=${query.genre}&status=${query.status}&language=${query.language}`, {
@@ -129,7 +129,7 @@ return fetch(`${urlToUse}/users/shows?page=${query.page}&rating=${query.rating}&
     .then(res=>res.json())
     .then(show=>
 {
-  console.log("FETCH SHOWS CUSTOM: ", show);
+  // console.log("FETCH SHOWS CUSTOM: ", show);
 
   show.shows = shuffle(show.shows);
 

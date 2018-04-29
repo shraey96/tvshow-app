@@ -27,7 +27,7 @@ class Home extends Component {
   }
 
 componentWillMount(){
-    console.log("Mounted");
+    // console.log("Mounted");
     this.setState({loader: true});
     let fetchShows = this.props.fetchShows();
     fetchShows.then((shows)=>{
@@ -104,7 +104,7 @@ if(this.state.loader === true){
 }
 
 let userShowInfo = this.props.user.userFollows;
-console.log(userShowInfo);
+// console.log(userShowInfo);
 
 if(this.props.shows.shows.length !==0){
 

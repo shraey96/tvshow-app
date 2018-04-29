@@ -21,13 +21,13 @@ class AboutShowCrew extends Component {
   }
 
 componentWillMount(){
-  console.log("Mounted AboutShowCrew");
+  // console.log("Mounted AboutShowCrew");
   this.setState({loader: true})
 
   fetch(`http://api.tvmaze.com/shows/${this.props.match.params.id}/crew`)
   .then(res=>res.json())
   .then(crew=>{
-    console.log(crew);
+    // console.log(crew);
     this.setState({crew: crew, loader: false});
 
     })

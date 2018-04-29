@@ -32,7 +32,7 @@ class AboutShow extends Component {
   }
 
 componentWillMount(){
-  console.log("Mounted AboutShow");
+  // console.log("Mounted AboutShow");
   this.setState({loader: true})
   let fetchShowByID = this.props.fetchShowByID(this.props.match.params.id);
   fetchShowByID.then((response)=>{
@@ -50,8 +50,8 @@ componentDidMount(){
 }
 
 componentWillReceiveProps(nextProps){
-   console.log("############", this.props.currentShow);
-   console.log("############", this.props.currentShow);
+   // console.log("############", this.props.currentShow);
+   // console.log("############", this.props.currentShow);
   if(nextProps.match.params.id !== this.props.match.params.id){
     this.setState({loader: true})
     let fetchShowByID = this.props.fetchShowByID(nextProps.match.params.id);
@@ -72,7 +72,7 @@ Follow = (tvShowInfo) => {
   if(this.props.user.isUserLoggedIn === false){
   this.setState({open: true, msg: `You must login to follow shows!`});
   }else {
-    console.log(tvShowInfo);
+    // console.log(tvShowInfo);
   let data = {
     tvid: (tvShowInfo.id),
     imdb: tvShowInfo.externals.imdb,
@@ -113,8 +113,8 @@ this.setState({
 
   render() {
 
-console.log(this.props.user);
-console.log(this.props.shows);
+// console.log(this.props.user);
+// console.log(this.props.shows);
 let userShowInfo = this.props.user.userFollows;
 let button;
 let info1;

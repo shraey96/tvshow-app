@@ -28,10 +28,10 @@ class Calendar extends Component {
   }
 
 componentWillMount(){
-  console.log("Mounted Calendar");
+  // console.log("Mounted Calendar");
   let events = [];
   let tz = moment.tz.guess();
-  console.log(tz);
+  // console.log(tz);
   // console.log(moment('2018-04-17').utcOffset("+05:30").format('MMMM Do YYYY'));
   // console.log(moment("2018-04-16T02:00:00+00:00").zone('America/Los_Angeles').format('MMMM Do YYYY, h:mm:ss a'));
   // console.log(moment.tz("2018-04-16T02:00:00+00:00", tz).format('MMMM Do YYYY, h:mm:ss a'));
@@ -63,7 +63,7 @@ componentWillMount(){
     })
   })
   this.setState({events:events},()=>{
-    console.log("events state updated!");
+    // console.log("events state updated!");
   })
 }
 

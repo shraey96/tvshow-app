@@ -11,12 +11,12 @@ const initialState = {
 
 export default function(state = initialState, action){
 
-  console.log("User Reducer Called: ", action.type);
+  // console.log("User Reducer Called: ", action.type);
 
   switch (action.type) {
     case 'LOGIN_USER':
     let userInfo;
-    console.log(action.payload);
+    // console.log(action.payload);
     return {
       ...state,
       isUserLoggedIn : action.payload.success,
@@ -26,7 +26,7 @@ export default function(state = initialState, action){
 
 
     case 'LOGIN_USER_GOOGLE':
-    console.log(action.payload);
+    // console.log(action.payload);
     return{
       ...state,
       isUserLoggedIn : action.payload.success,
@@ -35,7 +35,7 @@ export default function(state = initialState, action){
     }
 
     case 'LOGOUT_USER':
-    console.log("logout");
+    // console.log("logout");
     return {
       ...state,
       isUserLoggedIn: false,
@@ -44,28 +44,28 @@ export default function(state = initialState, action){
     }
 
     case 'FOLLOW_EPISODE':
-    console.log(action.payload);
+    // console.log(action.payload);
     return {
       ...state,
       userFollows: action.payload.user.tvShowInfo
     }
 
     case 'UNFOLLOW_EPISODE':
-    console.log(action.payload);
+    // console.log(action.payload);
     return {
       ...state,
       userFollows: action.payload.user.tvShowInfo
     }
 
     case 'FOLLOW_SHOW':
-    console.log(action.payload);
+    // console.log(action.payload);
     return{
       ...state,
       userFollows: action.payload.result.tvShowInfo
     }
 
     case 'UNFOLLOW_SHOW':
-    console.log(action.payload);
+    // console.log(action.payload);
     return{
       ...state,
       userFollows: action.payload.result.tvShowInfo
@@ -73,7 +73,7 @@ export default function(state = initialState, action){
 
     case 'GET_USER_INFO':
     console.log("GET USER INFO");
-    console.log(action.payload);
+    // console.log(action.payload);
     return{
       ...state,
       isUserLoggedIn: true,

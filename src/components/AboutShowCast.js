@@ -20,14 +20,14 @@ class AboutShowCast extends Component {
   }
 
 componentWillMount(){
-  console.log("Mounted AboutShowCast");
-  console.log(this.props.match.params);
+  // console.log("Mounted AboutShowCast");
+  // console.log(this.props.match.params);
   this.setState({loader: true})
 
   fetch(`http://api.tvmaze.com/shows/${this.props.match.params.id}/cast`)
   .then(res=>res.json())
   .then(cast=>{
-    console.log(cast);
+    // console.log(cast);
     this.setState({cast: cast, loader: false});
 
     })

@@ -35,7 +35,7 @@ class ProfilePage extends Component {
   }
 
 componentWillMount(){
-  console.log("Mounted Profile Page");
+  // console.log("Mounted Profile Page");
   this.fetchProfile();
 }
 
@@ -50,7 +50,7 @@ fetchProfile(){
           })
           .then(profile => profile.json())
           .then((profile) => {
-              console.log(profile);
+              // console.log(profile);
               if(profile.success===true){
               this.setState({loader: false, profileInfo:profile.info})
             }
@@ -63,7 +63,7 @@ fetchProfile(){
 updateToggles(type, bool){
   let data;
 
-  console.log("update toggle");
+  // console.log("update toggle");
   if(type==='oneSignalNotif'){
    data = {
     oneSignalNotif : bool
@@ -93,12 +93,12 @@ updateToggles(type, bool){
 }
 
 onToggleWeb = (e, value) =>{
-  console.log(value);
+  // console.log(value);
   this.updateToggles('oneSignalNotif', value);
 }
 
 onToggleEmail = (e, value) =>{
-  console.log(value);
+  // console.log(value);
   this.updateToggles('emailNotif', value);
 }
 
@@ -122,8 +122,8 @@ handlePasswordChange = () =>{
     old: this.state.oldPass,
     new: this.state.newPass
   }
-  fetch(`${urlToUse}/users/login`, {
-            method: 'post',
+  fetch(`${urlToUse}/users/updatePassword`, {
+            method: 'put',
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
@@ -132,9 +132,10 @@ handlePasswordChange = () =>{
         })
         .then(passupdate => passupdate.json())
         .then((passupdate) => {
-            console.log(passupdate);
             if(passupdate.success===true){
-              this.setState({snackopen: true, msg: "Password Updated Succesfully!"});
+              this.setState({snackopen: true, msg: "Password Updated Succesfully!"}, ()=>{
+                this.handleClose();
+              });
             }else {
               this.setState({snackopen: true, msg: "Old and New Passwords Don't Match!"});
             }
@@ -142,11 +143,11 @@ handlePasswordChange = () =>{
 }
 
 handleOldPassWordChange = (e) =>{
-  console.log(e.target.value);
+  // console.log(e.target.value);
   this.setState({oldPass: e.target.value});
 }
 handleNewPassWordChange = (e) =>{
-  console.log(e.target.value);
+  // console.log(e.target.value);
   this.setState({newPass: e.target.value});
 }
 
@@ -270,6 +271,7 @@ const actions = [
                         onChange={this.handleOldPassWordChange}
                         fullWidth={true}
                       /><br />
+
                       <TextField
                         floatingLabelText="New Password"
                         type='password'

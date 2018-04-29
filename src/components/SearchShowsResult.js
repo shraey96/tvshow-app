@@ -29,8 +29,8 @@ class SearchShowsResult extends Component {
   }
 
 componentWillMount(){
-  console.log(this.props.search);
-  console.log(this.props.match.params);
+  // console.log(this.props.search);
+  // console.log(this.props.match.params);
   // let query;
   //
   // if(this.props.search.genre === '' || this.props.search.rating === '' || this.props.search.status === '' || this.props.search.language === ''){
@@ -69,10 +69,10 @@ componentDidMount(){
 
 componentWillReceiveProps(nextProps){
   // console.log(nextProps.shows.searchShowCustom);
-  console.log("RECEIVED NEXT PROPS");
-  console.log(nextProps.search);
+  // console.log("RECEIVED NEXT PROPS");
+  // console.log(nextProps.search);
   if(nextProps.search !== this.props.search){
-    console.log("DIFFERENT");
+    // console.log("DIFFERENT");
     this.setState({loader: true}, ()=>{
     let customShow = this.props.fetchShowsCustom(nextProps.search);
     customShow.then((customShow)=>{
@@ -82,20 +82,20 @@ componentWillReceiveProps(nextProps){
     })
     })
   }else {
-    console.log("SAME");
+    // console.log("SAME");
   }
 }
 
 handlePageChange = (pageNumber) =>{
-  console.log(pageNumber);
+  // console.log(pageNumber);
   this.props.changePage(pageNumber);
   // this.props.history.push(`/more-shows/${this.props.search.genre || 1}/${this.props.search.genre || 1}/${this.props.search.rating || 1}/${this.props.search.rating || 1}/${this.props.search.status || 1}/${this.state.optionsValue.status || 1}`);
 }
 
 Follow = (tvShowInfo) => {
-  console.log(tvShowInfo);
-  console.log("clicked follow");
-  console.log(this.props.user);
+  // console.log(tvShowInfo);
+  // console.log("clicked follow");
+  // console.log(this.props.user);
   if(this.props.user.isUserLoggedIn === false){
   this.setState({open: true, msg: `You must login to follow shows!`});
   }else {
@@ -156,7 +156,7 @@ if(this.props.shows.searchShowCustom.length!==0){
 
 
     if(this.props.user.isUserLoggedIn === true){
-    console.log("YES");
+    // console.log("YES");
       if(userShowInfo.length>0){
           for(var i = 0; i<userShowInfo.length; i++){
               if(tvshow.tvShowId === parseInt(userShowInfo[i].tvShowId)){
@@ -174,7 +174,7 @@ if(this.props.shows.searchShowCustom.length!==0){
         }
 
     }else {
-      console.log("NO");
+      // console.log("NO");
       button = (<button onClick={()=>{this.Follow(tvshow)}}>Follow</button>);
       button = (<RaisedButton label="Follow" primary={true}  onClick={()=>{this.Follow(tvshow)}}/>);
     }

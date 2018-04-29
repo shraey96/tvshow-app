@@ -22,24 +22,24 @@ class Search extends Component {
     }
   }
 componentWillMount(){
-  console.log(this.props);
-console.log("Mounted AboutShow");
+  // console.log(this.props);
+// console.log("Mounted AboutShow");
 let searchQuery = this.props.fetchSearchQueryInfo((this.props.match.params.query));
-console.log(searchQuery);
+// console.log(searchQuery);
 searchQuery.then((search)=>{
-  console.log(search);
+  // console.log(search);
 })
 // console.log(this.state);
 }
 
 componentWillReceiveProps(nextProps){
-console.log(nextProps);
-console.log(this.props);
+// console.log(nextProps);
+// console.log(this.props);
 if(nextProps.match.params.query!==this.props.match.params.query){
-  console.log("no");
+  // console.log("no");
   this.props.fetchSearchQueryInfo((nextProps.match.params.query));
 }else {
-  console.log("y");
+  // console.log("y");
 }
 // this.props.fetchSearchQueryInfo((nextProps.match.params.query));
 }
@@ -71,7 +71,7 @@ Follow = (tvShowInfo) => {
 }
 
 unFollow = (tvShowInfo) => {
-  console.log(tvShowInfo);
+  // console.log(tvShowInfo);
   let data = {
     tvid: tvShowInfo.show.id
   }
@@ -113,7 +113,7 @@ showsHeader = (<h2>Shows</h2>);
   shows = this.props.searchShow.map((show)=>{
 
     if(this.props.user.isUserLoggedIn === true){
-    console.log("YES");
+    // console.log("YES");
       if(this.props.user.userFollows.length>0){
           for(var i = 0; i<this.props.user.userFollows.length; i++){
               if(show.show.id === parseInt(this.props.user.userFollows[i].tvShowId)){
@@ -128,7 +128,7 @@ showsHeader = (<h2>Shows</h2>);
         }
 
     }else {
-      console.log("NO");
+      // console.log("NO");
       button = (<RaisedButton label="Follow" primary={true}  onClick={()=>{this.Follow(show)}}/>);
     }
 
@@ -202,8 +202,8 @@ if(this.props.searchShow.length>0 && this.props.searchPeople.length>0){
   // noResultsText = '';
 }else {
   hrLine = '';
-  console.log(this.props.searchShow.length, this.props.searchPeople.length);
-  console.log(this.props.searchPeople.length>0);
+  // console.log(this.props.searchShow.length, this.props.searchPeople.length);
+  // console.log(this.props.searchPeople.length>0);
   // noResultsText = (<h3>No Shows or People Found!</h3>);
 }
 

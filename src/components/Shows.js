@@ -7,7 +7,7 @@ import {fetchShows} from '../actions/showsAction';
 class Shows extends Component {
 
 componentWillMount(){
-  console.log("Mounted");
+  // console.log("Mounted");
 }
 
 

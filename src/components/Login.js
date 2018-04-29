@@ -29,11 +29,11 @@ constructor(){
 }
 
  responseFacebook = (response) =>{
-    console.log(response);
+    // console.log(response);
   }
 
  responseGoogle = (response) => {
-   console.log(response);
+   // console.log(response);
     let credentials = {
       id_token: response.tokenObj.id_token,
       google_id: response.googleId
@@ -55,7 +55,7 @@ constructor(){
 
   Login = (e) =>{
     e.preventDefault();
-    console.log("clicked login!");
+    // console.log("clicked login!");
     if(this.state.email === ''){
       this.setState({open: true, msg: `Email can't be empty`});
     }else if(this.state.password === ''){
@@ -79,9 +79,7 @@ constructor(){
 
   }
 
-  componentDidMount(){
-    console.log(this.props);
-  }
+
 
   handleEmailChange = (e) =>{
     this.setState({ email : e.target.value});

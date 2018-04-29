@@ -17,7 +17,7 @@ class AboutShowEpisode extends Component {
   }
 
 componentWillMount(){
-  console.log("Mounted AboutShowEpisode");
+  // console.log("Mounted AboutShowEpisode");
   this.setState({loader: true});
   let fetchEpisodeByNumber = this.props.fetchEpisodeByNumber(this.props.match.params.tvshowid, this.props.match.params.season, this.props.match.params.enum);
   // this.props.fetchShowByID(this.props.match.params.id);
@@ -45,8 +45,8 @@ if(this.state.loader === true){
   loader = "";
 }
 
-console.log(this.props.currentShowEpisode);
-console.log(this.props.match);
+// console.log(this.props.currentShowEpisode);
+// console.log(this.props.match);
 if(this.props.currentShowEpisode){
 currentShowEpisode = this.props.currentShowEpisode;
 if(currentShowEpisode.image){

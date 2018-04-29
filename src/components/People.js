@@ -25,9 +25,9 @@ class People extends Component {
   }
 
 componentWillMount(){
-  console.log("Mounted AboutShow");
+  // console.log("Mounted AboutShow");
   this.setState({loader: true});
-  console.log(this.props.match.params.person);
+  // console.log(this.props.match.params.person);
 fetch(`http://api.tvmaze.com/people/${this.props.match.params.id}`)
   .then(res=>res.json())
   .then(personInfo=>{
@@ -50,9 +50,9 @@ fetch(`http://api.tvmaze.com/people/${this.props.match.params.id}`)
 
         Promise.all(personPromise)
         .then((result)=>{
-          console.log(result);
+          // console.log(result);
           this.setState({loader: false, personInfo: personInfo, personShows: result}, ()=>{
-            console.log(this.state);
+            // console.log(this.state);
           })
         })
 
@@ -124,7 +124,7 @@ let header;
 if(this.state.personShows.length>0){
 header = <h3>Starring In: </h3>
 personShows = this.state.personShows.map((show)=>{
-  console.log(show);
+  // console.log(show);
   if(show.image){
     image2 = <Link to={`/shows/${show.name}/${show.id}`}><img alt="n/a" src={show.image.medium} className="show_img"/></Link>;
   }else {

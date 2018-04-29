@@ -30,7 +30,7 @@ export function LoginUser(email, password) {
         password: password
     }
 
-    console.log(data);
+    // console.log(data);
 
     return function(dispatch) {
 
@@ -44,7 +44,7 @@ export function LoginUser(email, password) {
             })
             .then(userData => userData.json())
             .then((userData) => {
-                console.log(userData);
+                // console.log(userData);
 
 
 
@@ -72,7 +72,7 @@ export function LoginUser(email, password) {
 
 
 export function LoginUserGoogle(credentials){
-console.log(credentials);
+// console.log(credentials);
   return function(dispatch) {
 
     return  fetch(`${urlToUse}/users/login/google`, {
@@ -85,7 +85,7 @@ console.log(credentials);
           })
           .then(userData => userData.json())
           .then((userData) => {
-              console.log(userData);
+              // console.log(userData);
 
 
 
@@ -126,7 +126,7 @@ export function LogoutUser() {
             })
             .then(userLogout => userLogout.json())
             .then((userLogout) => {
-                console.log(userLogout);
+                // console.log(userLogout);
                 dispatch({
                     type: LOGOUT_USER,
                     payload: userLogout
@@ -157,7 +157,7 @@ export function RegisterUser(data){
               })
               .then(registered => registered.json())
               .then((registered) => {
-                  console.log(registered);
+                  // console.log(registered);
 
 
                   return registered
@@ -171,7 +171,7 @@ export function RegisterUser(data){
 
 export function UserFollowShow(data) {
 
-    console.log(data);
+    // console.log(data);
 
     return function(dispatch) {
 
@@ -186,7 +186,7 @@ export function UserFollowShow(data) {
             })
             .then(show => show.json())
             .then((show) => {
-                console.log(show);
+                // console.log(show);
                 dispatch({
                     type: UNFOLLOW_SHOW,
                     payload: show
@@ -200,7 +200,7 @@ export function UserFollowShow(data) {
 
 export function UserUnFollowShow(data) {
 
-    console.log(data);
+    // console.log(data);
 
     return function(dispatch) {
 
@@ -215,7 +215,7 @@ export function UserUnFollowShow(data) {
             })
             .then(show => show.json())
             .then((show) => {
-                console.log(show);
+                // console.log(show);
                 dispatch({
                     type: UNFOLLOW_SHOW,
                     payload: show
@@ -234,7 +234,7 @@ return function(dispatch){
   return fetch(`${urlToUse}/users/tvseries`, {credentials: 'include'})
   .then((userCompleteList) => userCompleteList.json())
   .then((userCompleteList)=>{
-    console.log(userCompleteList);
+    // console.log(userCompleteList);
     if(userCompleteList.success===true){
     dispatch({
         type: GET_USER_INFO,
@@ -262,7 +262,7 @@ export function followEpisode(data){
         })
         .then(result => result.json())
         .then((result) => {
-          console.log(result);
+          // console.log(result);
 
           dispatch({
             type: FOLLOW_EPISODE,
@@ -290,7 +290,7 @@ export function unFollowEpisode(data){
         })
         .then(result => result.json())
         .then((result) => {
-          console.log(result);
+          // console.log(result);
 
           dispatch({
             type: UNFOLLOW_EPISODE,
@@ -315,7 +315,7 @@ export function userProfile(info){
 
 
 function sendOSID(){
-  console.log("Sending osID");
+  // console.log("Sending osID");
   let OneSignal = window.OneSignal || [];
   OneSignal.push(function() {
     OneSignal.init({
@@ -342,7 +342,7 @@ function sendOSID(){
             })
             .then(osid => osid.json())
             .then((osid) => {
-                console.log(osid);
+                // console.log(osid);
               })
 
 

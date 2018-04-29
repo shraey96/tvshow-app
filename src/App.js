@@ -12,9 +12,9 @@ class App extends Component {
 componentWillMount(){
 let loggedIN = localStorage.getItem('isUserLoggedIn');
 if(!loggedIN){
-  console.log("Hi");
+  // console.log("Hi");
 }else {
-  console.log("FETCHING USER DATA");
+  // console.log("FETCHING USER DATA");
  this.props.getUserData();
 }
 // this.props.getUserData();

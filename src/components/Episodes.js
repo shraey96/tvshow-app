@@ -28,8 +28,8 @@ class Episodes extends Component {
   }
 
 componentWillMount(){
-    console.log("Mounted episodes page");
-    console.log(this.props.match.params);
+    // console.log("Mounted episodes page");
+    // console.log(this.props.match.params);
     this.fetchEpisodesByID(this.props.shows.currentShow.id || this.props.match.params.id)
   }
 
@@ -48,24 +48,23 @@ componentWillMount(){
 
 handleWatch = (episode_num, showid, type) =>{
 
-  console.log("episode watch: ", episode_num, type);
+  // console.log("episode watch: ", episode_num, type);
   if(this.props.user.isUserLoggedIn === true){
     let episodes = [];
     if(type === 0 ){
       episodes.push(episode_num);
     }else {
       for(let i=0; i<this.state.episodes.length; i++){
-          console.log(this.state.episodes[i].id );
+          // console.log(this.state.episodes[i].id );
         if(this.state.episodes[i].id === episode_num){
-          console.log("done");
+          // console.log("done");
           break;
         }else {
-          console.log("push");
+          // console.log("push");
           episodes.push(this.state.episodes[i].id);
         }
       }
       episodes.push(episode_num)
-      console.log("episodes: ", episodes);
     }
 
   let data = {
@@ -93,23 +92,22 @@ else {
 }
 
 handleUnWatch = (episode_num, showid, type) =>{
-  console.log(episode_num, showid, type);
+  // console.log(episode_num, showid, type);
   let episodes = [];
   if(type === 0){
     episodes.push(episode_num);
   }else {
     for(let i=0; i<this.state.episodes.length; i++){
-        console.log(this.state.episodes[i].id );
+        // console.log(this.state.episodes[i].id );
       if(this.state.episodes[i].id === episode_num){
-        console.log("done");
+        // console.log("done");
         break;
       }else {
-        console.log("push");
+        // console.log("push");
         episodes.push(this.state.episodes[i].id);
       }
     }
     episodes.push(episode_num)
-    console.log("episodes: ", episodes);
   }
   let data = {
     tvid: parseInt(showid),
@@ -118,7 +116,6 @@ handleUnWatch = (episode_num, showid, type) =>{
 
   let unWatch = this.props.unFollowEpisode(data);
   unWatch.then((episode)=>{
-    console.log(episode);
   if(episode.success===true){
       this.setState({open: true, msg: `Episode Unwatched!`});
   }else {
@@ -148,12 +145,12 @@ if(this.props.user.isUserLoggedIn === true){
    presentShowArray = this.props.user.userFollows.filter((follow)=>{
     return  parseInt(follow.tvShowId) === parseInt(this.props.shows.currentShow.id || this.props.match.params.id)
   })
-  console.log(presentShowArray);
+  // console.log(presentShowArray);
   if(!presentShowArray[0]){
   presentShowArray = [];
   }else {
   presentShowArray = (presentShowArray[0].episodeWatched);
-  console.log(presentShowArray);
+  // console.log(presentShowArray);
   }
 
 }
@@ -165,7 +162,7 @@ if(this.state.loader === true){
   loader = <h3 className="show_episode_header">{this.props.match.params.tvshow} Episodes</h3>;
 }
 
-  console.log(this.state.episodes);
+  // console.log(this.state.episodes);
   // let header;
     if(this.state.episodes.length>0){
       let count;
@@ -191,7 +188,7 @@ if(this.state.loader === true){
       //   )
 
       if(this.state.episodes[0]){
-        console.log("present");
+        // console.log("present");
         count=0;
       }
 
@@ -221,7 +218,7 @@ if(this.state.loader === true){
           tag= (<div><h1>Season: {count}</h1></div>)
         }
 
-        console.log(episode);
+        // console.log(episode);
         return(
 
        <div key={episode.id} className="episodes">
