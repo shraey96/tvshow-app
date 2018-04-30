@@ -26,7 +26,7 @@ componentWillMount(){
   // console.log(this.props.match.params);
   this.setState({loader: true})
 
-  fetch(`http://api.tvmaze.com/shows/${this.props.match.params.id}/cast`)
+  fetch(`https://api.tvmaze.com/shows/${this.props.match.params.id}/cast`)
   .then(res=>res.json())
   .then(cast=>{
     // console.log(cast);

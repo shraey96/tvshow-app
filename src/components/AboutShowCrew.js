@@ -26,7 +26,7 @@ componentWillMount(){
   // console.log("Mounted AboutShowCrew");
   this.setState({loader: true})
 
-  fetch(`http://api.tvmaze.com/shows/${this.props.match.params.id}/crew`)
+  fetch(`https://api.tvmaze.com/shows/${this.props.match.params.id}/crew`)
   .then(res=>res.json())
   .then(crew=>{
     // console.log(crew);

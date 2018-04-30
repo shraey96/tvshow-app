@@ -52,7 +52,7 @@ class Simple extends Component {
     this.setState({value: value}, ()=>{
       // `http://api.tvmaze.com/search/shows?q=${query}`
       let showArray = []
-      fetch(`http://api.tvmaze.com/search/shows?q=${this.state.value}`)
+      fetch(`https://api.tvmaze.com/search/shows?q=${this.state.value}`)
           .then(res=>res.json())
           .then(show=>
             {

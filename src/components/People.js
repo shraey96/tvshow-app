@@ -25,13 +25,13 @@ componentWillMount(){
   // console.log("Mounted AboutShow");
   this.setState({loader: true});
   // console.log(this.props.match.params.person);
-fetch(`http://api.tvmaze.com/people/${this.props.match.params.id}`)
+fetch(`https://api.tvmaze.com/people/${this.props.match.params.id}`)
   .then(res=>res.json())
   .then(personInfo=>{
     // console.log(personInfo);
     // this.setState({personInfo: personInfo, loader: false});
 
-      return fetch(`http://api.tvmaze.com/people/${this.props.match.params.id}/castcredits`)
+      return fetch(`https://api.tvmaze.com/people/${this.props.match.params.id}/castcredits`)
       .then(res=>res.json())
       .then(personShows=>{
 
