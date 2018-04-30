@@ -9,6 +9,9 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import MoreShowsSearch from './MoreShowsSearch';
 import SearchShowsResult from './SearchShowsResult';
+import { Helmet } from "react-helmet";
+
+
 class MoreShows extends Component {
 
   constructor(){
@@ -31,6 +34,16 @@ class MoreShows extends Component {
 <MoreShowsSearch />
 <SearchShowsResult />
       </div>
+
+
+      <Helmet>
+        <title>Binged! Browse Shows According to Your Choice!</title>
+        <meta name="description" content="Browse, Follow and Keep Track of Your Favourite Shows!" />
+        <meta name="og:type" content="video.movie" />
+        <meta name="og:title" content="Browse Popular TV Shows Airing Tonight!" />
+        <meta name="og:description" content="Built with React/Express" />
+      </Helmet>
+
 </MuiThemeProvider>
     );
   }

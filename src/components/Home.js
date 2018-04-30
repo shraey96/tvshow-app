@@ -14,6 +14,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Animated} from "react-animated-css";
 
+import { Helmet } from "react-helmet";
+
 class Home extends Component {
 
   constructor(){
@@ -75,7 +77,7 @@ unFollow = (tvShowInfo) => {
   let userShowUnfollow = this.props.UserUnFollowShow(data)
   userShowUnfollow.then((show)=>{
     if(show.success === true){
-      this.setState({open: true, msg: `Show Unollowed!`});
+      this.setState({open: true, msg: `Show unfollowed!`});
   }else {
       this.setState({open: true, msg: `There was some problem.`});
   }
@@ -190,6 +192,15 @@ if(this.props.user.isUserLoggedIn === true){
   />
 
       </div>
+
+      <Helmet>
+        <title>Binged! Popular TV Shows Airing Tonight!</title>
+        <meta name="description" content="Browse, Follow and Keep Track of Your Favourite Shows!" />
+        <meta name="og:type" content="video.movie" />
+        <meta name="og:title" content="Browse Popular TV Shows Airing Tonight!" />
+        <meta name="og:description" content="Built with React/Express" />
+      </Helmet>
+
 </MuiThemeProvider>
     );
   }

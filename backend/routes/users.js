@@ -669,19 +669,49 @@ router.post('/login/social', function(req, res, next){
 						tvShowInfo:[]
 					}
 
-					TvShow.create(newUser)
-					.then(()=>{
-						TvShow.findOne({user_id: req.user._id})
-								.populate('tvShowInfo.show_ref')
-								.populate('user_id')
-								.then((userData)=>{
-								res.json({
-										success: true,
-										msg: "authenticated.",
-										result: userData
-								});
+					TvShow.findOne({user_id: user._id})
+					.then((user_tv)=>{
+						if(user_tv){
+							TvShow.findOne({user_id: req.user._id})
+									.populate('tvShowInfo.show_ref')
+									.populate('user_id')
+									.then((userData)=>{
+									res.json({
+											success: true,
+											msg: "authenticated.",
+											result: userData
+									});
+								})
+						}else {
+							TvShow.create(newUser)
+							.then(()=>{
+								TvShow.findOne({user_id: req.user._id})
+										.populate('tvShowInfo.show_ref')
+										.populate('user_id')
+										.then((userData)=>{
+										res.json({
+												success: true,
+												msg: "authenticated.",
+												result: userData
+										});
+									})
 							})
+						}
 					})
+
+					// TvShow.create(newUser)
+					// .then(()=>{
+					// 	TvShow.findOne({user_id: req.user._id})
+					// 			.populate('tvShowInfo.show_ref')
+					// 			.populate('user_id')
+					// 			.then((userData)=>{
+					// 			res.json({
+					// 					success: true,
+					// 					msg: "authenticated.",
+					// 					result: userData
+					// 			});
+					// 		})
+					// })
 
 			})
 

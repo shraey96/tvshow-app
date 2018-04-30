@@ -8,6 +8,8 @@ import {Link} from 'react-router-dom';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import { withRouter } from 'react-router-dom';
 import {Animated} from "react-animated-css";
+import { Helmet } from "react-helmet";
+
 import '../App.css';
 
 const MyShows = (props) => {
@@ -70,6 +72,16 @@ function Percentage(portion, total){
         {usershows}
       </Row>
     </Grid>
+
+
+    <Helmet>
+      <title>Binged! Shows That You Follow!</title>
+      <meta name="description" content="Browse, Follow and Keep Track of Your Favourite Shows!" />
+      <meta name="og:type" content="video.movie" />
+      <meta name="og:title" content="Browse Popular TV Shows Airing Tonight!" />
+      <meta name="og:description" content="Built with React/Express" />
+    </Helmet>
+
     </div>
   )
 }

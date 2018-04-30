@@ -7,10 +7,7 @@ import {fetchShowByID} from '../actions/showsAction';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import {Link} from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-// import striptags from 'striptags';
-
-// import Episodes from './Episodes';
-// import Cast from './Cast';
+import { Helmet } from "react-helmet";
 import {Animated} from "react-animated-css";
 
 class People extends Component {
@@ -169,6 +166,16 @@ personShows = this.state.personShows.map((show)=>{
         </Grid>
 
       </div>
+
+      <Helmet>
+        <title>Binged! {this.props.match.params.person}</title>
+        <meta name="description" content="Browse, Follow and Keep Track of Your Favourite Shows!" />
+        <meta name="og:type" content="video.movie" />
+        <meta name="og:title" content="Browse Popular TV Shows Airing Tonight!" />
+        <meta name="og:description" content="Built with React/Express" />
+      </Helmet>
+
+
 </MuiThemeProvider>
     );
   }

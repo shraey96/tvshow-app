@@ -10,6 +10,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {Animated} from "react-animated-css";
 import { withRouter } from 'react-router-dom';
 
+import { Helmet } from "react-helmet";
+
 class AboutShowCrew extends Component {
 
   constructor(){
@@ -93,8 +95,16 @@ return(
         </Grid>
 
 
-
       </div>
+
+      <Helmet>
+        <title>Binged!: {this.props.match.params.tvshow} Crew</title>
+        <meta name="description" content="Browse, Follow and Keep Track of Your Favourite Shows!" />
+        <meta name="og:type" content="video.movie" />
+        <meta name="og:title" content="Browse Popular TV Shows Airing Tonight!" />
+        <meta name="og:description" content="Built with React/Express" />
+      </Helmet>
+
 </MuiThemeProvider>
     );
   }

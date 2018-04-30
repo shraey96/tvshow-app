@@ -9,6 +9,8 @@ import {Link} from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {Animated} from "react-animated-css";
 
+import { Helmet } from "react-helmet";
+
 class AboutShowCast extends Component {
 
   constructor(){
@@ -90,11 +92,16 @@ return(
           </Row>
         </Grid>
 
-
-
-
-
       </div>
+
+      <Helmet>
+        <title>Binged!: {this.props.match.params.tvshow} Cast</title>
+        <meta name="description" content="Browse, Follow and Keep Track of Your Favourite Shows!" />
+        <meta name="og:type" content="video.movie" />
+        <meta name="og:title" content="Browse Popular TV Shows Airing Tonight!" />
+        <meta name="og:description" content="Built with React/Express" />
+      </Helmet>
+
 </MuiThemeProvider>
     );
   }

@@ -123,7 +123,7 @@ unFollow = (tvShowInfo) => {
   let userShowUnfollow = this.props.UserUnFollowShow(data)
   userShowUnfollow.then((show)=>{
     if(show.success === true){
-      this.setState({open: true, msg: `Show Unollowed!`});
+      this.setState({open: true, msg: `Show unfollowed!`});
   }else {
       this.setState({open: true, msg: `There was some problem.`});
   }

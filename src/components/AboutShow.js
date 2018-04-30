@@ -10,11 +10,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {UserFollowShow, UserUnFollowShow} from '../actions/userAction';
 import striptags from 'striptags';
 import Snackbar from 'material-ui/Snackbar';
-// import Episodes from './Episodes';
 import RaisedButton from 'material-ui/RaisedButton';
 
-// import { SocialIcon } from 'react-social-icons';
-// import ShareButton from 'react-social-share-buttons';
+import { Helmet } from "react-helmet";
 
 import { Google } from 'react-social-sharing';
 import { Twitter } from 'react-social-sharing';
@@ -97,7 +95,7 @@ unFollow = (tvShowInfo) => {
   let userShowUnfollow = this.props.UserUnFollowShow(data)
   userShowUnfollow.then((show)=>{
     if(show.success === true){
-      this.setState({open: true, msg: `Show Unollowed!`});
+      this.setState({open: true, msg: `Show unfollowed!`});
   }else {
       this.setState({open: true, msg: `There was some problem.`});
   }
@@ -260,6 +258,15 @@ info3 = (
                 autoHideDuration={2000}
                 onRequestClose={this.handleRequestClose}
         />
+
+        <Helmet>
+          <title>Binged!: {this.props.match.params.tvshow}</title>
+          <meta name="description" content="Browse, Follow and Keep Track of Your Favourite Shows!" />
+          <meta name="og:type" content="video.movie" />
+          <meta name="og:title" content="Browse Popular TV Shows Airing Tonight!" />
+          <meta name="og:description" content="Built with React/Express" />
+        </Helmet>
+
 </MuiThemeProvider>
     );
   }

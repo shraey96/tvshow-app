@@ -10,7 +10,7 @@ import GoogleLogin from 'react-google-login';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import {RegisterUser, LoginUserSocial} from '../actions/userAction';
-
+import { Helmet } from "react-helmet";
 import TextField from 'material-ui/TextField';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Snackbar from 'material-ui/Snackbar';
@@ -30,7 +30,7 @@ constructor(){
 }
 
  responseFacebook = (response) =>{
-   console.log(response);
+   // console.log(response);
    let credentials = {
      fbid: response.id,
      fb_token: response.accessToken,
@@ -275,6 +275,14 @@ constructor(){
           />
 
       </div>
+
+      <Helmet>
+        <title>Binged! Register!</title>
+        <meta name="description" content="Browse, Follow and Keep Track of Your Favourite Shows!" />
+        <meta name="og:type" content="video.movie" />
+        <meta name="og:title" content="Browse Popular TV Shows Airing Tonight!" />
+        <meta name="og:description" content="Built with React/Express" />
+      </Helmet>
 </MuiThemeProvider>
     );
   }

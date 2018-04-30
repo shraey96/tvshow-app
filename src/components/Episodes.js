@@ -11,7 +11,7 @@ import {followEpisode, unFollowEpisode} from '../actions/userAction';
 import Snackbar from 'material-ui/Snackbar';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
-
+import { Helmet } from "react-helmet";
 
 class Episodes extends Component {
 
@@ -281,6 +281,14 @@ if(this.state.loader === true){
                     />
 
       </div>
+
+      <Helmet>
+        <title>Binged!: {this.props.match.params.tvshow} Episodes</title>
+        <meta name="description" content="Browse, Follow and Keep Track of Your Favourite Shows!" />
+        <meta name="og:type" content="video.movie" />
+        <meta name="og:title" content="Browse Popular TV Shows Airing Tonight!" />
+        <meta name="og:description" content="Built with React/Express" />
+      </Helmet>
 
       </MuiThemeProvider>
 

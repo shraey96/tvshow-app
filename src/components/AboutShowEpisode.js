@@ -6,6 +6,8 @@ import {fetchEpisodeByNumber} from '../actions/showsAction';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import striptags from 'striptags';
 
+import { Helmet } from "react-helmet";
+
 class AboutShowEpisode extends Component {
 
   constructor(){
@@ -100,6 +102,15 @@ col1 = (
 <br/>
           </Row>
         </Grid>
+
+        <Helmet>
+          <title>Binged!: {this.props.match.params.tvshow} Episodes</title>
+          <meta name="description" content="Browse, Follow and Keep Track of Your Favourite Shows!" />
+          <meta name="og:type" content="video.movie" />
+          <meta name="og:title" content="Browse Popular TV Shows Airing Tonight!" />
+          <meta name="og:description" content="Built with React/Express" />
+        </Helmet>
+
       </div>
     );
   }

@@ -14,6 +14,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import { Helmet } from "react-helmet";
 
 import moment from 'moment';
 
@@ -293,6 +294,15 @@ const actions = [
                 autoHideDuration={2000}
                 onRequestClose={this.handleRequestClose}
         />
+
+        <Helmet>
+          <title>Binged! Your Profile!</title>
+          <meta name="description" content="Browse, Follow and Keep Track of Your Favourite Shows!" />
+          <meta name="og:type" content="video.movie" />
+          <meta name="og:title" content="Browse Popular TV Shows Airing Tonight!" />
+          <meta name="og:description" content="Built with React/Express" />
+        </Helmet>
+
 </MuiThemeProvider>
     );
   }
