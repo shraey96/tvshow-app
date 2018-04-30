@@ -6,7 +6,7 @@ export const FETCH_SEARCH_QUERY = 'FETCH_SEARCH_QUERY';
 
 
 export const LOGIN_USER = 'LOGIN_USER';
-export const LOGIN_USER_GOOGLE = 'LOGIN_USER_GOOGLE';
+export const LOGIN_USER_SOCIAL = 'LOGIN_USER_SOCIAL';
 export const LOGOUT_USER = 'LOGOUT_USER';
 export const GET_USER_INFO = 'GET_USER_INFO';
 export const REGISTER_USER = 'REGISTER_USER';

@@ -1,4 +1,4 @@
-import {LOGIN_USER, USER_PROFILE, LOGOUT_USER, REGISTER_USER ,FOLLOW_SHOW, UNFOLLOW_SHOW, FOLLOW_EPISODE, UNFOLLOW_EPISODE, GET_USER_INFO, LOGIN_USER_GOOGLE} from './types';
+import {LOGIN_USER, USER_PROFILE, LOGOUT_USER, REGISTER_USER ,FOLLOW_SHOW, UNFOLLOW_SHOW, FOLLOW_EPISODE, UNFOLLOW_EPISODE, GET_USER_INFO, LOGIN_USER_SOCIAL} from './types';
 import urlToUse from '../config';
 
 export function LoginUser(email, password) {
@@ -71,11 +71,11 @@ export function LoginUser(email, password) {
 }
 
 
-export function LoginUserGoogle(credentials){
+export function LoginUserSocial(credentials){
 // console.log(credentials);
   return function(dispatch) {
 
-    return  fetch(`${urlToUse}/users/login/google`, {
+    return  fetch(`${urlToUse}/users/login/social`, {
               method: 'post',
               credentials: 'include',
               headers: {
@@ -87,13 +87,10 @@ export function LoginUserGoogle(credentials){
           .then((userData) => {
               // console.log(userData);
 
-
-
-
               if(userData.success === true){
                 sendOSID();
                       dispatch({
-                          type: LOGIN_USER_GOOGLE,
+                          type: LOGIN_USER_SOCIAL,
                           payload: userData
                       })
 
@@ -110,6 +107,7 @@ export function LoginUserGoogle(credentials){
   }
 
 }
+
 
 
 export function LogoutUser() {
@@ -331,7 +329,7 @@ function sendOSID(){
       let data = {
         osid: userId
       };
-
+      console.log("OS_ID: ", data);
       fetch(`${urlToUse}/users/login/osid`, {
                 method: 'put',
                 credentials: 'include',

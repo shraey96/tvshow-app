@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const rp = require('request-promise');
 const passportGoogle = require('../config/passport-google');
+
 // bring in models
 let User = require('../models/user');
 let showCache = require('../models/showCache');
@@ -275,7 +276,7 @@ router.put('/profile', ensureAuthenticated, function(req, res){
             }
         })
     });
-    
+
 });
 
 
@@ -587,7 +588,7 @@ router.post('/register', function (req, res, next) {
             }
         })
         .catch((err) => {
-            
+
         })
 });
 
@@ -603,7 +604,7 @@ router.put('/updatePassword', function(req, res){
                                 if(err){
                                     console.log(err);
                                 }
-                                req.body.new = hash2; 
+                                req.body.new = hash2;
                         User.update({_id: user._id}, {password: req.body.new}, function(err, raw) {
                             res.send({
                                 success:true,
@@ -658,32 +659,8 @@ router.post('/login', function(req, res, next){
 });
 
 
-// Login Google
 
-// router.post('/login/google', passport.authenticate('google', { scope : ['profile', 'email'],  function(err, user, info){
-// 	 console.log("error: ", error);
-// 	 console.log("user: ", user );
-// 	 console.log("info: ", info);
-//  }})
-//
-// )
-
-// router.post('/login/google',passportGoogle.authenticate('google', { scope: 'https://www.google.com/m8/feeds' }))
-
-// router.get('/login/google', passportGoogle.authenticate('google', {
-//     scope: ['https://www.googleapis.com/auth/userinfo.profile']
-// }));
-
-// router.post('/login/google', passport.authenticate('custom', function(req, res) {
-//     // res.redirect('/');
-// 		res.json({
-// 			succes: true,
-// 			user: req.user
-// 		})
-//   })
-// );
-
-router.post('/login/google', function(req, res, next){
+router.post('/login/social', function(req, res, next){
 
 	passport.authenticate('custom', function(err, user, info){
 			  req.logIn(user, function(err){
@@ -705,22 +682,14 @@ router.post('/login/google', function(req, res, next){
 								});
 							})
 					})
-					// TvShow.findOne({user_id: req.user._id})
-					// 		.populate('tvShowInfo.show_ref')
-					// 		.populate('user_id')
-					// 		.then((userData)=>{
-					// 		res.json({
-					// 				success: true,
-					// 				msg: "authenticated.",
-					// 				result: userData
-					// 		});
-					// 	})
+
 			})
 
 	})(req, res, next);
 
 
 })
+
 
 
 // Logout

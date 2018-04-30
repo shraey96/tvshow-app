@@ -1,42 +1,17 @@
 const User = require('../models/user');
 const config = require('../config/database');
-const GoogleStrategy = require('passport-google-auth').Strategy;
-const GoogleTokenStrategy = require('passport-google-auth').Strategy;
 const CustomStrategy = require('passport-custom').Strategy;
 const passport = require('passport');
+const FB = require('fb');
 const rp = require('request-promise');
-// change cliendID to clientid
-
-// passport.use(new GoogleStrategy({
-//     clientId: "826343597365-4mnq7r5ro06nnocd08ogumcg584si15d.apps.googleusercontent.com",
-//     clientSecret: "FGY1JZflbHWSStqYBUtNM4g6",
-//     callbackURL: "http://127.0.0.1:3000/auth/google/callback"
-//   },
-//   function(accessToken, refreshToken, profile, done) {
-//     console.log("ADSADS");
-//        // User.findOrCreate({ userid: profile.id }, { name: profile.displayName,userid: profile.id }, function (err, user) {
-//        //   return done(err, user);
-//        // });
-//   }
-// ));
-
-// passport.use(new GoogleTokenStrategy({
-//     clientId: `826343597365-4mnq7r5ro06nnocd08ogumcg584si15d.apps.googleusercontent.com`,
-//     clientSecret: `FGY1JZflbHWSStqYBUtNM4g6`,
-//     callbackURL: "http://localhost:3000/auth/google/redirect"
-//   },
-//   function(accessToken, refreshToken, profile, done) {
-//     console.log("sdad");
-//     User.findOrCreate({ googleId: profile.id }, function (err, user) {
-//       return done(err, user);
-//     });
-//   }
-// ));
 
 
 passport.use(new CustomStrategy(
   function(req, done) {
-         User.findOne({
+
+      if(req.body.type==='google'){
+        console.log("Google.");
+           User.findOne({
            google_id: req.body.google_id
          }, function (err, user) {
            if(user){
@@ -66,6 +41,46 @@ passport.use(new CustomStrategy(
 
 
        })
+}else if(req.body.type==='facebook'){
+  console.log("Facebook");
+        User.findOne({facebook_id: req.body.fbid}, function (err, user) {
+
+          if(user){
+              return done(err, user);
+          }else {
+
+            FB.api('me', { fields: ['id', 'name', 'picture.type(large)', 'email'], access_token: req.body.fb_token }, function (result) {
+
+              // console.log(result);
+
+              let objToCreate = {
+                facebook_id: result.id,
+                username: result.name,
+                email: result.email,
+                profile_Img: result.picture.data.url
+              }
+
+              User.create(objToCreate)
+              .then((newUser)=>{
+                done(err, newUser)
+              })
+
+            })
+
+          }
+
+        })
+
+
+
+
+}
+
+
+
+
+
+
 
        passport.serializeUser(function(user, done) {
            done(null, user.id);
@@ -80,15 +95,5 @@ passport.use(new CustomStrategy(
   }
 ));
 
-// passport.use(new GoogleTokenStrategy({
-//     clientID: "GOOGLE_CLIENT_ID",
-//     clientSecret: GOOGLE_CLIENT_SECRET
-//   },
-//   function(accessToken, refreshToken, profile, done) {
-//     User.findOrCreate({ googleId: profile.id }, function (err, user) {
-//       return done(err, user);
-//     });
-//   }
-// ));
 
 module.exports = passport;

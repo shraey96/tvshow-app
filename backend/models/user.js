@@ -23,6 +23,14 @@ const UserSchema = mongoose.Schema({
       type: String,
       require:false
     },
+    facebook_id:{
+      type: String,
+      require:false
+    },
+    facebook_token:{
+      type: String,
+      require:false
+    },
     profile_Img:{
         type:String,
         require:false

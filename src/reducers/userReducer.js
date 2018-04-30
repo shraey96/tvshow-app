@@ -1,4 +1,4 @@
-import {LOGIN_USER, LOGOUT_USER, FOLLOW_SHOW, UNFOLLOW_EPISODE} from '../actions/types';
+import {LOGIN_USER, LOGIN_USER_SOCIAL,  LOGIN_USER_FACEBOOK, LOGOUT_USER, FOLLOW_SHOW, UNFOLLOW_EPISODE} from '../actions/types';
 
 const initialState = {
 
@@ -25,7 +25,7 @@ export default function(state = initialState, action){
     }
 
 
-    case 'LOGIN_USER_GOOGLE':
+    case 'LOGIN_USER_SOCIAL':
     // console.log(action.payload);
     return{
       ...state,
@@ -33,6 +33,7 @@ export default function(state = initialState, action){
       userProfile : action.payload.result.user_id,
       userFollows: action.payload.result.tvShowInfo
     }
+
 
     case 'LOGOUT_USER':
     // console.log("logout");

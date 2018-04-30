@@ -9,7 +9,7 @@ import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Grid, Row, Col } from 'react-flexbox-grid';
-import {LoginUser, LoginUserGoogle, LogoutUser} from '../actions/userAction';
+import {LoginUser, LoginUserSocial, LogoutUser} from '../actions/userAction';
 
 import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
@@ -29,17 +29,35 @@ constructor(){
 }
 
  responseFacebook = (response) =>{
-    // console.log(response);
+    console.log(response);
+    let credentials = {
+      fbid: response.id,
+      fb_token: response.accessToken,
+      type: 'facebook'
+    }
+    let socialLogin = this.props.LoginUserSocial(credentials)
+    socialLogin.then((login)=>{
+      if(login.success === true){
+        this.setState({open: true, msg: `Login Success!`}, ()=>{
+          setTimeout(()=>{
+             this.props.history.push('/')
+          }, 1000)
+        });
+      }else if(login.success === false){
+        this.setState({open: true, msg: `Login Failed! Invalid Credentials!`});
+      }
+    })
   }
 
  responseGoogle = (response) => {
    // console.log(response);
     let credentials = {
       id_token: response.tokenObj.id_token,
-      google_id: response.googleId
+      google_id: response.googleId,
+      type: 'google'
     }
-    let googleLogin = this.props.LoginUserGoogle(credentials)
-    googleLogin.then((login)=>{
+    let socialLogin = this.props.LoginUserSocial(credentials)
+    socialLogin.then((login)=>{
       if(login.success === true){
         this.setState({open: true, msg: `Login Success!`}, ()=>{
           setTimeout(()=>{
@@ -154,8 +172,17 @@ constructor(){
     <br/>
     <br/>
 
+      <FacebookLogin
+         appId="415911222188406"
+         autoLoad={false}
+         fields="name,email,picture"
+         callback={this.responseFacebook}
+         className="facebookLogin"
+         />
+       <br/><br/>
+
 <GoogleLogin
- clientId="95894114672-849bmsu6ganu1ufg1fecsj801rcvd3od.apps.googleusercontent.com"
+ clientId="95894114672-45ungm664qrto6477mbbtpoih6ut49kj.apps.googleusercontent.com"
  buttonText="Login with Google"
  onSuccess={this.responseGoogle}
  onFailure={this.responseGoogle}
@@ -188,4 +215,4 @@ const mapStateToProps = function(state){
 }
 
 
-export default connect(mapStateToProps, {LoginUser, LoginUserGoogle})(Login);
+export default connect(mapStateToProps, {LoginUser, LoginUserSocial})(Login);
