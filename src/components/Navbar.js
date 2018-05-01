@@ -9,7 +9,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
 import AutoComplete from 'material-ui/AutoComplete';
-
+import Headroom from 'react-headroom'
 import {Link} from 'react-router-dom';
 import {withRouter} from 'react-router-dom';
 
@@ -230,13 +230,14 @@ user = userLoggedIn;
     return(
        <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
          <div>
+           <Headroom>
     <AppBar
       title="Binged"
       onLeftIconButtonClick = {this.handleToggle}
       onRequestChange={(open) => this.setState({open})}
       iconElementRight={rightButtons}
     />
-
+  </Headroom>
     <Drawer open={this.state.open}
       docked={false}
       open={this.state.open}

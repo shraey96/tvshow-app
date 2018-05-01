@@ -12,10 +12,13 @@ var randomstring = require("randomstring");
 let User = require('../models/user');
 
 let mailer = nodemailer.createTransport({
-	service: 'gmail',
+	host: 'smtp.zoho.com',
+	service:'Zoho',
+	port:465,
+	secure: false,
 	auth: {
-		user: 'nitish@creativeappography.com',
-		pass: 'nitish@123'
+			user: 'notifications@binged.xyz',
+			pass: 'bingingshows'
 	}
 });
 

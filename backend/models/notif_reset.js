@@ -13,7 +13,7 @@ const NotifReset = mongoose.Schema({
       require: true
     },
     timeRun:{
-        type:String,
+        type:Date,
     }
 
 });

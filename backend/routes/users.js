@@ -724,8 +724,10 @@ router.post('/login/social', function(req, res, next){
 
 // Logout
 router.get('/logout', function(req, res){
-	console.log("LOGOUT: ", req.user._id);
-	User.update({_id: req.user._id},{$unset: {os_id: 1}})
+	// console.log("LOGOUT: ", req.user._id);
+	if(req.user){
+			User.update({_id: req.user._id},{$unset: {os_id: 1}})
+	}
     req.logout();
     res.json({
         success:true,

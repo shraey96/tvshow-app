@@ -17,7 +17,7 @@ let db = mongoose.connection;
 
 db.once('open', function(){
 	console.log('Connected to MongoDB');
-
+	// resetNotif()
 });
 db.on('error', function(err){
 	console.log(err);
@@ -25,7 +25,7 @@ db.on('error', function(err){
 
 cron.schedule('* * * * *', function(){
   console.log('running a task every minute');
-  resetNotif()
+  resetNotif();
 });
 
 function resetNotif(){
@@ -42,7 +42,7 @@ function resetNotif(){
     }
       users.forEach((user)=>{
         console.log(user);
-        // console.log(user.timeRun);
+        console.log(user.timeRun);
         let resetDate = moment(user.timeRun);
         // console.log(resetDate.isValid());
           console.log( moment(user.timeRun).format('MMMM Do YY'));
@@ -52,8 +52,8 @@ function resetNotif(){
                     let userOSNotif = user.user_id.oneSignalNotif;
                     let user_id = user.user_id._id;
                     let tvShowId = user.tvShowId;
-                    console.log(userEmailNotif, userOSNotif, tvShowId);
-                    console.log(user._id);
+                    // console.log(userEmailNotif, userOSNotif, tvShowId);
+                    // console.log(user._id);
 
         if(resetDate.isSame(todaysDate, 'day')){
           console.log("Resetting! ");
@@ -76,6 +76,8 @@ function resetNotif(){
           })
 
 
+        }else {
+        	console.log("NOT RESETTING");
         }
 
       })
