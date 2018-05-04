@@ -50,6 +50,9 @@ handleWatch = (episode_num, showid, type) =>{
 
   // console.log("episode watch: ", episode_num, type);
   if(this.props.user.isUserLoggedIn === true){
+    console.log(this.state.episodes[0]);
+    let stateEpisodes = this.state.episodes.reverse();
+    console.log(stateEpisodes[0]);
     let episodes = [];
     if(type === 0 ){
       episodes.push(episode_num);

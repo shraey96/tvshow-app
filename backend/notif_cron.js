@@ -382,28 +382,28 @@ mailer.sendMail(mailOptions, (err, done)=>{
 		}
 })
 
-
-var transporter = nodemailer.createTransport({
- service: 'gmail',
- auth: {
-        user: 'nitish@creativeappography.com',
-        pass: 'nitish@123'
-    }
-});
-
-const mailOptions = {
-  from: 'sender@email.com', // sender address
-  to: `${notif_user.user_id.email}`, // list of receivers
-  subject: 'Notification fron Binged.xyz!', // Subject line
-	text: `${notif_user.show_ref.tvShowName}`,
-  html:`<p>${notif_user.show_ref.tvShowName} S${episodes.season}E${episodes.number} will be releasing in 1 hour! You don't wanna miss it, do you?!</p>`// plain text body
-};
-
-transporter.sendMail(mailOptions, function (err, info) {
-   if(err)
-     console.log(err)
-   else
-     console.log(info);
-});
+// 
+// var transporter = nodemailer.createTransport({
+//  service: 'gmail',
+//  auth: {
+//         user: 'nitish@creativeappography.com',
+//         pass: 'nitish@123'
+//     }
+// });
+//
+// const mailOptions = {
+//   from: 'sender@email.com', // sender address
+//   to: `${notif_user.user_id.email}`, // list of receivers
+//   subject: 'Notification fron Binged.xyz!', // Subject line
+// 	text: `${notif_user.show_ref.tvShowName}`,
+//   html:`<p>${notif_user.show_ref.tvShowName} S${episodes.season}E${episodes.number} will be releasing in 1 hour! You don't wanna miss it, do you?!</p>`// plain text body
+// };
+//
+// transporter.sendMail(mailOptions, function (err, info) {
+//    if(err)
+//      console.log(err)
+//    else
+//      console.log(info);
+// });
 
 }
