@@ -34,133 +34,133 @@ cron.schedule('* * * * *', function(){
 
 	// notifQueryDate();
 	notifQueryHour();
-	webPushDay();
-	webPushHour();
+	// webPushDay();
+	// webPushHour();
 
 
 });
 
 
+//
+// function webPushDay(){
+//
+// console.log("webPushDay");
+// let d = new Date();
+// let todaysDate = moment(d, 'YYYY.MM.DD').tz('Asia/Calcutta');
+//
+// let todayAll = moment(d).tz('Asia/Calcutta').format("MMMM Do YYYY, h:mm");
+//
+//
+// console.log("#################### running webPushDay Query");
+// ShowNotification.find({oneSignalDay: false})
+// .populate('user_id', '-password')
+// .populate('show_ref')
+// .then((notif_users)=>{
+// if(!notif_users){
+// 	console.log("No users");
+// }else {
+//
+// notif_users.forEach((notif_user)=>{
+// 	let remindersDate = [];
+// 	notif_user.show_ref.episodes.forEach((user_notif_episodes)=>{
+//
+//
+// 		let showDate = moment(user_notif_episodes.airstamp, 'YYYY.MM.DD').tz('Asia/Calcutta');
+// 		let showDateTime = moment(user_notif_episodes.airstamp, 'YYYY.MM.DD, h:mm').tz('Asia/Calcutta')
+//
+// 			if(showDate.isSame(todaysDate, 'day')){
+//
+// 				if(notif_user.user_id.os_id){
+// 					console.log(notif_user.show_ref.tvShowName);
+// 					let message = `${notif_user.show_ref.tvShowName} S${user_notif_episodes.season}E${user_notif_episodes.number} will be released today!`
+// 					push.sendWebPush([notif_user.user_id.os_id], message, function(err, response){
+// 						if(response){
+// 							ShowNotification.update({_id: notif_user._id, tvShowId: notif_user.show_ref.tvShowId}, {oneSignalDay: true})
+// 							.then((msg)=>{
+// 								console.log(msg);
+// 							})
+// 						}
+// 					})
+//
+//
+// 				}
+//
+// 			}
+//
+// 	})
+//
+//
+// })
+// }
+//
+// });
+//
+// }
 
-function webPushDay(){
-
-console.log("webPushDay");
-let d = new Date();
-let todaysDate = moment(d, 'YYYY.MM.DD').tz('Asia/Calcutta');
-
-let todayAll = moment(d).tz('Asia/Calcutta').format("MMMM Do YYYY, h:mm");
-
-
-console.log("#################### running webPushDay Query");
-ShowNotification.find({oneSignalDay: false})
-.populate('user_id', '-password')
-.populate('show_ref')
-.then((notif_users)=>{
-if(!notif_users){
-	console.log("No users");
-}else {
-
-notif_users.forEach((notif_user)=>{
-	let remindersDate = [];
-	notif_user.show_ref.episodes.forEach((user_notif_episodes)=>{
-
-
-		let showDate = moment(user_notif_episodes.airstamp, 'YYYY.MM.DD').tz('Asia/Calcutta');
-		let showDateTime = moment(user_notif_episodes.airstamp, 'YYYY.MM.DD, h:mm').tz('Asia/Calcutta')
-
-			if(showDate.isSame(todaysDate, 'day')){
-
-				if(notif_user.user_id.os_id){
-					console.log(notif_user.show_ref.tvShowName);
-					let message = `${notif_user.show_ref.tvShowName} S${user_notif_episodes.season}E${user_notif_episodes.number} will be released today!`
-					push.sendWebPush([notif_user.user_id.os_id], message, function(err, response){
-						if(response){
-							ShowNotification.update({_id: notif_user._id, tvShowId: notif_user.show_ref.tvShowId}, {oneSignalDay: true})
-							.then((msg)=>{
-								console.log(msg);
-							})
-						}
-					})
-
-
-				}
-
-			}
-
-	})
-
-
-})
-}
-
-});
-
-}
-
-function webPushHour(){
-
-console.log("webPushHour");
-let d = new Date();
-let todaysDate = moment(d, 'YYYY.MM.DD').tz('Asia/Calcutta');
-
-let todayAll = moment(d).tz('Asia/Calcutta').format("MMMM Do YYYY, h:mm");
-
-
-console.log("#################### running webPushHour Query");
-ShowNotification.find({oneSignalHour: false})
-.populate('user_id', '-password')
-.populate('show_ref')
-.then((notif_users)=>{
-if(!notif_users){
-	console.log("No users");
-}else {
-
-notif_users.forEach((notif_user)=>{
-	let remindersDate = [];
-	notif_user.show_ref.episodes.forEach((user_notif_episodes)=>{
-
-
-		let showDate = moment(user_notif_episodes.airstamp, 'YYYY.MM.DD').tz('Asia/Calcutta');
-		let showDateTime = moment(user_notif_episodes.airstamp, 'YYYY.MM.DD, h:mm').tz('Asia/Calcutta')
-
-			if(showDate.isSame(todaysDate, 'day')){
-
-				if(showDateTime.diff(todayAll) <= 3600000){
-					if(notif_user.user_id.os_id){
-						console.log(notif_user.show_ref.tvShowName);
-						let message = `${notif_user.show_ref.tvShowName} S${user_notif_episodes.season}E${user_notif_episodes.number} will be released today!`
-						push.sendWebPush([notif_user.user_id.os_id], message, function(err, response){
-							if(response){
-								ShowNotification.update({_id: notif_user._id, tvShowId: notif_user.show_ref.tvShowId}, {oneSignalHour: true})
-								.then((msg)=>{
-									console.log(msg);
-
-									let body = {
-										user_id: notif_user._id,
-										tvShowId: notif_user.show_ref.tvShowId,
-										timeRun: showDate.add(1, 'day').toDate()
-									}
-									NotifReset.create(body)
-
-								})
-							}
-						})
-					}
-			}
-
-
-
-			}
-
-	})
-
-
-})
-}
-
-});
-
-}
+// function webPushHour(){
+//
+// console.log("webPushHour");
+// let d = new Date();
+// let todaysDate = moment(d, 'YYYY.MM.DD').tz('Asia/Calcutta');
+//
+// let todayAll = moment(d).tz('Asia/Calcutta').format("MMMM Do YYYY, h:mm");
+//
+//
+// console.log("#################### running webPushHour Query");
+// ShowNotification.find({oneSignalHour: false})
+// .populate('user_id', '-password')
+// .populate('show_ref')
+// .then((notif_users)=>{
+// if(!notif_users){
+// 	console.log("No users");
+// }else {
+//
+// notif_users.forEach((notif_user)=>{
+// 	let remindersDate = [];
+// 	notif_user.show_ref.episodes.forEach((user_notif_episodes)=>{
+//
+//
+// 		let showDate = moment(user_notif_episodes.airstamp, 'YYYY.MM.DD').tz('Asia/Calcutta');
+// 		let showDateTime = moment(user_notif_episodes.airstamp, 'YYYY.MM.DD, h:mm').tz('Asia/Calcutta')
+//
+// 			if(showDate.isSame(todaysDate, 'day')){
+//
+// 				if(showDateTime.diff(todayAll) <= 3600000){
+// 					if(notif_user.user_id.os_id){
+// 						console.log(notif_user.show_ref.tvShowName);
+// 						let message = `${notif_user.show_ref.tvShowName} S${user_notif_episodes.season}E${user_notif_episodes.number} will be released today!`
+// 						push.sendWebPush([notif_user.user_id.os_id], message, function(err, response){
+// 							if(response){
+// 								ShowNotification.update({_id: notif_user._id, tvShowId: notif_user.show_ref.tvShowId}, {oneSignalHour: true})
+// 								.then((msg)=>{
+// 									console.log(msg);
+//
+// 									let body = {
+// 										user_id: notif_user._id,
+// 										tvShowId: notif_user.show_ref.tvShowId,
+// 										timeRun: showDate.add(1, 'day').toDate()
+// 									}
+// 									NotifReset.create(body)
+//
+// 								})
+// 							}
+// 						})
+// 					}
+// 			}
+//
+//
+//
+// 			}
+//
+// 	})
+//
+//
+// })
+// }
+//
+// });
+//
+// }
 
 
 
@@ -230,7 +230,8 @@ function notifQueryHour(){
 
 					if(showDate.isSame(todaysDate, 'day')){
 
-
+						console.log("Current time: ", todayAll.format('YYYY.MM.DD, h:mm'));
+						console.log("showTime: ", showDateTime.format('YYYY.MM.DD, h:mm'));
 							if(showDateTime.diff(todayAll) <= 3600000){
 							mailerHour(notif_user, user_notif_episodes, showDate.add(1, 'day').toDate());
 						}
@@ -324,8 +325,8 @@ function notifQueryHour(){
 
 function mailerHour(notif_user, episodes, resetDate){
 console.log("notif hour sent!");
-
-ShowNotification.update({_id: notif_user._id, tvShowId: notif_user.show_ref.tvShowId}, {oneHour: true})
+console.log(notif_user.user_id._id, notif_user.show_ref.tvShowId);
+ShowNotification.update({user_id: notif_user.user_id._id, tvShowId: notif_user.show_ref.tvShowId}, {emailHour: true})
 .then((msg)=>{
 	console.log(msg);
 
@@ -382,7 +383,7 @@ mailer.sendMail(mailOptions, (err, done)=>{
 		}
 })
 
-// 
+//
 // var transporter = nodemailer.createTransport({
 //  service: 'gmail',
 //  auth: {
