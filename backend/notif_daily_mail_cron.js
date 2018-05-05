@@ -38,7 +38,7 @@ cron.schedule('0 0 0 * * *', function(){
 
 
 function sendDailyShows(){
-
+	console.log("Running sendDailyShows");
   let d = new Date();
   let todaysDate = moment(d, 'YYYY.MM.DD');
 
