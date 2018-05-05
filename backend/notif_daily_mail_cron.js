@@ -62,7 +62,7 @@ function sendDailyShows(){
                 // console.log(notif.show_ref.tvShowName);
                 // console.log(episode);
                   	let showDate = moment(episode.airstamp, 'YYYY.MM.DD');
-                    if(!showDate.isSame(todaysDate)){
+                    if(showDate.isSame(todaysDate)){
                       // console.log(showDate);
                       let objToUse = {
                         name: notif.show_ref.tvShowName,
