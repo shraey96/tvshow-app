@@ -16,7 +16,6 @@ mongoose.Promise = global.Promise;
 mongoose.connect(config.database, { useMongoClient: true });
 
 let db = mongoose.connection;
-0 0 0 * * *
 //check for db errors
 db.once('open', function(){
 	console.log('Connected to MongoDB');
