@@ -257,6 +257,15 @@ router.get('/profile', ensureAuthenticated, function(req, res){
 });
 
 router.put('/profile', ensureAuthenticated, function(req, res){
+
+	if(typeof req.body.oneSignalNotif !== undefined){
+		ShowNotification.update({user_id: req.user._id}, {$set: {oneSignalDay: req.body.oneSignalNotif, oneSignalHour: req.body.oneSignalNotif}}, {multi: true})
+	}
+
+	if(typeof req.body.emailNotif !== undefined){
+		ShowNotification.update({user_id: req.user._id}, {$set: {emailDay: req.body.emailNotif, emailHour: req.body.emailNotif}}, {multi: true})
+		}
+
     User.update({_id: req.user._id}, req.body, function(err, raw) {
         if (err) {
           res.json(err);

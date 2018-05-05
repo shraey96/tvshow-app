@@ -178,13 +178,20 @@ if(this.props.user.isUserLoggedIn === true){
   </Col>
 )
 
+let passButton;
+if(this.state.profileInfo.google_id || this.state.profileInfo.facebook_id){
+  passButton = '';
+}else {
+  passButton = (<RaisedButton label="Change Password" onClick={this.handleOpenDialog} />);
+}
+
 profileInfo = (
     <Col xs={12} md={8}  sm={12}>
     <div className="user_profile">
     <p className="user_profile_main"><span>{this.state.profileInfo.username}</span> </p>
     <p className="user_profile_main"><span>{this.state.profileInfo.email}</span> </p>
     <p>Date Joined: <span>{moment(this.state.profileInfo.created_at).format('MMMM Do YYYY')}</span> </p><br/>
-    <RaisedButton label="Change Password" onClick={this.handleOpenDialog} />
+    {passButton}
     </div>
     </Col>
 )
