@@ -41,6 +41,7 @@ componentWillMount(){
     .then(episode=>{
 
       this.setState({episodes: episode.reverse(), loader: false});
+      // this.setState({episodes: episode, loader: false});
 
       })
   }
@@ -50,21 +51,22 @@ handleWatch = (episode_num, showid, type) =>{
 
   // console.log("episode watch: ", episode_num, type);
   if(this.props.user.isUserLoggedIn === true){
-    console.log(this.state.episodes[0]);
-    let stateEpisodes = this.state.episodes.reverse();
-    console.log(stateEpisodes[0]);
+    // console.log(this.state.episodes[0]);
+    let stateEpisodes = this.state.episodes.slice();
+    stateEpisodes = stateEpisodes.reverse();
+    // console.log(stateEpisodes[0]);
     let episodes = [];
     if(type === 0 ){
       episodes.push(episode_num);
     }else {
-      for(let i=0; i<this.state.episodes.length; i++){
+      for(let i=0; i<stateEpisodes.length; i++){
           // console.log(this.state.episodes[i].id );
-        if(this.state.episodes[i].id === episode_num){
+        if(stateEpisodes[i].id === episode_num){
           // console.log("done");
           break;
         }else {
           // console.log("push");
-          episodes.push(this.state.episodes[i].id);
+          episodes.push(stateEpisodes[i].id);
         }
       }
       episodes.push(episode_num)
@@ -73,12 +75,8 @@ handleWatch = (episode_num, showid, type) =>{
   let data = {
     tvid: showid,
     episodeid: episodes,
-    // imdb: this.props.shows.currentShow.externals.imdb,
-    // tvname: this.props.shows.currentShow.name,
-    // tvimg: this.props.shows.currentShow.image.medium,
     request: 'add'
   };
-
   let watch = this.props.followEpisode(data);
   watch.then((episode)=>{
     if(episode.success===true){
@@ -100,14 +98,16 @@ handleUnWatch = (episode_num, showid, type) =>{
   if(type === 0){
     episodes.push(episode_num);
   }else {
-    for(let i=0; i<this.state.episodes.length; i++){
+    let stateEpisodes = this.state.episodes.slice();
+    stateEpisodes = stateEpisodes.reverse();
+    for(let i=0; i<stateEpisodes.length; i++){
         // console.log(this.state.episodes[i].id );
-      if(this.state.episodes[i].id === episode_num){
+      if(stateEpisodes[i].id === episode_num){
         // console.log("done");
         break;
       }else {
         // console.log("push");
-        episodes.push(this.state.episodes[i].id);
+        episodes.push(stateEpisodes[i].id);
       }
     }
     episodes.push(episode_num)
@@ -120,7 +120,7 @@ handleUnWatch = (episode_num, showid, type) =>{
   let unWatch = this.props.unFollowEpisode(data);
   unWatch.then((episode)=>{
   if(episode.success===true){
-      this.setState({open: true, msg: `Episode Unwatched!`});
+      this.setState({open: true, msg: `Episode(s) Unwatched!`});
   }else {
       this.setState({open: true, msg: `There was some problem.`});
   }

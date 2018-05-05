@@ -10,6 +10,9 @@ import { withRouter } from 'react-router-dom';
 import {Animated} from "react-animated-css";
 import { Helmet } from "react-helmet";
 
+import moment from 'moment';
+import 'moment-timezone';
+
 import '../App.css';
 
 const MyShows = (props) => {
@@ -17,14 +20,36 @@ const MyShows = (props) => {
 let usershows;
 let image;
 let percentageWatched;
+	let todaysDate = moment(new Date(), 'YYYY.MM.DD').tz('Asia/Calcutta');
+// 	console.log(todaysDate, typeof todaysDate);
 if(props.user.isUserLoggedIn === true){
 
   if(props.user.userFollows.length>0){
   usershows = props.user.userFollows.map((shows)=>{
-    // console.log(shows);
+
+    // console.log(shows.show_ref.episodes);
+    // shows.show_ref.episodes.forEach((episode)=>{
+    // episode.airstamp =   moment(episode.airstamp, 'YYYY.MM.DD')
+    //   console.log(episode.airstamp.isBefore(todaysDate));
+    // })
+
+    let nextEpisode = shows.show_ref.episodes.filter((episode)=>{
+      episode.airstamp =   moment(episode.airstamp, 'YYYY.MM.DD');
+      return !episode.airstamp.isBefore(todaysDate)
+    })
+    let nextEpisodeAirDate;
+    if(nextEpisode.length>0){
+      // console.log(nextEpisode[0]);
+      nextEpisodeAirDate = moment(nextEpisode[0].airdate).format('MMMM Do YYYY').toString();
+      // console.log(nextEpisodeAirDate);
+
+    }else {
+      nextEpisodeAirDate = 'coming soon';
+    }
+    // console.log(shows.show_ref.episodes.airstamp.isBefore(todaysDate));
     image = <Link to={`/shows/${shows.show_ref.tvShowName}/${shows.tvShowId}`}><img className="show_img" src={shows.show_ref.tvShowImageUrl}/></Link>
     if(shows.show_ref.tvShowImageUrl === "" || !shows.show_ref.tvShowImageUrl){
-       image = <Link to={`/shows/${shows.show_ref.tvShowName}/${shows.tvShowId}`}><img className="show_img" src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/vintage-tv-poster-irina-march.jpg" height="295px" width="210px"/></Link>
+    image = <Link to={`/shows/${shows.show_ref.tvShowName}/${shows.tvShowId}`}><img className="show_img" src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/vintage-tv-poster-irina-march.jpg" height="295px" width="210px"/></Link>
     }
     percentageWatched = Percentage(shows.episodeWatched.length, shows.show_ref.totalEpisodeCount)
     return(
@@ -35,6 +60,7 @@ if(props.user.isUserLoggedIn === true){
         <br/>
         <p className="my_shows"><Link className="tvpopularLink" to={`/shows/${shows.show_ref.tvShowName}/${shows.show_ref.tvShowId}`}>{shows.show_ref.tvShowName}</Link> </p>
         <p className="my_shows_percent">Percentage Watched: {percentageWatched}</p>
+        <u className="my_shows_percent">Next Episode: {nextEpisodeAirDate}</u>
         </div>
         <br/>
       </Animated>

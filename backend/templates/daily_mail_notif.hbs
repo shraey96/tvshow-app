@@ -1,0 +1,165 @@
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous"> -->
+
+<style>
+
+@media (max-width: 480px) {
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+  .div1 {
+    order: 2;
+  }
+}
+.topnav li a{
+  font-size: 30px;
+}
+
+ul.topnav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+ul.topnav li {float: left;}
+
+ul.topnav li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+ul.topnav li a:hover:not(.active) {background-color: #111;}
+
+ul.topnav li a.active {background-color: #4CAF50;}
+
+ul.topnav li.right {float: right;}
+
+@media screen and (max-width: 600px){
+    ul.topnav li.right,
+    ul.topnav li {float: none;}
+}
+
+p{
+  line-height: 0
+}
+
+
+.inner{
+
+    float: left;
+    width: 100%;
+}
+
+@media (min-width:500px){
+    .inner{
+        width: 50%;
+}
+}
+
+.show_poster{
+  margin-right: 40%;
+  padding-left: 70px
+}
+
+/* .all_stuff{
+  background-color: black
+} */
+
+.container {
+  display: flex;
+}
+
+.section {
+  flex: 1; /*grow*/
+  padding: 20px 20px 20px 20px;
+}
+
+.showInfo{
+  font-size: 20px;
+}
+
+.showInfo p{
+  margin-top: 10px;
+}
+
+@media (max-width: 768px) { /*breakpoint*/
+  .container {
+    flex-direction: column;
+  }
+}
+
+</style>
+
+
+</head>
+
+<body>
+<div class="all_stuff">
+
+  <ul class="topnav">
+    <li><a class="active" href="https://www.binged.xyz">Binged Notifications</a></li>
+  </ul>
+
+  <center>
+  <div>
+    <h2>
+   Shows Airing Today!
+   <br>
+ </h2>
+  </div>
+  </center>
+
+<br><br>
+
+  <div style="margin:0 auto; width:350px;" class="showInfo">
+    <center>
+      <ul class="people_list">
+      {{#each notifArray}}
+      <li><a href=`https://binged.xyz/#/shows/{{this.name}}/{{this.showid}}/{{this.season}}/episode/{{this.episode_number}}`>{{this.name}} ({{this.episode}})</a>, will be airing on {{this.airstamp}}</li>
+      {{/each}}
+      </ul>
+    </center>
+  </div>
+
+
+
+
+
+
+
+
+<br><br><br><br>
+
+
+
+<br>
+<hr>
+
+<p>*This is an auto-generted mail. Please do not reply to this email.</p>
+
+
+
+
+
+
+
+<br><br>
+
+
+</div>
+</body>
+
+</html>

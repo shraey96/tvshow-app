@@ -30,6 +30,11 @@ componentWillMount(){
   .then(res=>res.json())
   .then(crew=>{
     // console.log(crew);
+    crew.forEach((crew)=>{
+      if(crew.person.image){
+      crew.person.image.medium = crew.person.image.medium.replace('http', 'https');
+    }
+    })
     this.setState({crew: crew, loader: false});
 
     })

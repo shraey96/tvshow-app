@@ -314,7 +314,7 @@ export function userProfile(info){
 
 function sendOSID(){
   // console.log("Sending osID");
-  let OneSignal = window.OneSignal || [];
+  var OneSignal = window.OneSignal || [];
   OneSignal.push(function() {
     OneSignal.init({
       appId: "19de5a98-baae-4f0c-91f6-9f3127e36de3",

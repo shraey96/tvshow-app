@@ -200,6 +200,7 @@ settings = (
   toggled={this.state.profileInfo.oneSignalNotif}
   className="toggle"
   />
+<p>Receive Web Push notifications daily for shows! (still in alpha stage)</p>
 
   <Toggle
   label="Email Notifications"
@@ -208,6 +209,7 @@ settings = (
   toggled={this.state.profileInfo.emailNotif}
   className="toggle"
   />
+<p>Receive a list of followed shows airing everyday via email!</p>
   </Col>
 
 )

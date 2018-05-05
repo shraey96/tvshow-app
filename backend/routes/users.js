@@ -282,47 +282,127 @@ router.put('/profile', ensureAuthenticated, function(req, res){
 
 router.put('/episodeWatched',ensureAuthenticated, function(req, res){
     if(req.body.request==="add"){
-    TvShow.update(
-        { user_id: req.user._id ,
-        "tvShowInfo.tvShowId":req.body.tvid},
-        { $addToSet: { "tvShowInfo.$.episodeWatched" : { $each: req.body.episodeid  }}}
-    )
 
-    // let query = { user_id: req.user._id , "tvShowInfo.tvShowId":req.body.tvid};
-    // let update = { $addToSet: { "tvShowInfo.$.episodeWatched" : req.body.episodeid  } };
-    // let options = {new: true, upsert: true}
-    //   TvShow.findOneAndUpdate (query, update, options, function(err, result){
-    //     if(result){
-    //               res.json({
-    //                   succes: true,
-    //                   msg: "Episode Added",
-    //                   result: result
-    //                 });
-    //     }
-    //   })
+			showCache.findOne({tvShowId: req.body.tvid})
+		  .then((show)=>{
 
-        .then((done) => {
-            if(done){
+		    if(show){
+		      console.log("show found!");
+		      proceedToAdd(show)
+		    }else {
+		      console.log("show not found!");
+		      var options = {
+		          uri: 'http://api.tvmaze.com/shows/'+req.body.tvid+'/episodes?specials=1',
+		          json: true
+		      };
+		      rp(options)
+		          .then(function (response) {
 
-                  TvShow.findOne({user_id: req.user._id})
-                  .populate('tvShowInfo.show_ref')
-                  .then((user)=>{
-                    res.json({
-                        success: true,
-                        msg: "Episode Added",
-                        user: user
-                      });
-                  })
+								var options2 = {
+									uri: 'https://api.tvmaze.com/shows/'+req.body.tvid+'?embed=cast',
+				          json: true
+								}
+
+								rp(options2)
+											.then(function(response2){
+
+												let objToCreate = {
+						              tvShowId : response2.id,
+						              tvShowIMDB: response2.externals.imdb || '',
+						              tvShowImageUrl: response2.image.medium || '',
+						              tvShowName: response2.name,
+						              totalEpisodeCount: response.length,
+						              episodes: response
+						            }
+
+						            showCache.create(objToCreate)
+						            .then((show)=>{
+						              proceedToAdd(show)
+						            })
 
 
-            }else{
-                res.json({
-                    success:false,
-                    msg: "Episode already Exist"
-                })
-            }
-        })
-    }else{
+											})
+
+
+
+		          })
+		    }
+		  })
+
+
+			function proceedToAdd(show){
+				TvShow.findOne({user_id: req.user._id,"tvShowInfo.tvShowId":req.body.tvid})
+				.then((user)=>{
+					if(user){
+
+						    TvShow.update(
+						        { user_id: req.user._id ,
+						        "tvShowInfo.tvShowId":req.body.tvid},
+						        { $addToSet: { "tvShowInfo.$.episodeWatched" : { $each: req.body.episodeid  }}}
+						    )
+						        .then((done) => {
+						            if(done){
+
+						                  TvShow.findOne({user_id: req.user._id})
+						                  .populate('tvShowInfo.show_ref')
+						                  .then((user)=>{
+						                    res.json({
+						                        success: true,
+						                        msg: "Episode Added",
+						                        user: user
+						                      });
+						                  })
+
+
+						            }else{
+						                res.json({
+						                    success:false,
+						                    msg: "Episode already Exist"
+						                })
+						            }
+						        })
+
+					}else {
+
+
+						let updateObj = {
+											tvShowId : parseInt(req.body.tvid),
+											show_ref : show._id,
+											episodeWatched : req.body.episodeid
+						}
+
+						TvShow.update(
+								{ user_id: req.user._id } ,
+								{ $addToSet: { "tvShowInfo" : updateObj}}
+						).then((done)=>{
+							TvShow.findOne({user_id: req.user._id})
+							.populate('tvShowInfo.show_ref')
+							.then((user)=>{
+							res.json({
+									success: true,
+									msg: "Episode Added.",
+									user: user
+							});
+							req.body.show_ref = show._id;
+							req.body.user_id = req.user._id;
+							req.body.tvShowId = req.body.tvid;
+							req.body.oneSignalDay = !req.user.oneSignalNotif;
+							req.body.oneSignalHour = !req.user.oneSignalNotif;
+							req.body.emailDay = !req.user.emailNotif;
+							req.body.emailHour = !req.user.emailNotif;
+							ShowNotification.create(req.body).then((notification)=>{
+									console.log("notification created!");
+							})
+
+
+		})
+						})
+
+			}
+
+    })
+	}
+}		else{
         TvShow.update(
             { user_id: req.user._id ,
             "tvShowInfo.tvShowId":req.body.tvid},
@@ -347,7 +427,8 @@ router.put('/episodeWatched',ensureAuthenticated, function(req, res){
                 }
             })
     }
-});
+	})
+
 
 
 router.post('/userTvInfo/follow',ensureAuthenticated, function(req, res){
@@ -513,6 +594,9 @@ router.post('/userTvInfo/unfollow',ensureAuthenticated, function (req, res) {
                     msg: "Show unfollowed.",
                     result: user
                 });
+
+								ShowNotification.remove({ user_id: req.user._id, tvShowId: req.body.tvid })
+
                 });
         })
 });

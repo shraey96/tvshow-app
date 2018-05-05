@@ -30,6 +30,14 @@ componentWillMount(){
   .then(res=>res.json())
   .then(cast=>{
     // console.log(cast);
+    cast.forEach((cast)=>{
+      if(cast.person.image){
+      cast.person.image.medium = cast.person.image.medium.replace('http', 'https');
+    }
+     if(cast.character.image){
+      cast.character.image.medium = cast.character.image.medium.replace('http', 'https');
+    }
+    })
     this.setState({cast: cast, loader: false});
 
     })

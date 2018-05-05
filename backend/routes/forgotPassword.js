@@ -6,7 +6,7 @@ const rp = require('request-promise');
 const hbs = require('nodemailer-express-handlebars');
 const nodemailer = require('nodemailer');
 const cron = require('node-cron');
-var randomstring = require("randomstring");
+const randomstring = require("randomstring");
 
 // bring in models
 let User = require('../models/user');
@@ -49,7 +49,7 @@ router.post('/', function(req, res){
 
             User.update({_id: user._id}, {password: password}, function(err, raw) {
                 let mailOptions = {
-                    from: 'nitish@creativeappography.com',
+                    from: 'notifications@binged.xyz',
                     to: `${req.body.email}`,
                     subject: `Notification fron Binged.xyz`,
                     template: 'forgot_password',
