@@ -17,7 +17,7 @@ let mailer = nodemailer.createTransport({
 	port:465,
 	secure: false,
 	auth: {
-			user: 'notifications@binged.xyz',
+			user: 'support@binged.xyz',
 			pass: 'bingingshows'
 	}
 });
@@ -41,7 +41,7 @@ router.post('/', function(req, res){
     User.findOne({'email': req.body.email})
     .then((user)=>{
         if(!user){
-            res.send({
+            res.json({
                 success:false,
                 msg:"email not found",
             })
@@ -49,9 +49,9 @@ router.post('/', function(req, res){
 
             User.update({_id: user._id}, {password: password}, function(err, raw) {
                 let mailOptions = {
-                    from: 'notifications@binged.xyz',
+                    from: 'support@binged.xyz',
                     to: `${req.body.email}`,
-                    subject: `Notification fron Binged.xyz`,
+                    subject: `Forgot your password?`,
                     template: 'forgot_password',
                     context: {
                     newPassword: randomPassword,
@@ -68,7 +68,7 @@ router.post('/', function(req, res){
                             }
                     })
 
-                res.send({
+                res.json({
                     success:true,
                     msg:"password changed",
                 })
