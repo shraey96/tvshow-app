@@ -232,6 +232,8 @@ function notifQueryHour(){
 
 						console.log("Current time: ", todayAll.format('YYYY.MM.DD, h:mm'));
 						console.log("showTime: ", showDateTime.format('YYYY.MM.DD, h:mm'));
+						console.log("show: ", notif_user.show_ref.tvShowName);
+						console.log("episode", user_notif_episodes.id);
 							if(showDateTime.diff(todayAll) <= 3600000){
 							mailerHour(notif_user, user_notif_episodes, showDate.add(1, 'day').toDate());
 						}
