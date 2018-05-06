@@ -19,7 +19,7 @@ let db = mongoose.connection;
 //check for db errors
 db.once('open', function(){
 	console.log('Connected to MongoDB');
-
+	sendDailyShows();
 });
 db.on('error', function(err){
 	console.log(err);
@@ -39,7 +39,7 @@ cron.schedule('0 0 0 * * *', function(){
 function sendDailyShows(){
 	console.log("Running sendDailyShows");
   let d = new Date();
-  let todaysDate = moment(d, 'YYYY.MM.DD');
+  let todaysDate = moment(d);
 
   User.find({emailNotif: true})
   .then((users)=>{
@@ -61,9 +61,13 @@ function sendDailyShows(){
 
                 // console.log(notif.show_ref.tvShowName);
                 // console.log(episode);
-                  	let showDate = moment(episode.airstamp, 'YYYY.MM.DD');
-                    if(showDate.isSame(todaysDate)){
-                      // console.log(showDate);
+                  	let showDate = moment(episode.airstamp)
+										// console.log(showDate.format('YYYY.MM.DD'), todaysDate.format('YYYY.MM.DD'));
+										// console.log(todaysDate.isSame(showDate, 'date'));
+
+                    if(showDate.isSame(todaysDate, 'month') && showDate.isSame(todaysDate, 'year') && showDate.isSame(todaysDate, 'date')){
+											console.log(notif.show_ref.tvShowName);
+											console.log(showDate);
                       let objToUse = {
                         name: notif.show_ref.tvShowName,
                         showid: notif.show_ref.tvShowId,
@@ -107,41 +111,48 @@ function sendDailyShows(){
 function sendMailDay(userEmail, dailyList){
   // console.log(userEmail, dailyList);
 
-  let mailer = nodemailer.createTransport({
-  	host: 'smtp.zoho.com',
-  	service:'Zoho',
-  	port:465,
-  	secure: false,
-  	auth: {
-  			user: 'notifications@binged.xyz',
-  			pass: 'bingingshows'
-  	}
-  });
+	if(dailyList.length>0){
 
-  mailer.use('compile', hbs({
-  	viewPath: './templates',
-  	extName: '.hbs'
-  }))
+		let mailer = nodemailer.createTransport({
+			host: 'smtp.zoho.com',
+			service:'Zoho',
+			port:465,
+			secure: false,
+			auth: {
+					user: 'notifications@binged.xyz',
+					pass: 'bingingshows'
+			}
+		});
+
+		mailer.use('compile', hbs({
+			viewPath: './templates',
+			extName: '.hbs'
+		}))
 
 
-  let mailOptions = {
-   from: 'notifications@binged.xyz',
-   to: `${userEmail}`,
-   subject: `Binged! List of episodes airing today!`,
-   template: 'daily_mail_notif',
-   context: {
-  notifArray: dailyList,
-   }
-  };
+		let mailOptions = {
+		 from: 'notifications@binged.xyz',
+		 to: `${userEmail}`,
+		 subject: `Binged! List of episodes airing today!`,
+		 template: 'daily_mail_notif',
+		 context: {
+		notifArray: dailyList,
+		 }
+		};
 
-  mailer.sendMail(mailOptions, (err, done)=>{
-  		if(err){
-  			console.log(err);
-  			return
-  		}else {
-  			console.log("Sent mail to: ", done);
-  		}
+	  mailer.sendMail(mailOptions, (err, done)=>{
+	  		if(err){
+	  			console.log(err);
+	  			return
+	  		}else {
+	  			console.log("Sent mail to: ", done);
+	  		}
 
-})
+	})
+
+
+	}
+
+
 
 }
