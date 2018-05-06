@@ -10,6 +10,8 @@ import {HashRouter} from 'react-router-dom';
 
 import store from './store';
 
+import Analytics from 'react-router-ga';
+
 WebFontLoader.load({
   google: {
     families: ['Roboto:300,400,500,700', 'Material Icons'],
@@ -22,7 +24,9 @@ ReactDOM.render(
 <Provider store={store}>
 
   <HashRouter>
+    <Analytics id="UA-117273991-2" debug>
     <App />
+    </Analytics>
   </HashRouter>
 
 </Provider>
